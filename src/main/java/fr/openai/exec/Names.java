@@ -6,7 +6,6 @@ public class Names {
     private String finalName; // Поле для хранения отформатированного имени
 
     public String getFinalName(String line) {
-        Executor.executedLog(line);
 
         if (line.contains("»")) {
             int start = line.indexOf("[Client thread/INFO]: [CHAT]") + "[Client thread/INFO]: [CHAT]".length();
@@ -14,7 +13,7 @@ public class Names {
 
             if (end != -1) {
                 String getName = line.substring(start, end).trim();
-                System.out.println(getName);
+                // System.out.println(getName); // del
 
                 // Вызываем метод finalName и сохраняем результат в поле finalName
                 finalName = finalName(getName);
@@ -27,7 +26,7 @@ public class Names {
 
             if (minColonIndex != -1) {
                 String getName = line.substring(startIndex, minColonIndex).trim();
-                //System.out.println(getName);
+                // System.out.println(getName); // del
 
                 // Вызываем метод finalName и сохраняем результат в поле finalName
                 finalName = finalName(getName);
@@ -38,6 +37,7 @@ public class Names {
         // Если не найдено имя игрока, возвращаем "Unknown" (или что вам нужно)
         return "Unknown";
     }
+
 
     private static final Pattern SQUARE_BRACKETS_PATTERN = Pattern.compile("\\[.+?\\]");
     private static final Pattern HASHTAG_PATTERN = Pattern.compile("#.*");
