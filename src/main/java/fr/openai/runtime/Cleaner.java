@@ -1,12 +1,15 @@
 package fr.openai.runtime;
 
-import fr.openai.runtime.DatabaseManager;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.io.*;
 import java.time.Instant;
 import java.util.Iterator;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Cleaner implements Runnable {
     private MessageManager messageManager;
@@ -22,6 +25,7 @@ public class Cleaner implements Runnable {
     public void run() {
         while (running) {
             cleanMessages();
+            cleanOldViolations(); // Добавляем очистку старых нарушений
             try {
                 Thread.sleep(CLEANING_INTERVAL_MILLISECONDS);
             } catch (InterruptedException e) {
@@ -52,4 +56,36 @@ public class Cleaner implements Runnable {
 
         DatabaseManager.saveMessages(jsonArray); // Сохраняем JSONArray в базу данных
     }
+
+    private void cleanOldViolations() {
+        long currentTimestamp = System.currentTimeMillis() / 1000L;
+        long cutoffTimestamp = currentTimestamp - 58; // Определяем метку времени, старше которой нарушения будут удалены
+
+        try (FileReader reader = new FileReader("violations.json")) {
+            JsonElement jsonElement = JsonParser.parseReader(reader);
+
+            // Проверяем, не является ли jsonElement null
+            if (jsonElement != null && jsonElement.isJsonArray()) {
+                JsonArray jsonArray = jsonElement.getAsJsonArray();
+
+                Iterator<com.google.gson.JsonElement> iterator = jsonArray.iterator();
+                while (iterator.hasNext()) {
+                    JsonObject violation = iterator.next().getAsJsonObject();
+                    long violationTimestamp = violation.get("timestamp").getAsLong();
+
+                    if (violationTimestamp < cutoffTimestamp) {
+                        iterator.remove(); // Удаляем нарушение, если оно старше заданной метки времени
+                    }
+                }
+
+                // Записываем обновленный массив нарушений обратно в файл
+                try (FileWriter writer = new FileWriter("violations.json")) {
+                    writer.write(jsonArray.toString());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

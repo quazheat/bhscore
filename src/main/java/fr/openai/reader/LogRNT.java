@@ -11,54 +11,76 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import fr.openai.handler.filter.FloodDBReader;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import fr.openai.runtime.ConfigManager;
 public class LogRNT {
-    private static final String LOG_RNT_PATH = System.getProperty("user.home") + File.separator + ".cristalix" +
-            File.separator + "updates" + File.separator + "Minigames" + File.separator + "logs" + File.separator + "latest.log";
+    private final ConfigManager configManager;
+    private final Executor executor;
+    private final Names names;
+    private final Flooding flooding;
+    private final MessageManager messageManager;
+    private final Cleaner cleaner;
+    private final Times times;
+    private final FloodDBReader floodDBReader;
+    private final ExecutorService floodDBReaderExecutor;
 
-    public static void main(String[] args) {
-        long previousSize = getFileSize();
-        long currentTime = System.currentTimeMillis();
-        Executor executor = new Executor();
-        Names names = new Names();
-        Flooding flooding = new Flooding();
-
-        // Создаем экземпляр MessageManager
-        MessageManager messageManager = new MessageManager();
-
-        // Создаем экземпляр Cleaner и передаем ему MessageManager
-        Cleaner cleaner = new Cleaner(messageManager);
-        Times times = new Times(messageManager); // Передаем MessageManager
-
-        // Создаем поток для выполнения Cleaner
+    public LogRNT() {
+        this.configManager = new ConfigManager();
+        this.executor = new Executor();
+        this.names = new Names();
+        this.flooding = new Flooding();
+        this.messageManager = new MessageManager();
+        this.cleaner = new Cleaner(messageManager);
+        this.times = new Times(messageManager);
         Thread cleanerThread = new Thread(cleaner);
         cleanerThread.start();
+        this.floodDBReader = new FloodDBReader();
+        this.floodDBReaderExecutor = Executors.newSingleThreadExecutor(); // Создаем пул потоков с одним потоком для FloodDBReader
+    }
+
+    public static void main(String[] args) {
+        LogRNT logReader = new LogRNT();
+        logReader.run();
+    }
+
+    private void run() {
+        long previousSize = getFileSize();
+        long currentTime = System.currentTimeMillis();
 
         while (true) {
             long currentSize = getFileSize();
             long elapsedTime = System.currentTimeMillis() - currentTime;
+            int upFQ = configManager.getUpFQ();
 
-            if (currentSize > previousSize && elapsedTime >= 100) {
-                readNewLines(previousSize, currentSize, executor, names, times, messageManager);
+            if (currentSize > previousSize && elapsedTime >= upFQ) {
+                String logRntPath = configManager.getLogRntPath();
+                readNewLines(previousSize, currentSize, logRntPath);
                 previousSize = currentSize;
                 currentTime = System.currentTimeMillis();
             }
 
+            // Вызываем FloodDBReader в отдельном потоке
+            floodDBReaderExecutor.submit(floodDBReader::checkForFloodWarnings);
+
             try {
-                Thread.sleep(100);
+                Thread.sleep(upFQ);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private static long getFileSize() {
+    private long getFileSize() {
         try {
-            Path path = Paths.get(LOG_RNT_PATH);
+            String logRntPath = configManager.getLogRntPath();
+            Path path = Paths.get(logRntPath);
             return Files.size(path);
         } catch (IOException e) {
             e.printStackTrace();
@@ -66,43 +88,39 @@ public class LogRNT {
         }
     }
 
-    private static void readNewLines(long start, long end, Executor executor, Names names, Times times, MessageManager messageManager) {
-        JSONArray jsonArray = new JSONArray(); // Создаем JSON массив для хранения сообщений
+    private void readNewLines(long start, long end, String logRntPath) {
+        JSONArray jsonArray = new JSONArray();
 
-        try (RandomAccessFile raf = new RandomAccessFile(LOG_RNT_PATH, "r")) {
+        try (RandomAccessFile raf = new RandomAccessFile(logRntPath, "r")) {
             raf.seek(start);
             String line;
             while ((line = raf.readLine()) != null) {
-                line = new String(line.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
-
-                if (Readable.check(line)) {
-                    executor.execute(line, names);
-                    times.timestamp(line, names);
-
-                    // Теперь можно вызывать метод checkForFlood() из экземпляра msgHandler
-
-                    try {
-                        // Попытка разобрать строку как JSON
-                        Object parsedObject = new JSONParser().parse(line);
-
-                        if (parsedObject instanceof JSONObject) {
-                            // Это корректный JSON-объект, добавляем его в массив
-                            jsonArray.add(parsedObject);
-                        } else {
-                            // Это не JSON-объект, можете выполнить другие действия по вашему выбору
-                        }
-                    } catch (ParseException e) {
-                        // Обработка ошибки разбора JSON, если строка не является корректным JSON
-                        // Можете добавить логирование ошибки или другие действия по вашему выбору
-                    }
-                }
+                processLogLine(line, jsonArray);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // Преобразуем JSON массив в объект и передаем его в DatabaseManager
         DatabaseManager.saveMessages(jsonArray);
     }
 
+    private void processLogLine(String line, JSONArray jsonArray) {
+        line = new String(line.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+
+        if (Readable.check(line)) {
+            executor.execute(line, names);
+            times.timestamp(line, names);
+
+            try {
+                Object parsedObject = new JSONParser().parse(line);
+
+                if (parsedObject instanceof JSONObject) {
+                    jsonArray.add(parsedObject);
+                }  // Действия по обработке не-JSON строки
+
+            } catch (ParseException e) {
+                // Обработка ошибок разбора JSON
+            }
+        }
+    }
 }
