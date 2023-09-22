@@ -58,18 +58,33 @@ public class Cleaner implements Runnable {
         reloadDatabase();
 
         // Debug message to check the messages after cleaning
-        System.out.println("After cleaning: " + messages);
+        /*System.out.println("After cleaning: " + messages);*/
     }
 
     // Метод для сохранения сообщений в JSON-файл
     private void saveDatabase(JSONArray jsonArray) {
         try (FileWriter fileWriter = new FileWriter(JSON_FILE_PATH)) {
-            fileWriter.write(jsonArray.toJSONString());
+            String newline = System.getProperty("line.separator");
+
+            fileWriter.write("[" + newline);
+
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject jsonMessage = (JSONObject) jsonArray.get(i); // Приведение к типу JSONObject
+                fileWriter.write(jsonMessage.toJSONString());
+
+                if (i < jsonArray.size() - 1) {
+                    fileWriter.write("," + newline); // Добавляем запятую и новую строку после каждой записи, кроме последней
+                }
+            }
+
+            fileWriter.write("]" + newline);
+
             fileWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     // Метод для перезагрузки базы данных
     public void reloadDatabase() {

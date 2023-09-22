@@ -2,15 +2,8 @@ package fr.openai.runtime;
 
 import fr.openai.exec.Messages;
 import fr.openai.exec.Names;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Times {

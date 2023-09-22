@@ -31,7 +31,6 @@ public class LogRNT {
         Times times = new Times(cleaner);
 
         // Создаем экземпляр MsgHandler, передавая cleaner и DbSaver
-        msgHandler = new MsgHandler(cleaner);
 
         // Создаем поток для выполнения Cleaner
         Thread cleanerThread = new Thread(cleaner);
@@ -77,7 +76,6 @@ public class LogRNT {
                     times.timestamp(line, names); // Use the Times instance to call timestamp method
 
                     // Теперь можно вызывать метод checkForFlood() из экземпляра msgHandler
-                    msgHandler.checkForFlood();
 
                     // Сохраняем базу данных с помощью DbSaver
                     // Нет необходимости вызывать DbSaver.saveDatabase() здесь, так как это делает MsgHandler
