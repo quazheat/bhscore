@@ -1,4 +1,4 @@
 package fr.openai.handler;
 
-public class MsgHandler {
+public class Handler{
 }

@@ -1,36 +1,30 @@
 package fr.openai.exec;
 
 import fr.openai.handler.filter.Filtering;
-import fr.openai.exec.Names;
 
 public class Executor {
+    private final Filtering filtering;
+
+    public Executor() {
+        this.filtering = new Filtering();
+    }
+
     public void execute(String line, Names names) {
         if (Validator.isValid(line)) {
             return;
-        } // Строки с определенными текстами игнорируются
+        }
 
+        String playerName = names.getFinalName(line);
         String message = Messages.getMessage(line);
 
-        // Создаем экземпляр класса Filtering и вызываем onFilter перед выводом "Player Message"
-        Filtering filtering = new Filtering();
-        filtering.onFilter(names.getFinalName(line), message); // Передаем имя из finalName
+        filtering.onFilter(playerName, message);
 
-        assert message != null;
-        if (!message.isEmpty()) {
+        if (message != null && !message.isEmpty()) {
             System.out.println("Player Message: " + message);
-
-            // Получаем значение finalName с помощью метода getFinalName() из экземпляра Names
-            //String finalName = names.getFinalName(line);
-
-            // Выводим finalName для отладки
-            //System.out.println("DEBUG Exec: " + finalName);
         }
     }
 
-
-    public static void executedLog(String line) {
-        // Этот метод можно вызывать из других классов для обработки строки
-        // Например, Names.executedLog(line);
+    public void executedLog(String line) {
         System.out.println(line);
     }
 }

@@ -3,15 +3,13 @@ package fr.openai.runtime;
 import fr.openai.exec.Messages;
 import fr.openai.exec.Names;
 import org.json.simple.JSONObject;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Times {
-    private List<JSONObject> messages = new ArrayList<>();
-    private Cleaner cleaner;
+    private MessageManager messageManager;
 
-    public Times(Cleaner cleaner) {
-        this.cleaner = cleaner;
+    public Times(MessageManager messageManager) {
+        this.messageManager = messageManager;
     }
 
     public void timestamp(String line, Names names) {
@@ -19,12 +17,12 @@ public class Times {
         String playerName = names.getFinalName(line);
 
         JSONObject jsonMessage = new JSONObject();
-        jsonMessage.put("message_number", messages.size());
+        jsonMessage.put("message_number", messageManager.getMessages().size());
         jsonMessage.put("timestamp", System.currentTimeMillis() / 1000);
         jsonMessage.put("message", message);
         jsonMessage.put("player_name", playerName);
 
-        messages.add(jsonMessage);
-        cleaner.addMessage(jsonMessage);
+        // Вместо добавления сообщения в локальный список, добавляем его в MessageManager
+        messageManager.addMessage(jsonMessage);
     }
 }
