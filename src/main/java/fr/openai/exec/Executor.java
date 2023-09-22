@@ -20,7 +20,7 @@ public class Executor {
         filtering.onFilter(playerName, message);
 
         if (message != null && !message.isEmpty()) {
-            System.out.println("Player Message: " + message);
+            System.out.println("DEBUG_" + playerName + " »  " + message);
         }
     }
 

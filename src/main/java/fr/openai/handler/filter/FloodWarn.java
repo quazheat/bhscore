@@ -8,25 +8,25 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FloodDBReader {
-    private static final String FLOOD_DB_PATH = "floodDB.json"; // Путь к файлу floodDB.json
+public class FloodWarn {
+    private static final String CHAT_PATH = "livechat.json"; // Путь к файлу chat
     private static final String VIOLATIONS_PATH = "violations.json"; // Путь к файлу violations.json
 
-    public void checkForFloodWarnings() {
+    public void checkWarn() {
         boolean fileNotFound = false;
 
         while (!fileNotFound) {
-            File floodDbFile = new File(FLOOD_DB_PATH);
+            File chatFile = new File(CHAT_PATH);
 
-            if (!floodDbFile.exists() || floodDbFile.length() == 0) {
+            if (!chatFile.exists() || chatFile.length() == 0) {
                 return;
             }
 
-            ensureViolationsFileExists(); // Проверяем и создаем violations.json, если его нет
+            isExist(); // Проверяем и создаем violations.json, если его нет
 
-            try (FileReader reader = new FileReader(FLOOD_DB_PATH)) {
+            try (FileReader reader = new FileReader(CHAT_PATH)) {
                 // Сначала проверяем, не пустой ли файл, и только затем парсим его
-                if (floodDbFile.length() > 0) {
+                if (chatFile.length() > 0) {
                     JsonArray jsonArray = JsonParser.parseReader(reader).getAsJsonArray();
 
                     Map<String, Integer> messageCounts = new HashMap<>();
@@ -44,7 +44,7 @@ public class FloodDBReader {
 
                             if (messageCounts.get(messageKey) >= 3) {
                                 // Проверяем нарушение в файле violations.json
-                                if (!isViolationAlreadyRecorded(playerName, message)) {
+                                if (!isRecorded(playerName, message)) {
                                     // Нарушение еще не записано, записываем его и отправляем уведомление
                                     recordViolation(playerName, message);
                                     System.out.println("FLOOD WARNING: " + playerName + " sent the same message 3 times: " + message);
@@ -68,7 +68,7 @@ public class FloodDBReader {
     }
 
 
-    private void ensureViolationsFileExists() {
+    private void isExist() {
         File violationsFile = new File(VIOLATIONS_PATH);
 
         if (!violationsFile.exists()) {
@@ -89,18 +89,18 @@ public class FloodDBReader {
     }
 
 
-    private boolean isViolationAlreadyRecorded(String playerName, String message) {
+    private boolean isRecorded(String playerName, String message) {
         // Проверяем нарушение в файле violations.json
         try (FileReader reader = new FileReader(VIOLATIONS_PATH)) {
             JsonArray jsonArray = JsonParser.parseReader(reader).getAsJsonArray();
 
             for (int i = 0; i < jsonArray.size(); i++) {
                 JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
-                String recordedPlayerName = jsonObject.get("player_name").getAsString();
-                String recordedMessage = jsonObject.get("message").getAsString();
+                String rNick = jsonObject.get("player_name").getAsString();
+                String rMessage = jsonObject.get("message").getAsString();
 
                 // Если нарушение уже записано в файле, возвращаем true
-                if (recordedPlayerName.equals(playerName) && recordedMessage.equals(message)) {
+                if (rNick.equals(playerName) && rMessage.equals(message)) {
                     return true;
                 }
             }

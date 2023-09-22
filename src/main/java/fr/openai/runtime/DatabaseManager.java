@@ -8,30 +8,17 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 
 public class DatabaseManager {
-    private static final String JSON_FILE_PATH = "floodDB.json";
+    private static final String JSON_FILE_PATH = "livechat.json";
 
     public static void saveMessages(JSONArray jsonArray) {
         try (FileWriter fileWriter = new FileWriter(JSON_FILE_PATH)) {
-            String newline = System.getProperty("line.separator");
-
-            fileWriter.write("[" + newline);
-
-            for (int i = 0; i < jsonArray.size(); i++) {
-                JSONObject jsonMessage = (JSONObject) jsonArray.get(i);
-                fileWriter.write(jsonMessage.toJSONString());
-
-                if (i < jsonArray.size() - 1) {
-                    fileWriter.write("," + newline);
-                }
-            }
-
-            fileWriter.write("]" + newline);
-
+            fileWriter.write(jsonArray.toJSONString());
             fileWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     public static JSONArray loadMessages() {
         JSONArray jsonArray = new JSONArray();

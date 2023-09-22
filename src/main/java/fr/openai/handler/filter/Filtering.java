@@ -9,12 +9,17 @@ public class Filtering {
     private static final Pattern forbiddenPattern = Pattern.compile("\\b(запрещенное слово1|матное слово|fuck|хуй)\\b", Pattern.CASE_INSENSITIVE);
 
     public void onFilter(String name, String line) {
+        // Проверяем, что ник игрока не равен "Unknown"
+        if ("Unknown".equalsIgnoreCase(name)) {
+            return; // Пропускаем сообщение
+        }
+
         String message = Messages.getMessage(line);
 
         if (message != null) {
-            System.out.println("Filtering: Message received: " + message);
+            System.out.println("Filtering: "+ name + " » " + message);
             if (containsForbiddenWords(message)) {
-                System.out.println("Filtering: Forbidden words detected in the message");
+                System.out.println("DETECTED");
 
                 // Создаем сообщение о нарушении
                 String violationMessage = name + " нарушил что-то";
@@ -28,6 +33,7 @@ public class Filtering {
             System.out.println("Filtering: No message received");
         }
     }
+
 
     private boolean containsForbiddenWords(String message) {
         Matcher matcher = forbiddenPattern.matcher(message);

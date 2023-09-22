@@ -12,11 +12,8 @@ import java.time.Instant;
 import java.util.Iterator;
 
 public class Cleaner implements Runnable {
-    private MessageManager messageManager;
-    private static final String JSON_FILE_PATH = "floodDB.json";
+    private final MessageManager messageManager;
     private boolean running = true;
-    private static final int MESSAGE_EXPIRATION_SECONDS = 58;
-    private static final long CLEANING_INTERVAL_MILLISECONDS = 500;
 
     public Cleaner(MessageManager messageManager) {
         this.messageManager = messageManager;
@@ -27,6 +24,7 @@ public class Cleaner implements Runnable {
             cleanMessages();
             cleanOldViolations(); // Добавляем очистку старых нарушений
             try {
+                long CLEANING_INTERVAL_MILLISECONDS = 500;
                 Thread.sleep(CLEANING_INTERVAL_MILLISECONDS);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -47,6 +45,7 @@ public class Cleaner implements Runnable {
             JSONObject jsonMessage = iterator.next();
             long messageTimestamp = (long) jsonMessage.get("timestamp");
 
+            int MESSAGE_EXPIRATION_SECONDS = 58;
             if (currentTimestamp - messageTimestamp > MESSAGE_EXPIRATION_SECONDS) {
                 iterator.remove();
             } else {

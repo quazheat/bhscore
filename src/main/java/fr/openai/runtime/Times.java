@@ -17,7 +17,6 @@ public class Times {
         String playerName = names.getFinalName(line);
 
         JSONObject jsonMessage = new JSONObject();
-        jsonMessage.put("message_number", messageManager.getMessages().size());
         jsonMessage.put("timestamp", System.currentTimeMillis() / 1000);
         jsonMessage.put("message", message);
         jsonMessage.put("player_name", playerName);

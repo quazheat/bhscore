@@ -11,7 +11,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import fr.openai.handler.filter.FloodDBReader;
+import fr.openai.handler.filter.FloodWarn;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -28,8 +28,8 @@ public class LogRNT {
     private final MessageManager messageManager;
     private final Cleaner cleaner;
     private final Times times;
-    private final FloodDBReader floodDBReader;
-    private final ExecutorService floodDBReaderExecutor;
+    private final FloodWarn floodWarn;
+    private final ExecutorService chatReaderExec;
 
     public LogRNT() {
         this.configManager = new ConfigManager();
@@ -41,8 +41,8 @@ public class LogRNT {
         this.times = new Times(messageManager);
         Thread cleanerThread = new Thread(cleaner);
         cleanerThread.start();
-        this.floodDBReader = new FloodDBReader();
-        this.floodDBReaderExecutor = Executors.newSingleThreadExecutor(); // Создаем пул потоков с одним потоком для FloodDBReader
+        this.floodWarn = new FloodWarn();
+        this.chatReaderExec = Executors.newSingleThreadExecutor(); // Создаем пул потоков с одним потоком для FloodWarn
     }
 
     public static void main(String[] args) {
@@ -66,8 +66,8 @@ public class LogRNT {
                 currentTime = System.currentTimeMillis();
             }
 
-            // Вызываем FloodDBReader в отдельном потоке
-            floodDBReaderExecutor.submit(floodDBReader::checkForFloodWarnings);
+            // Вызываем FloodWarn в отдельном потоке
+            chatReaderExec.submit(floodWarn::checkWarn);
 
             try {
                 Thread.sleep(upFQ);
