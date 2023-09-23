@@ -1,10 +1,9 @@
 package fr.openai.reader;
 
 import fr.openai.exec.Executor;
-import fr.openai.exec.Names;
-import fr.openai.handler.filter.Flooding;
-import fr.openai.runtime.Cleaner;
-import fr.openai.runtime.DatabaseManager;
+import fr.openai.database.Names;
+import fr.openai.handler.filter.Cleaner;
+import fr.openai.database.DatabaseManager;
 import fr.openai.runtime.MessageManager;
 import fr.openai.runtime.Times;
 import org.json.simple.JSONArray;
@@ -24,7 +23,6 @@ public class LogRNT {
     private final ConfigManager configManager;
     private final Executor executor;
     private final Names names;
-    private final Flooding flooding;
     private final MessageManager messageManager;
     private final Cleaner cleaner;
     private final Times times;
@@ -35,7 +33,6 @@ public class LogRNT {
         this.configManager = new ConfigManager();
         this.executor = new Executor();
         this.names = new Names();
-        this.flooding = new Flooding();
         this.messageManager = new MessageManager();
         this.cleaner = new Cleaner(messageManager);
         this.times = new Times(messageManager);

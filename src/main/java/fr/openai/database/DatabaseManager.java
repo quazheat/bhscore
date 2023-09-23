@@ -1,4 +1,4 @@
-package fr.openai.runtime;
+package fr.openai.database;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

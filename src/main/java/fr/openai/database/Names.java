@@ -1,10 +1,11 @@
-package fr.openai.exec;
+package fr.openai.database;
 
 import java.util.regex.Pattern;
 
 public class Names {
     private String finalName;
     private final Pattern SQUARE_BRACKETS_PATTERN = Pattern.compile("\\[.+?]");
+    private final Pattern BRACKETS_PATTERN = Pattern.compile("\\(.+?\\)");
 
     private final Pattern HASHTAG_PATTERN = Pattern.compile("#.*");
     private final Pattern PIPE_PATTERN = Pattern.compile(".+?┃");
@@ -31,6 +32,7 @@ public class Names {
     }
 
     private String formatName(String line) {
+        line = BRACKETS_PATTERN.matcher(line).replaceAll("");
         line = SQUARE_BRACKETS_PATTERN.matcher(line).replaceAll("");
         line = HASHTAG_PATTERN.matcher(line).replaceAll("");
         line = PIPE_PATTERN.matcher(line).replaceAll("");

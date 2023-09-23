@@ -1,9 +1,11 @@
-package fr.openai.runtime;
+package fr.openai.handler.filter;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import fr.openai.database.DatabaseManager;
+import fr.openai.runtime.MessageManager;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -22,7 +24,7 @@ public class Cleaner implements Runnable {
     public void run() {
         while (running) {
             cleanMessages();
-            cleanOldViolations(); // Добавляем очистку старых нарушений
+            cleanViolations(); // Добавляем очистку старых нарушений
             try {
                 long CLEANING_INTERVAL_MILLISECONDS = 500;
                 Thread.sleep(CLEANING_INTERVAL_MILLISECONDS);
@@ -39,7 +41,7 @@ public class Cleaner implements Runnable {
     public void cleanMessages() {
         long currentTimestamp = Instant.now().getEpochSecond();
         Iterator<JSONObject> iterator = messageManager.getMessages().iterator();
-        JSONArray jsonArray = new JSONArray(); // Создаем JSONArray для хранения очищенных сообщений
+        JSONArray jsonArray = new JSONArray(); // Создаем JSONArray для хранения  сообщений
 
         while (iterator.hasNext()) {
             JSONObject jsonMessage = iterator.next();
@@ -56,29 +58,34 @@ public class Cleaner implements Runnable {
         DatabaseManager.saveMessages(jsonArray); // Сохраняем JSONArray в базу данных
     }
 
-    private void cleanOldViolations() {
-        long currentTimestamp = System.currentTimeMillis() / 1000L;
-        long cutoffTimestamp = currentTimestamp - 58; // Определяем метку времени, старше которой нарушения будут удалены
+    private void cleanViolations() {
+        File violationsFile = new File("violations.json");
 
-        try (FileReader reader = new FileReader("violations.json")) {
+        if (!violationsFile.exists()) {
+            // Файл не существует, продолжаем цикл
+            return;
+        }
+
+        long currentTimestamp = System.currentTimeMillis() / 1000L;
+        long cutoffTimestamp = currentTimestamp - 58;
+
+        try (FileReader reader = new FileReader(violationsFile)) {
             JsonElement jsonElement = JsonParser.parseReader(reader);
 
-            // Проверяем, не является ли jsonElement null
             if (jsonElement != null && jsonElement.isJsonArray()) {
                 JsonArray jsonArray = jsonElement.getAsJsonArray();
 
-                Iterator<com.google.gson.JsonElement> iterator = jsonArray.iterator();
+                Iterator<JsonElement> iterator = jsonArray.iterator();
                 while (iterator.hasNext()) {
                     JsonObject violation = iterator.next().getAsJsonObject();
                     long violationTimestamp = violation.get("timestamp").getAsLong();
 
                     if (violationTimestamp < cutoffTimestamp) {
-                        iterator.remove(); // Удаляем нарушение, если оно старше заданной метки времени
+                        iterator.remove();
                     }
                 }
 
-                // Записываем обновленный массив нарушений обратно в файл
-                try (FileWriter writer = new FileWriter("violations.json")) {
+                try (FileWriter writer = new FileWriter(violationsFile)) {
                     writer.write(jsonArray.toString());
                 }
             }
@@ -86,5 +93,6 @@ public class Cleaner implements Runnable {
             e.printStackTrace();
         }
     }
+
 
 }

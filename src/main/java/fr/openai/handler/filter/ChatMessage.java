@@ -1,4 +1,4 @@
-package fr.openai.database;
+package fr.openai.handler.filter;
 
 import com.google.gson.annotations.SerializedName;
 
