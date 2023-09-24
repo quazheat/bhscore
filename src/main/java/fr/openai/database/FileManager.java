@@ -19,13 +19,8 @@ public class FileManager {
         File wordsJsonFile = new File(WORDS_JSON_PATH);
         return wordsJsonFile.delete();
     }
-
-    public void createFileWithContent(String content) {
-        try (FileWriter fileWriter = new FileWriter(WORDS_JSON_PATH)) {
-            fileWriter.write(content);
-        } catch (IOException e) {
-            System.err.println("Failed to create JSON file: " + WORDS_JSON_PATH);
-            e.printStackTrace();
-        }
+    public long getFileSize(String filePath) {
+        File file = new File(filePath);
+        return file.length();
     }
 }

@@ -4,7 +4,9 @@ import fr.openai.exec.Executor;
 import fr.openai.database.Names;
 import fr.openai.handler.filter.Cleaner;
 import fr.openai.database.DatabaseManager;
+import fr.openai.notify.NotificationSystem;
 import fr.openai.runtime.MessageManager;
+import fr.openai.runtime.SystemTrayManager;
 import fr.openai.runtime.Times;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -20,6 +22,8 @@ import java.util.concurrent.Executors;
 
 import fr.openai.runtime.ConfigManager;
 public class LogRNT {
+    private volatile boolean stopRequested = false;
+
     private final ConfigManager configManager;
     private final Executor executor;
     private final Names names;
@@ -28,6 +32,7 @@ public class LogRNT {
     private final Times times;
     private final FloodWarn floodWarn;
     private final ExecutorService chatReaderExec;
+    private static final NotificationSystem notificationSystem = new NotificationSystem(); // Создаем экземпляр класса
 
     public LogRNT() {
         this.configManager = new ConfigManager();
@@ -44,6 +49,9 @@ public class LogRNT {
 
     public static void main(String[] args) {
         LogRNT logReader = new LogRNT();
+        //notificationSystem.showTestNotification(); // Вызываем метод showTestNotification
+        SystemTrayManager trayManager = new SystemTrayManager();
+        trayManager.setupSystemTray(); // Настройка системного трея
         logReader.run();
     }
 
@@ -51,7 +59,7 @@ public class LogRNT {
         long previousSize = getFileSize();
         long currentTime = System.currentTimeMillis();
 
-        while (true) {
+        while (!stopRequested) {
             long currentSize = getFileSize();
             long elapsedTime = System.currentTimeMillis() - currentTime;
             int upFQ = configManager.getUpFQ();

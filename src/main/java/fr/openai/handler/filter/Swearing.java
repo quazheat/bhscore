@@ -1,5 +1,6 @@
 package fr.openai.handler.filter;
 
+import fr.openai.database.TimeUtil;
 import fr.openai.exec.Messages;
 
 import java.io.FileReader;
@@ -7,12 +8,21 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import fr.openai.notify.NotificationSystem;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Swearing {
+
+    private final NotificationSystem notificationSystem;
+
+    public Swearing() {
+        this.notificationSystem = new NotificationSystem();
+    }
     private static final Pattern forbiddenPattern;
 
     static {
@@ -29,12 +39,16 @@ public class Swearing {
         String message = Messages.getMessage(line);
 
         if (message != null) {
+            message = SbFix.fixMessage(message); // Используем SbFix для обработки сообщения
             System.out.println("Filtering: " + name + " » " + message);
             if (hasWords(message)) {
                 System.out.println("DETECTED");
 
                 // Создаем сообщение о нарушении
                 String violationMessage = name + " нарушил что-то";
+                String currentTime = TimeUtil.getCurrentTime();
+
+                showNotification(name, "swearing");
 
                 // Выводим сообщение о нарушении
                 System.out.println("Filtering: " + violationMessage);
@@ -47,9 +61,42 @@ public class Swearing {
     }
 
     private boolean hasWords(String message) {
-        Matcher matcher = forbiddenPattern.matcher(message);
-        return matcher.find();
+        try {
+            JSONParser parser = new JSONParser();
+            JSONObject json = (JSONObject) parser.parse(new FileReader("words.json"));
+            JSONArray whitelistArray = (JSONArray) json.get("whitelist");
+
+            // Разбиваем сообщение на отдельные слова
+            String[] words = message.split("\\s+");
+
+            for (String word : words) {
+                // Если слово есть в whitelist, то пропускаем его
+                boolean isWhitelisted = false;
+                for (Object wordObj : whitelistArray) {
+                    String whitelistWord = (String) wordObj;
+                    if (word.equals(whitelistWord)) {
+                        isWhitelisted = true;
+                        break;
+                    }
+                }
+
+                if (!isWhitelisted) {
+                    // Если слово не находится в whitelist, проверяем на запрещенные слова
+                    Matcher matcher = forbiddenPattern.matcher(word);
+                    if (matcher.find()) {
+                        return true; // Найдено запрещенное слово в сообщении
+                    }
+                }
+            }
+
+            return false; // Не найдено запрещенных слов в сообщении
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error reading JSON file: " + "words.json");
+        }
     }
+
+
 
     private static Pattern buildPattern() {
         try {
@@ -78,6 +125,9 @@ public class Swearing {
             e.printStackTrace();
             throw new RuntimeException("Error reading JSON file: " + "words.json");
         }
+    }
+    private void showNotification(String playerName, String violation) {
+        notificationSystem.showNotification(playerName, violation);
     }
 
 

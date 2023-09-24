@@ -18,6 +18,7 @@ public class Filtering {
         String message = Messages.getMessage(line);
 
         if (message != null) {
+            message = SbFix.fixMessage(message); // Используем SbFix для обработки сообщения
             System.out.println("Filtering: " + name + " » " + message);
 
             boolean violationDetected = false; // Флаг для обнаружения нарушений

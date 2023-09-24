@@ -30,12 +30,16 @@ public class JsonManager {
         return null; // Возвращаем null в случае ошибки
     }
 
-    public void createDefaultJsonFile(String filePath, List<String> defaultWords) {
+    public void createDefaultJsonFile(String filePath, List<String> defaultWords, List<String> whitelistWords) {
         JSONArray defaultWordsArray = new JSONArray();
         defaultWordsArray.addAll(defaultWords);
 
+        JSONArray whitelistArray = new JSONArray();
+        whitelistArray.addAll(whitelistWords);
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("forbidden_words", defaultWordsArray);
+        jsonObject.put("whitelist", whitelistArray); // Добавляем новый массив whitelist
 
         try (FileWriter fileWriter = new FileWriter(filePath)) {
             jsonObject.writeJSONString(fileWriter);
@@ -44,12 +48,10 @@ public class JsonManager {
             e.printStackTrace();
         }
     }
+
     public long getFileSize(String filePath) {
         File file = new File(filePath);
         return file.length();
     }
-
-
-
 
 }
