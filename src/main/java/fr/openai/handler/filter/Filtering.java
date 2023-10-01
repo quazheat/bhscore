@@ -88,12 +88,24 @@ public class Filtering {
             }
         } return false;
     }
+    private String removeSpecialCharacters(String input) {
+        // Оставляем только латиницу (a-zA-Z) и кириллицу (а-яА-Я)
+        return input.replaceAll("[^a-zA-Zа-яА-Я]", "");
+    }
+
 
     private boolean hasCaps(String message) {
         int upperCaseCount = 0;
+        String cleanedMessage = removeSpecialCharacters(message);
 
-        for (char c : message.toCharArray()) { if (Character.isUpperCase(c)) upperCaseCount++;}
+        for (char c : cleanedMessage.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                upperCaseCount++;
+            }
+        }
+
         // Проверяем, что букв в верхнем регистре составляют более 55% и букв более 6
-        return upperCaseCount > 6 && (double) upperCaseCount / message.length() > 0.55;
+        return upperCaseCount > 5 && (double) upperCaseCount / cleanedMessage.length() > 0.55;
     }
+
 }
