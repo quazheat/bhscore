@@ -2,57 +2,43 @@ package fr.openai.handler.filter;
 
 import fr.openai.database.TimeUtil;
 import fr.openai.exec.Messages;
+import fr.openai.handler.filter.fixer.SbFix;
+import fr.openai.notify.NotificationSystem;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import fr.openai.notify.NotificationSystem;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Swearing {
-
     private final NotificationSystem notificationSystem;
-
     public Swearing() {
         this.notificationSystem = new NotificationSystem();
     }
     private static final Pattern forbiddenPattern;
 
-    static {
-        // Чтение запрещенных слов из JSON-файла и создание регулярного выражения
-        forbiddenPattern = buildPattern();
-    }
+    static {forbiddenPattern = buildPattern();}
 
     public void onFilter(String name, String line) {
         // Проверяем, что ник игрока не равен "Unknown"
-        if ("Unknown".equalsIgnoreCase(name)) {
-            return; // Пропускаем сообщение
-        }
-
+        if ("Unknown".equalsIgnoreCase(name)) return; // Пропускаем сообщение
         String message = Messages.getMessage(line);
 
         if (message != null) {
             message = SbFix.fixMessage(message); // Используем SbFix для обработки сообщения
-            System.out.println("Filtering: " + name + " » " + message);
+            /*System.out.println("Filtering: " + name + " » " + message);*/
             if (hasWords(message)) {
                 System.out.println("DETECTED");
-
                 // Создаем сообщение о нарушении
                 String violationMessage = name + " нарушил что-то";
                 String currentTime = TimeUtil.getCurrentTime();
-
-                showNotification(name, "swearing");
-
+                showNotification(name);
                 // Выводим сообщение о нарушении
                 System.out.println("Filtering: " + violationMessage);
-
                 // Здесь можно выполнить действия в случае обнаружения
             }
         } else {
@@ -126,8 +112,8 @@ public class Swearing {
             throw new RuntimeException("Error reading JSON file: " + "words.json");
         }
     }
-    private void showNotification(String playerName, String violation) {
-        notificationSystem.showNotification(playerName, violation);
+    private void showNotification(String playerName) {
+        notificationSystem.showNotification(playerName, "swearing");
     }
 
 

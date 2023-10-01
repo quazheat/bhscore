@@ -4,10 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import fr.openai.exec.NameFix;
+import fr.openai.handler.filter.NameFix;
 
 
 public class NotificationSystem {
@@ -176,11 +175,4 @@ public class NotificationSystem {
         currentY += 20; // Увеличиваем текущую высоту на 20 пикселей для следующего уведомления
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            NotificationSystem system = new NotificationSystem();
-            system.showNotification("Player1", "Violation1");
-            system.showNotification("Player2", "Violation2");
-        });
-    }
 }

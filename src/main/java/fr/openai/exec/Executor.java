@@ -30,9 +30,9 @@ public class Executor {
         swearingThread.start();
         filteringThread.start();
 
-        if (message != null && !message.isEmpty()) {
-            System.out.println("DEBUG_" + playerName + " »  " + message);
-        }
+//        if (message != null && !message.isEmpty()) {
+//            System.out.println("DEBUG_" + playerName + " »  " + message);
+//        }
     }
 
     public void executedLog(String line) {

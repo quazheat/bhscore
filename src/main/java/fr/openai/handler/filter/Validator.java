@@ -16,6 +16,7 @@ public class Validator {
                 line.contains("㐎") || /*Это ;жалоба*/
                 line.contains("㥐") || /*Это выдача варна*/
                 line.contains("[CHAT] Очистка ┃ ") ||
+                line.contains("[CHAT] [Уборщик] ") ||
                 line.contains("размутил игрока");
     }
 }

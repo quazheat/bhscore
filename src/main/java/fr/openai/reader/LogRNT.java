@@ -32,7 +32,7 @@ public class LogRNT {
     private final Times times;
     private final FloodWarn floodWarn;
     private final ExecutorService chatReaderExec;
-    private static final NotificationSystem notificationSystem = new NotificationSystem(); // Создаем экземпляр класса
+    //private static final NotificationSystem notificationSystem = new NotificationSystem(); // Создаем экземпляр класса
 
     public LogRNT() {
         this.configManager = new ConfigManager();
@@ -47,7 +47,7 @@ public class LogRNT {
         this.chatReaderExec = Executors.newSingleThreadExecutor(); // Создаем пул потоков с одним потоком для FloodWarn
     }
 
-    public static void main(String[] args) {
+    public void starter() {
         LogRNT logReader = new LogRNT();
         //notificationSystem.showTestNotification(); // Вызываем метод showTestNotification
         SystemTrayManager trayManager = new SystemTrayManager();

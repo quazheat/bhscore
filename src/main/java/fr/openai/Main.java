@@ -1,11 +1,9 @@
 package fr.openai;
 
-import fr.openai.reader.LogRNT;
+import fr.openai.starter.internet.InternetManager;
 
 public class Main {
     public static void main(String[] args) {
-        LogRNT logRNT = new LogRNT();
-        logRNT.main(args);
-
+        InternetManager.check();
     }
 }

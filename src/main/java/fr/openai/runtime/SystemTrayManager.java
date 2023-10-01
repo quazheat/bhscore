@@ -3,8 +3,6 @@ package fr.openai.runtime;
 import fr.openai.database.TrayIconLoader;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class SystemTrayManager {
     private volatile boolean stopRequested = false;
@@ -35,17 +33,13 @@ public class SystemTrayManager {
                 stopRequested = true;
                 System.exit(1);
             });
-
             TrayIcon trayIcon = new TrayIcon(icon, "BHScore", popupMenu);
-
             try {
                 tray.add(trayIcon);
             } catch (AWTException e) {
                 e.printStackTrace();
             }
         }
-
-
         if (icon != null) {
             iconLoader.configureImageAutoSize(true);
         }

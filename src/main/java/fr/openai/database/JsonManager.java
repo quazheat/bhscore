@@ -11,9 +11,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class JsonManager {
-    public boolean isExist(String filePath) {
+    public void isExist(String filePath) {
         File file = new File(filePath);
-        return file.exists();
     }
 
     public JSONObject parseJsonFile(String filePath) {
@@ -33,14 +32,11 @@ public class JsonManager {
     public void createDefaultJsonFile(String filePath, List<String> defaultWords, List<String> whitelistWords) {
         JSONArray defaultWordsArray = new JSONArray();
         defaultWordsArray.addAll(defaultWords);
-
         JSONArray whitelistArray = new JSONArray();
         whitelistArray.addAll(whitelistWords);
-
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("forbidden_words", defaultWordsArray);
         jsonObject.put("whitelist", whitelistArray); // Добавляем новый массив whitelist
-
         try (FileWriter fileWriter = new FileWriter(filePath)) {
             jsonObject.writeJSONString(fileWriter);
         } catch (IOException e) {

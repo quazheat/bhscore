@@ -20,7 +20,8 @@ public class Names {
                 return getFormattedName();
             }
         } else {
-            int startIndex = line.indexOf("[Client thread/INFO]: [CHAT]") + "[Client thread/INFO]: [CHAT]".length();
+            int startIndex = line.indexOf("[Client thread/INFO]: [CHAT]"
+            ) + "[Client thread/INFO]: [CHAT]".length();
             int minColonIndex = line.indexOf(":", startIndex);
             if (minColonIndex != -1) {
                 String getName = line.substring(startIndex, minColonIndex).trim();

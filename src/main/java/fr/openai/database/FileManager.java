@@ -15,12 +15,11 @@ public class FileManager {
         return wordsJsonFile.exists() && wordsJsonFile.length() == 0;
     }
 
-    public boolean deleteFile() {
+    public void deleteFile() {
         File wordsJsonFile = new File(WORDS_JSON_PATH);
-        return wordsJsonFile.delete();
-    }
+    }/*
     public long getFileSize(String filePath) {
         File file = new File(filePath);
         return file.length();
-    }
+    }*/
 }
