@@ -59,8 +59,4 @@ public class SystemTrayManager {
         }
     }
 
-    public static void main(String[] args) {
-        SystemTrayManager trayManager = new SystemTrayManager();
-        trayManager.setupSystemTray();
-    }
 }
