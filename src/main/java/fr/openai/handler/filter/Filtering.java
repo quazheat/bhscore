@@ -2,17 +2,14 @@ package fr.openai.handler.filter;
 
 import fr.openai.exec.Messages;
 import fr.openai.handler.filter.fixer.SbFix;
-import fr.openai.notify.NotificationHandler;
 import fr.openai.notify.NotificationSystem;
 
 public class Filtering {
-    private final NotificationHandler notificationHandler;
-    private final SwearingFilter swearingFilter;
+    private final NotificationSystem notificationSystem;
     private final Filters filters;
 
-    public Filtering() {
-        this.notificationHandler = new NotificationHandler(new NotificationSystem());
-        this.swearingFilter = new SwearingFilter();
+    public Filtering(NotificationSystem notificationSystem) {
+        this.notificationSystem = notificationSystem;
         this.filters = new Filters();
     }
 
@@ -25,32 +22,34 @@ public class Filtering {
 
             boolean violationDetected = false;
 
-            if (swearingFilter.hasSwearing(message)) {
-                swearingFilter.showNotification(name);
+            if (filters.hasSwearing(message)) {
+                notificationSystem.showNotification(name, "Swearing");
                 violationDetected = true;
             }
 
             if (!violationDetected && filters.hasManySymbols(message)) {
-                notificationHandler.showNotification(name, "Symbol flood");
+                notificationSystem.showNotification(name, "Symbol flood");
                 violationDetected = true;
             }
 
             if (!violationDetected && filters.hasLaugh(message)) {
-                notificationHandler.showNotification(name, "Laugh flood");
+                notificationSystem.showNotification(name, "Laugh flood");
                 violationDetected = true;
             }
 
             if (!violationDetected && filters.hasWFlood(message)) {
                 System.out.println("DETECTED: 5 одинаковых слов");
-                notificationHandler.showNotification(name, "Flood");
+                notificationSystem.showNotification(name, "Flood");
                 violationDetected = true;
             }
 
             if (!violationDetected && filters.hasCaps(message)) {
-                notificationHandler.showNotification(name, "CAPS");
+                notificationSystem.showNotification(name, "CAPS");
             }
         } else {
             System.out.println("Filtering: No message received");
         }
+
     }
 }
+

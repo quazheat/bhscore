@@ -13,22 +13,24 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class NotificationSystem {
-    private final Queue<Notification> notifications = new LinkedList<>();
-    private static final int MAX_NOTIFICATIONS = 25;
-    private int currentY = 50;
+    private final Queue<NotificationDialogPair> notificationPairs = new LinkedList<>();
+    private static final int MAX_NOTIFICATIONS = 12;
+    private final NotificationHeightManager heightManager = new NotificationHeightManager();
 
     public void showNotification(String playerName, String violation) {
-        int currentYBeforeNotification = getCurrentY();
+        int currentYBeforeNotification = heightManager.getNotificationY();
 
-        while (notifications.size() >= MAX_NOTIFICATIONS) {
-            notifications.poll();
-            currentYBeforeNotification -= 20;
+        while (notificationPairs.size() >= MAX_NOTIFICATIONS) {
+            NotificationDialogPair removedPair = notificationPairs.poll();
+            heightManager.setNotificationHeight(notificationPairs.size(), removedPair.getDialog().getHeight());
         }
 
         Notification notification = new Notification(playerName, violation);
-        notifications.offer(notification);
-
         CustomDialog notificationDialog = new CustomDialog();
+
+        // Create a pair to associate the notification with the dialog
+        NotificationDialogPair pair = new NotificationDialogPair(notification, notificationDialog);
+        notificationPairs.offer(pair);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) (screenSize.getWidth() - notificationDialog.getWidth());
@@ -44,62 +46,89 @@ public class NotificationSystem {
         playerNameLabel.setForeground(Color.BLACK);
 
         CustomField violationField = new CustomField(violation);
-        CustomClose closeButton = new CustomClose("X", notificationDialog, this);
+        CustomClose closeButton = new CustomClose("x", notificationDialog, this, heightManager);
 
         closeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (notifications.contains(notificationDialog)) {
-                    notifications.remove(notificationDialog);
+                if (notificationPairs.contains(pair)) {
+                    notificationPairs.remove(pair);
                     notificationDialog.dispose();
-                    updateCurrentY(-20);
+                    heightManager.updateCurrentY(-20);
                 }
             }
         });
 
-        JButton skyblockButton = new JButton("mute\\warn");
-        skyblockButton.setBackground(new Color(29, 29, 29));
-        skyblockButton.setForeground(Color.WHITE);
-        skyblockButton.setFocusPainted(false);
+        JButton muteButton = new JButton("Mute");
+        JButton warnButton = new JButton("Warn");
+        muteButton.setBackground(new Color(29, 29, 29));
+        muteButton.setForeground(Color.WHITE);
+        muteButton.setFocusPainted(false);
 
-        skyblockButton.addMouseListener(new MouseAdapter() {
+        warnButton.setBackground(new Color(29, 29, 29));
+        warnButton.setForeground(Color.WHITE);
+        warnButton.setFocusPainted(false);
+        muteButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     String playerName = NameFix.sbFix(playerNameLabel.getText());
                     String command = "/mute " + playerName + "  ";
                     ClipboardUtil.copyToClipboard(command);
-                    notifications.remove(notificationDialog);
-                    notificationDialog.dispose();
-                    updateCurrentY(-20);
-                } else if (e.getButton() == MouseEvent.BUTTON3) {
+                    if (notificationPairs.contains(pair)) {
+                        notificationPairs.remove(pair);
+                        notificationDialog.dispose();
+                        heightManager.updateCurrentY(-20);
+                    }
+                }
+            }
+        });
+
+        warnButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1) {
                     String playerName = NameFix.sbFix(playerNameLabel.getText());
                     String command = "/warn " + playerName + "  ";
                     ClipboardUtil.copyToClipboard(command);
-                    notifications.remove(notificationDialog);
+                    notificationPairs.remove(pair);
                     notificationDialog.dispose();
-                    updateCurrentY(-20);
+                    heightManager.updateCurrentY(-20);
                 }
             }
         });
 
         JPanel buttonPanel = new JPanel(new BorderLayout());
+        muteButton.setPreferredSize(new Dimension((int) (0.43 * notificationDialog.getWidth()), 18));
+        warnButton.setPreferredSize(new Dimension((int) (0.43 * notificationDialog.getWidth()), 18));
+        closeButton.setPreferredSize(new Dimension((int) (0.14 * notificationDialog.getWidth()), 18));
 
-        buttonPanel.add(skyblockButton, BorderLayout.CENTER);
+        buttonPanel.add(muteButton, BorderLayout.WEST);
+        buttonPanel.add(warnButton, BorderLayout.CENTER);
         buttonPanel.add(closeButton, BorderLayout.EAST);
         notificationPanel.add(playerNameLabel, BorderLayout.NORTH);
         notificationPanel.add(violationField, BorderLayout.CENTER);
         notificationPanel.add(buttonPanel, BorderLayout.SOUTH);
         notificationDialog.add(notificationPanel);
         notificationDialog.setVisible(true);
-        updateCurrentY(20);
+        heightManager.updateCurrentY(20);
     }
 
-    public void updateCurrentY(int value) {
-        currentY += value;
-    }
+    private static class NotificationDialogPair {
+        private final Notification notification;
+        private final CustomDialog dialog;
 
-    private int getCurrentY() {
-        return currentY;
+        public NotificationDialogPair(Notification notification, CustomDialog dialog) {
+            this.notification = notification;
+            this.dialog = dialog;
+        }
+
+        public Notification getNotification() {
+            return notification;
+        }
+
+        public CustomDialog getDialog() {
+            return dialog;
+        }
     }
 }

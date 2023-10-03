@@ -1,5 +1,6 @@
 package fr.openai.database.customui;
 
+import fr.openai.notify.NotificationHeightManager;
 import fr.openai.notify.NotificationSystem;
 
 import javax.swing.*;
@@ -8,14 +9,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class CustomClose extends JButton {
+    private final NotificationHeightManager heightManager;
     private final JDialog notificationDialog;
     private final NotificationSystem notificationSystem;
 
-
-    public CustomClose(String text, JDialog dialog, NotificationSystem system) {
+    public CustomClose(String text, JDialog dialog, NotificationSystem system, NotificationHeightManager heightManager) {
         super(text);
         this.notificationDialog = dialog;
         this.notificationSystem = system;
+        this.heightManager = heightManager; // Передаем NotificationHeightManager в конструктор
+
         setupCustomButton();
         addActionListener(new CloseButtonListener());
     }
@@ -30,7 +33,7 @@ public class CustomClose extends JButton {
         public void actionPerformed(ActionEvent e) {
             if (notificationDialog != null) {
                 notificationDialog.dispose();
-                notificationSystem.updateCurrentY(-20); // Обновляем currentY в NotificationSystem
+                heightManager.updateCurrentY(-20); // Обновляем currentY в NotificationHeightManager
             }
         }
     }

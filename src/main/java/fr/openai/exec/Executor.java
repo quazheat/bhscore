@@ -4,14 +4,17 @@ import fr.openai.database.Names;
 import fr.openai.handler.filter.SwearingFilter;
 import fr.openai.handler.filter.Filtering;
 import fr.openai.handler.filter.Validator;
+import fr.openai.notify.NotificationSystem;
 
 public class Executor {
     private final SwearingFilter swearingFilter;
     private final Filtering filtering;
+    private final NotificationSystem notificationSystem;
 
-    public Executor() {
+    public Executor(NotificationSystem notificationSystem) {
+        this.notificationSystem = notificationSystem;
         this.swearingFilter = new SwearingFilter();
-        this.filtering = new Filtering();
+        this.filtering = new Filtering(notificationSystem);
     }
 
     public void execute(String line, Names names) {

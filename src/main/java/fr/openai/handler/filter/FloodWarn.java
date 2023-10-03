@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import fr.openai.database.JsonManager;
-import fr.openai.notify.NotificationHandler;
 import fr.openai.notify.NotificationSystem;
 
 import java.io.*;
@@ -12,14 +11,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FloodWarn {
+    private final NotificationSystem notificationSystem;
     private final ViolationRecorder violationRecorder = new ViolationRecorder();
     private static final String CHAT_PATH = "livechat.json";
-    private final NotificationHandler notificationHandler;
 
     private static final String VIOLATIONS_PATH = "violations.json";
 
-    public FloodWarn() {
-        this.notificationHandler = new NotificationHandler(new NotificationSystem());
+    public FloodWarn(NotificationSystem notificationSystem) {
+        this.notificationSystem = notificationSystem;
     }
 
     public void checkWarn() {
@@ -46,7 +45,7 @@ public class FloodWarn {
                                 if (!violationRecorder.isRecorded(playerName, message)) {
                                     violationRecorder.recordViolation(playerName, message);
                                     System.out.println("FLOOD WARNING: " + playerName + " sent the same message 3 times: " + message);
-                                    notificationHandler.showNotification(playerName, "3 similar messages");
+                                    notificationSystem.showNotification(playerName, "3 similar messages");
                                 }
                             }
                         }

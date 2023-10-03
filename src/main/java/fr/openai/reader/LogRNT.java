@@ -34,23 +34,24 @@ public class LogRNT {
     private final Times times;
     private final FloodWarn floodWarn;
     private final ExecutorService chatReaderExec;
+    private final NotificationSystem notificationSystem;
 
-    public LogRNT() {
+    public LogRNT(NotificationSystem notificationSystem) {
+        this.notificationSystem = notificationSystem;
         this.configManager = new ConfigManager();
-        this.executor = new Executor();
+        this.executor = new Executor(notificationSystem);
         this.names = new Names();
         this.liveChat = new ArrayList<>(); // Создайте список live_chat
         this.cleaner = new Cleaner(liveChat); // Передайте liveChat в Cleaner
         Thread cleanerThread = new Thread(cleaner);
         cleanerThread.start();
         this.times = new Times(liveChat); // Передайте liveChat в Times
-        this.floodWarn = new FloodWarn();
+        this.floodWarn = new FloodWarn(notificationSystem);
         this.chatReaderExec = Executors.newSingleThreadExecutor(); // Создаем пул потоков с одним потоком для FloodWarn
     }
 
     public void starter() {
-        LogRNT logReader = new LogRNT();
-        //notificationSystem.showTestNotification(); // Вызываем метод showTestNotification
+        LogRNT logReader = new LogRNT(notificationSystem);
         SystemTrayManager trayManager = new SystemTrayManager();
         trayManager.setupSystemTray(); // Настройка системного трея
         logReader.run();
@@ -73,6 +74,7 @@ public class LogRNT {
             }
 
             // Вызываем FloodWarn в отдельном потоке
+
             chatReaderExec.submit(floodWarn::checkWarn);
 
             try {

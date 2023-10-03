@@ -24,10 +24,16 @@ public class Cleaner implements Runnable {
 
     public void run() {
         while (running) {
-            cleanMessages();
+            // Создаем новый поток для выполнения cleanMessages
+            Thread cleanMessagesThread = new Thread(() -> {
+                cleanMessages();
+            });
+            cleanMessagesThread.start();
+
             cleanViolations(); // Добавляем очистку старых нарушений
+
             try {
-                long CLEANING_INTERVAL_MILLISECONDS = 500;
+                long CLEANING_INTERVAL_MILLISECONDS = 100;
                 Thread.sleep(CLEANING_INTERVAL_MILLISECONDS);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -75,7 +81,7 @@ public class Cleaner implements Runnable {
         }
 
         long currentTimestamp = System.currentTimeMillis() / 1000L;
-        long cutoffTimestamp = currentTimestamp - 58;
+        long cutoffTimestamp = currentTimestamp - 59;
 
         try (FileReader reader = new FileReader(violationsFile)) {
             JsonElement jsonElement = JsonParser.parseReader(reader);
