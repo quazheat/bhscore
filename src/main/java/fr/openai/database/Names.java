@@ -11,13 +11,16 @@ public class Names {
     private final Pattern PIPE_PATTERN = Pattern.compile(".+?┃");
 
     public String getFinalName(String line) {
+        System.out.println(line);
         if (line.contains("»")) {
             int start = line.indexOf("[Client thread/INFO]: [CHAT]") + "[Client thread/INFO]: [CHAT]".length();
             int end = line.indexOf("»");
             if (end != -1) {
                 String getName = line.substring(start, end).trim();
                 finalName = formatName(getName);
+                System.out.println(formatName(line));
                 return getFormattedName();
+
             }
         } else {
             int startIndex = line.indexOf("[Client thread/INFO]: [CHAT]"

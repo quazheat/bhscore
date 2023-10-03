@@ -4,11 +4,13 @@ import fr.openai.exec.Messages;
 import fr.openai.database.Names;
 import org.json.simple.JSONObject;
 
-public class Times {
-    private MessageManager messageManager;
+import java.util.List;
 
-    public Times(MessageManager messageManager) {
-        this.messageManager = messageManager;
+public class Times {
+    private List<JSONObject> liveChat; // Список live_chat
+
+    public Times(List<JSONObject> liveChat) {
+        this.liveChat = liveChat;
     }
 
     public void timestamp(String line, Names names) {
@@ -20,7 +22,7 @@ public class Times {
         jsonMessage.put("message", message);
         jsonMessage.put("player_name", playerName);
 
-        // Вместо добавления сообщения в локальный список, добавляем его в MessageManager
-        messageManager.addMessage(jsonMessage);
+        // Вместо добавления сообщения в MessageManager, добавляем его в liveChat
+        liveChat.add(jsonMessage);
     }
 }

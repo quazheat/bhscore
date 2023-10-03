@@ -9,7 +9,7 @@ public class WordsFileManager {
     private static final String WORDS_JSON_PATH = "words.json";
     private final List<String> defWords = Arrays.asList(
             "nigg", "бля", "пизд", "хуй", "крым", "ауе", "gblj", "fuc", "pido", "pida", "cerf", "долбае", "pizd",
-            "соси", "sosi",
+            "соси", "sosi","ahue","ahui",
             "сук", "сука", "пидо", "пидр", "суч", "ёб", "хул", "хули", "хуи", "клоун", "бездар", "конч", "героям",
             "слава", "деб","ебу","выеб",
             "акбар", "даун", "аут", "хуй", "чмо", "хохл", "хохол", "москаль", "чмо", "хер", "бомж", "чурк",

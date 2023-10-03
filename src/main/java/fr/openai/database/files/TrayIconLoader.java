@@ -42,7 +42,7 @@ public class TrayIconLoader {
         }
     }
 
-    public void configureImageAutoSize(boolean imageAutoSize) {
+    public void imageAutoSize(boolean imageAutoSize) {
         TrayIcon trayIcon = SystemTray.getSystemTray().getTrayIcons()[0];
         trayIcon.setImageAutoSize(imageAutoSize);
     }

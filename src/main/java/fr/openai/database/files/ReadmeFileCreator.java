@@ -37,6 +37,9 @@ public class ReadmeFileCreator {
             readmeContent += " \n";
             readmeContent += "Чтобы слова вступили в силу, требуется перезапуск программы (НЕ ИГРЫ). \n";
             readmeContent += " \n";
+            readmeContent += "Если какая-то ошибка в отправке репорта, попробуйте просто покликать отправить или изменить текст, так бывает)))\n";
+            readmeContent += " Не пишите туда всякую хуйню, я вижу ваш айдишник\n";
+            readmeContent += " Если несколько раз отправите одно и то же, не страшно, можно кидать ссылки на скриншоты \n";
             readmeWriter.write(readmeContent);
             readmeWriter.close();
         } catch (IOException e) {

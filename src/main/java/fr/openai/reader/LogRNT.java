@@ -17,6 +17,8 @@ import fr.openai.handler.filter.FloodWarn;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -27,22 +29,21 @@ public class LogRNT {
     private final ConfigManager configManager;
     private final Executor executor;
     private final Names names;
-    private final MessageManager messageManager;
+    private final List<JSONObject> liveChat; // Список live_chat
     private final Cleaner cleaner;
     private final Times times;
     private final FloodWarn floodWarn;
     private final ExecutorService chatReaderExec;
-    //private static final NotificationSystem notificationSystem = new NotificationSystem(); // Создаем экземпляр класса
 
     public LogRNT() {
         this.configManager = new ConfigManager();
         this.executor = new Executor();
         this.names = new Names();
-        this.messageManager = new MessageManager();
-        this.cleaner = new Cleaner(messageManager);
-        this.times = new Times(messageManager);
+        this.liveChat = new ArrayList<>(); // Создайте список live_chat
+        this.cleaner = new Cleaner(liveChat); // Передайте liveChat в Cleaner
         Thread cleanerThread = new Thread(cleaner);
         cleanerThread.start();
+        this.times = new Times(liveChat); // Передайте liveChat в Times
         this.floodWarn = new FloodWarn();
         this.chatReaderExec = Executors.newSingleThreadExecutor(); // Создаем пул потоков с одним потоком для FloodWarn
     }

@@ -7,6 +7,7 @@ public class LoginManager {
     public static void attemptLogin() {
         UuidChecker uuidChecker = new UuidChecker();
 
+
         if (uuidChecker.isAllowed()) {
             LogRNT logRNT = new LogRNT();
             logRNT.starter();

@@ -12,8 +12,28 @@
         <maven.compiler.source>20</maven.compiler.source>
         <maven.compiler.target>20</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Указываем версию SLF4J, которую мы хотим использовать -->
+        <slf4j.version>1.7.32</slf4j.version>
+        <!-- Указываем версию logback-classic, которую мы хотим использовать -->
+        <logback.version>1.4.7</logback.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <!-- Остальные зависимости -->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver-sync</artifactId>
+            <version>4.9.0</version>
+        </dependency>
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
@@ -34,6 +54,6 @@
             <artifactId>jna-platform</artifactId>
             <version>5.12.1</version>
         </dependency>
+        <!-- Остальные зависимости -->
     </dependencies>
-
 </project>

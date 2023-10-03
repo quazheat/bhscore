@@ -26,8 +26,6 @@ public class CheckProvider {
                     List<String> allowedUuids = reader.lines().collect(Collectors.toList());
 
                     // Выводим информацию в консоль
-                    System.out.println("Allowed UUIDs:");
-                    allowedUuids.forEach(System.out::println);
 
                     // Получаем и выводим UUID компьютера
                     UUID systemUUID = UuidProvider.getUUID();

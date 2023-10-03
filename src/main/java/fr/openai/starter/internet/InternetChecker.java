@@ -11,7 +11,7 @@ public class InternetChecker {
             URL siteURL = new URL(url);
             connection = (HttpURLConnection) siteURL.openConnection();
             connection.setRequestMethod("HEAD");
-            connection.setConnectTimeout(2000); // Установите таймаут соединения по вашему усмотрению
+            connection.setConnectTimeout(5000); // Установите таймаут соединения по вашему усмотрению
             int responseCode = connection.getResponseCode();
             return responseCode == HttpURLConnection.HTTP_OK;
         } catch (IOException e) {

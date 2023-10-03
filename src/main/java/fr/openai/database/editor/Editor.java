@@ -1,6 +1,5 @@
 package fr.openai.database.editor;
 
-import fr.openai.database.*;
 import fr.openai.database.customui.CustomButtonUI;
 import fr.openai.database.customui.CustomTab;
 
@@ -15,7 +14,6 @@ public class Editor {
 
     private final AddNewWhitelistWord addNewWhitelistWord = new AddNewWhitelistWord(this);
     private final RemoveWhitelistWord removeWhitelistWord = new RemoveWhitelistWord(this);
-    private final JTextField inputTextField = new JTextField();
 
     private final JFrame frame; // Добавьте поле для хранения окна
     private final JLabel outputLabel; // Добавьте поле для вывода сообщений как лейбл
@@ -23,6 +21,7 @@ public class Editor {
     public Editor() {
 
         frame = new JFrame("Word Editor");
+        frame.setIconImage(new ImageIcon("tray_icon.png").getImage());
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Закрывать только окно Editor, не завершать приложение
         frame.setSize(400, 160);

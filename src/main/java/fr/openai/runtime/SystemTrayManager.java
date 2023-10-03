@@ -1,13 +1,17 @@
 package fr.openai.runtime;
 
+import fr.openai.database.files.TicketSubmissionApp;
 import fr.openai.database.files.TrayIconLoader;
-import fr.openai.database.editor.Editor; // Импортируйте ваш класс Editor
+import fr.openai.database.editor.Editor;
 
 import java.awt.*;
 
 public class SystemTrayManager {
     private volatile boolean stopRequested = false;
-    private Editor editor; // Создайте поле для хранения экземпляра Editor
+
+    private Editor editor;
+    private TicketSubmissionApp ticketApp;
+
 
     public void setupSystemTray() {
         TrayIconLoader iconLoader = new TrayIconLoader();
@@ -18,13 +22,14 @@ public class SystemTrayManager {
 
             PopupMenu popupMenu = new PopupMenu();
 
-            MenuItem showEditorItem = new MenuItem("Show Editor"); // Добавьте пункт меню для отображения Editor
-            popupMenu.add(showEditorItem);
+            MenuItem showEditor = new MenuItem("Show Editor");
+            popupMenu.add(showEditor);
 
-            // Создаем кастомный MenuItem с символом "x" внутри
+            MenuItem showReports = new MenuItem("Report");
+            popupMenu.add(showReports);
+
             MenuItem closeMenu = new MenuItem("Hide menu");
 
-            // Устанавливаем ActionListener для закрытия меню
             closeMenu.addActionListener(e -> {
                 // Закрыть поп-ап меню без завершения программы
             });
@@ -34,6 +39,14 @@ public class SystemTrayManager {
             popupMenu.add(closeMenu);
 
             exitItem.addActionListener(e -> {
+                try {
+                    if (this.ticketApp != null) {
+                        this.ticketApp.closeDb();
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace(); // Здесь можно обработать исключение, вывести сообщение или выполнить другие действия
+                }
+
                 stopRequested = true;
                 System.exit(1);
             });
@@ -45,18 +58,24 @@ public class SystemTrayManager {
                 e.printStackTrace();
             }
 
-            showEditorItem.addActionListener(e -> {
-                // Создайте и отобразите экземпляр Editor при выборе "Show Editor"
+            showEditor.addActionListener(e -> {
                 if (editor == null) {
                     editor = new Editor();
                 } else {
-                    editor.setVisible(true); //
+                    editor.setVisible(true);
                 }
             });
+
+            showReports.addActionListener(e -> {
+                if (ticketApp == null) {
+                    ticketApp = new TicketSubmissionApp(); // Создайте экземпляр TicketSubmissionApp
+                }
+                ticketApp.showAppWindow(); // Вызовите метод для отображения окна системы тикетов
+            });
+
         }
         if (icon != null) {
-            iconLoader.configureImageAutoSize(true);
+            iconLoader.imageAutoSize(true);
         }
     }
-
 }

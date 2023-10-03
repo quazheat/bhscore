@@ -1,16 +1,16 @@
 package fr.openai.exec;
 
 import fr.openai.database.Names;
-import fr.openai.handler.filter.Swearing;
+import fr.openai.handler.filter.SwearingFilter;
 import fr.openai.handler.filter.Filtering;
 import fr.openai.handler.filter.Validator;
 
 public class Executor {
-    private final Swearing swearing;
+    private final SwearingFilter swearingFilter;
     private final Filtering filtering;
 
     public Executor() {
-        this.swearing = new Swearing();
+        this.swearingFilter = new SwearingFilter();
         this.filtering = new Filtering();
     }
 
@@ -23,11 +23,9 @@ public class Executor {
         String message = Messages.getMessage(line);
 
         // Создаем отдельные потоки для Swearing и Filtering
-        Thread swearingThread = new Thread(() -> swearing.onFilter(playerName, message));
         Thread filteringThread = new Thread(() -> filtering.onFilter(playerName, message));
 
         // Запускаем потоки
-        swearingThread.start();
         filteringThread.start();
 
 //        if (message != null && !message.isEmpty()) {
