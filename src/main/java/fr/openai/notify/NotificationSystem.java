@@ -14,7 +14,7 @@ import java.util.Queue;
 
 public class NotificationSystem {
     private final Queue<NotificationDialogPair> notificationPairs = new LinkedList<>();
-    private static final int MAX_NOTIFICATIONS = 12;
+    private static final int MAX_NOTIFICATIONS = 99;
     private final NotificationHeightManager heightManager = new NotificationHeightManager();
 
     public void showNotification(String playerName, String violation) {
