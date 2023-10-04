@@ -1,9 +1,8 @@
 package fr.openai.handler.filter;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -66,11 +65,11 @@ public class Filters {
         // Проверяем, что букв в верхнем регистре составляют более 55% и букв более 6
         return upperCaseCount > 5 && (double) upperCaseCount / cleanedMessage.length() > 0.55;
     }
+
     public boolean hasSwearing(String message) {
         try {
-            JSONParser parser = new JSONParser();
-            JSONObject json = (JSONObject) parser.parse(new FileReader("words.json"));
-            JSONArray whitelistArray = (JSONArray) json.get("whitelist");
+            JsonObject json = JsonParser.parseReader(new FileReader("words.json")).getAsJsonObject();
+            JsonArray whitelistArray = json.getAsJsonArray("whitelist");
 
             // Разбиваем сообщение на отдельные слова
             String[] words = message.split("\\s+");
@@ -78,8 +77,8 @@ public class Filters {
             for (String word : words) {
                 // Если слово есть в whitelist, то пропускаем его
                 boolean isWhitelisted = false;
-                for (Object wordObj : whitelistArray) {
-                    String whitelistWord = (String) wordObj;
+                for (int i = 0; i < whitelistArray.size(); i++) {
+                    String whitelistWord = whitelistArray.get(i).getAsString();
                     if (word.equals(whitelistWord)) {
                         isWhitelisted = true;
                         break;
@@ -96,7 +95,7 @@ public class Filters {
             }
 
             return false; // Не найдено запрещенных слов в сообщении
-        } catch (IOException | ParseException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Error reading JSON file: " + "words.json");
         }

@@ -1,17 +1,16 @@
 package fr.openai.runtime;
 
-import org.json.simple.JSONObject;
-
+import com.google.gson.JsonObject;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class MessageManager {
-    private final ConcurrentLinkedQueue<JSONObject> messages = new ConcurrentLinkedQueue<>();
+    private final ConcurrentLinkedQueue<JsonObject> messages = new ConcurrentLinkedQueue<>();
 
-    public void addMessage(JSONObject jsonMessage) {
+    public void addMessage(JsonObject jsonMessage) {
         messages.add(jsonMessage);
     }
 
-    public ConcurrentLinkedQueue<JSONObject> getMessages() {
+    public ConcurrentLinkedQueue<JsonObject> getMessages() {
         return messages;
     }
 }

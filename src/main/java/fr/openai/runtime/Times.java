@@ -1,15 +1,15 @@
 package fr.openai.runtime;
 
+import com.google.gson.JsonObject;
 import fr.openai.exec.Messages;
 import fr.openai.database.Names;
-import org.json.simple.JSONObject;
 
 import java.util.List;
 
 public class Times {
-    private List<JSONObject> liveChat; // Список live_chat
+    private final List<JsonObject> liveChat; // Список live_chat
 
-    public Times(List<JSONObject> liveChat) {
+    public Times(List<JsonObject> liveChat) {
         this.liveChat = liveChat;
     }
 
@@ -17,12 +17,11 @@ public class Times {
         String message = Messages.getMessage(line);
         String playerName = names.getFinalName(line);
 
-        JSONObject jsonMessage = new JSONObject();
-        jsonMessage.put("timestamp", System.currentTimeMillis() / 1000);
-        jsonMessage.put("message", message);
-        jsonMessage.put("player_name", playerName);
-
-        // Вместо добавления сообщения в MessageManager, добавляем его в liveChat
+        JsonObject jsonMessage = new JsonObject();
+        jsonMessage.addProperty("timestamp", System.currentTimeMillis() / 1000);
+        jsonMessage.addProperty("message", message);
+        jsonMessage.addProperty("player_name", playerName);
+        System.out.println(playerName + " " + message);
         liveChat.add(jsonMessage);
     }
 }

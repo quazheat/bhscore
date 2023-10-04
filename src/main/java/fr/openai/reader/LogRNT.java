@@ -1,40 +1,37 @@
 package fr.openai.reader;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import fr.openai.exec.Executor;
 import fr.openai.database.Names;
 import fr.openai.handler.filter.Cleaner;
 import fr.openai.database.DatabaseManager;
+import fr.openai.handler.filter.FloodWarn;
 import fr.openai.notify.NotificationSystem;
-import fr.openai.runtime.MessageManager;
 import fr.openai.runtime.SystemTrayManager;
 import fr.openai.runtime.Times;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import fr.openai.handler.filter.FloodWarn;
+import fr.openai.runtime.ConfigManager;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import fr.openai.runtime.ConfigManager;
 public class LogRNT {
-    private volatile boolean stopRequested = false;
 
     private final ConfigManager configManager;
     private final Executor executor;
     private final Names names;
-    private final List<JSONObject> liveChat; // Список live_chat
+    private final List<JsonObject> liveChat; // Список live_chat
     private final Cleaner cleaner;
     private final Times times;
-    private final FloodWarn floodWarn;
-    private final ExecutorService chatReaderExec;
     private final NotificationSystem notificationSystem;
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private final FloodWarn floodWarn;
 
     public LogRNT(NotificationSystem notificationSystem) {
         this.notificationSystem = notificationSystem;
@@ -43,11 +40,10 @@ public class LogRNT {
         this.names = new Names();
         this.liveChat = new ArrayList<>(); // Создайте список live_chat
         this.cleaner = new Cleaner(liveChat); // Передайте liveChat в Cleaner
+        this.floodWarn = new FloodWarn(notificationSystem);
         Thread cleanerThread = new Thread(cleaner);
         cleanerThread.start();
         this.times = new Times(liveChat); // Передайте liveChat в Times
-        this.floodWarn = new FloodWarn(notificationSystem);
-        this.chatReaderExec = Executors.newSingleThreadExecutor(); // Создаем пул потоков с одним потоком для FloodWarn
     }
 
     public void starter() {
@@ -61,6 +57,7 @@ public class LogRNT {
         long previousSize = getFileSize();
         long currentTime = System.currentTimeMillis();
 
+        boolean stopRequested = false;
         while (!stopRequested) {
             long currentSize = getFileSize();
             long elapsedTime = System.currentTimeMillis() - currentTime;
@@ -72,10 +69,6 @@ public class LogRNT {
                 previousSize = currentSize;
                 currentTime = System.currentTimeMillis();
             }
-
-            // Вызываем FloodWarn в отдельном потоке
-
-            chatReaderExec.submit(floodWarn::checkWarn);
 
             try {
                 Thread.sleep(upFQ);
@@ -97,7 +90,7 @@ public class LogRNT {
     }
 
     private void readNewLines(long start, long end, String logRntPath) {
-        JSONArray jsonArray = new JSONArray();
+        JsonArray jsonArray = new JsonArray();
 
         try (RandomAccessFile raf = new RandomAccessFile(logRntPath, "r")) {
             raf.seek(start);
@@ -108,11 +101,10 @@ public class LogRNT {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         DatabaseManager.saveMessages(jsonArray);
     }
 
-    private void processLogLine(String line, JSONArray jsonArray) {
+    private void processLogLine(String line, JsonArray jsonArray) {
         line = new String(line.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
 
         if (Readable.check(line)) {
@@ -120,13 +112,13 @@ public class LogRNT {
             times.timestamp(line, names);
 
             try {
-                Object parsedObject = new JSONParser().parse(line);
+                Object parsedObject = gson.fromJson(line, Object.class);
 
-                if (parsedObject instanceof JSONObject) {
-                    jsonArray.add(parsedObject);
+                if (parsedObject instanceof JsonObject) {
+                    jsonArray.add((JsonObject) parsedObject);
                 }  // Действия по обработке не-JSON строки
 
-            } catch (ParseException e) {
+            } catch (JsonParseException e) {
                 // Обработка ошибок разбора JSON
             }
         }

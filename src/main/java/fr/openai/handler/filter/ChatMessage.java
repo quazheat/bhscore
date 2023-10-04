@@ -8,7 +8,6 @@ public class ChatMessage {
 
     private String message;
 
-    // Геттеры и сеттеры
     public String getPlayerName() {
         return playerName;
     }

@@ -1,65 +1,70 @@
 package fr.openai.handler.filter;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import fr.openai.database.JsonManager;
+import com.google.gson.Gson;
 import fr.openai.notify.NotificationSystem;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class FloodWarn {
-    private final NotificationSystem notificationSystem;
-    private final ViolationRecorder violationRecorder = new ViolationRecorder();
-    private static final String CHAT_PATH = "livechat.json";
-
-    private static final String VIOLATIONS_PATH = "violations.json";
+    private static NotificationSystem notificationSystem;
+    // Создаем Set для хранения имен игроков, нарушивших правило
+    private static final Set<String> violations = new HashSet<>();
 
     public FloodWarn(NotificationSystem notificationSystem) {
-        this.notificationSystem = notificationSystem;
+        FloodWarn.notificationSystem = notificationSystem;
     }
 
-    public void checkWarn() {
-        boolean fileNotFound = false;
+    public static void checkWarn(String filePath) {
+        try {
+            // Чтение содержимого JSON файла
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+            StringBuilder jsonContent = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                jsonContent.append(line);
+            }
+            reader.close();
 
-        while (!fileNotFound) {
-            File chatFile = new File(CHAT_PATH);
+            // Разбор JSON в объекты
+            Gson gson = new Gson();
+            ChatMessage[] messages = gson.fromJson(jsonContent.toString(), ChatMessage[].class);
 
-            if (!chatFile.exists() || chatFile.length() == 0) return;
+            // Создание мапы для подсчета одинаковых сообщений по игрокам
+            Map<String, Map<String, Integer>> playerMessagesMap = new HashMap<>();
 
-            new JsonManager().isExist(VIOLATIONS_PATH);
-            try (FileReader reader = new FileReader(CHAT_PATH)) {
-                if (chatFile.length() > 0) {
-                    JsonArray jsonArray = JsonParser.parseReader(reader).getAsJsonArray();
-                    Map<String, Integer> messageCounts = new HashMap<>();
-                    for (int i = 0; i < jsonArray.size(); i++) {
-                        JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
-                        String playerName = jsonObject.get("player_name").getAsString();
-                        String message = jsonObject.get("message").getAsString();
-                        if (playerName != null && !playerName.equalsIgnoreCase("Unknown")) {
-                            String messageKey = playerName + ":" + message;
-                            messageCounts.put(messageKey, messageCounts.getOrDefault(messageKey, 0) + 1);
-                            if (messageCounts.get(messageKey) >= 3) {
-                                if (!violationRecorder.isRecorded(playerName, message)) {
-                                    violationRecorder.recordViolation(playerName, message);
-                                    System.out.println("FLOOD WARNING: " + playerName + " sent the same message 3 times: " + message);
-                                    notificationSystem.showNotification(playerName, "3 similar messages");
+            // Подсчет одинаковых сообщений по игрокам
+            for (ChatMessage message : messages) {
+                String playerName = message.getPlayerName();
+                String messageText = message.getMessage();
+
+                Map<String, Integer> messageCountMap = playerMessagesMap.computeIfAbsent(playerName, k -> new HashMap<>());
+                int messageCount = messageCountMap.getOrDefault(messageText, 0);
+                messageCountMap.put(messageText, messageCount + 1);
+
+                if (messageCount + 1 >= 3 && !violations.contains(playerName)) {
+                    notificationSystem.showNotification(playerName, "3 same messages");
+                    // Добавляем имя игрока в массив violations и устанавливаем таймер на 60 секунд
+                    violations.add(playerName);
+                    new java.util.Timer().schedule(
+                            new java.util.TimerTask() {
+                                @Override
+                                public void run() {
+                                    // Удаляем имя игрока из массива violations после 60 секунд
+                                    violations.remove(playerName);
                                 }
-                            }
-                        }
-                    }
-                }
-                fileNotFound = true;
-            } catch (IOException e) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
+                            },
+                            60000
+                    );
                 }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-
 }

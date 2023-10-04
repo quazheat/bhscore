@@ -14,6 +14,7 @@ public class LoginManager {
             LogRNT logRNT = new LogRNT(notificationSystem);
             logRNT.starter();
 
+
         } else {
             LoginUIManager.loginPopup();
         }

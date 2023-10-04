@@ -2,8 +2,8 @@ package fr.openai.database.editor;
 
 import fr.openai.database.JsonManager;
 import fr.openai.database.editor.Editor;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -22,16 +22,17 @@ public class AddNewWord {
 
         // Считываем текущий JSON из файла
         JsonManager jsonManager = new JsonManager();
-        JSONObject jsonObject = jsonManager.parseJsonFile(WORDS_JSON_PATH);
+        JsonObject jsonObject = jsonManager.parseJsonFile(WORDS_JSON_PATH);
 
         if (jsonObject != null) {
             // Получаем массив forbidden_words
-            JSONArray forbiddenWordsArray = (JSONArray) jsonObject.get("forbidden_words");
+            JsonArray forbiddenWordsArray = jsonObject.getAsJsonArray("forbidden_words");
 
             // Проверяем, не существует ли уже такого слова в массиве
             boolean wordExists = false;
-            for (Object word : forbiddenWordsArray) {
-                if (word.toString().toLowerCase().equals(newWord)) {
+            for (int i = 0; i < forbiddenWordsArray.size(); i++) {
+                String word = forbiddenWordsArray.get(i).getAsString();
+                if (word.toLowerCase().equals(newWord)) {
                     wordExists = true;
                     break;
                 }
@@ -42,12 +43,12 @@ public class AddNewWord {
                 forbiddenWordsArray.add(newWord);
 
                 // Обновляем JSON объект
-                jsonObject.put("forbidden_words", forbiddenWordsArray);
+                jsonObject.add("forbidden_words", forbiddenWordsArray);
 
                 // Перезаписываем файл
                 try (FileWriter fileWriter = new FileWriter(WORDS_JSON_PATH)) {
-                    jsonObject.writeJSONString(fileWriter);
-                    editor.setOutputText(newWord +" добавлено.");
+                    fileWriter.write(jsonManager.gson.toJson(jsonObject));
+                    editor.setOutputText(newWord + " добавлено.");
                 } catch (IOException e) {
                     System.err.println("Failed to update JSON file: " + WORDS_JSON_PATH);
                     e.printStackTrace();

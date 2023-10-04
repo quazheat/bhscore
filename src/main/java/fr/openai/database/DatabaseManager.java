@@ -1,42 +1,38 @@
 package fr.openai.database;
 
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class DatabaseManager {
     private static final String JSON_FILE_PATH = "livechat.json";
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public static void saveMessages(JSONArray jsonArray) {
-        try (FileWriter fileWriter = new FileWriter(JSON_FILE_PATH)) {
-            fileWriter.write(jsonArray.toJSONString());
-            fileWriter.flush();
+    public static void saveMessages(JsonArray jsonArray) {
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(JSON_FILE_PATH), StandardCharsets.UTF_8))) {
+            gson.toJson(jsonArray, writer);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-    public static JSONArray loadMessages() {
-        JSONArray jsonArray = new JSONArray();
+    public static JsonArray loadMessages() {
+        JsonArray jsonArray = new JsonArray();
 
         try {
             File file = new File(JSON_FILE_PATH);
             if (file.exists() && file.length() > 0) {
                 BufferedReader reader = new BufferedReader(new FileReader(JSON_FILE_PATH));
-                StringBuilder jsonContent = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    jsonContent.append(line);
-                }
+                jsonArray = JsonParser.parseReader(reader).getAsJsonArray();
                 reader.close();
-
-                JSONParser parser = new JSONParser();
-                jsonArray = (JSONArray) parser.parse(jsonContent.toString());
             }
-        } catch (IOException | ParseException e) {
+        } catch (IOException | JsonIOException | JsonSyntaxException e) {
             e.printStackTrace();
         }
 
