@@ -1,10 +1,10 @@
 package fr.openai.exec;
 
-import fr.openai.handler.filter.Validator;
+import fr.openai.filter.Validator;
 
 public class Messages {
     public static String getMessage(String line) {
-        if (Validator.isValid(line)) {
+        if (Validator.notValid(line)) {
             return null;
         }
 

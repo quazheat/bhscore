@@ -34,4 +34,8 @@ public class NotificationHeightManager {
             }
         }
     }
+
+    public void setCurrentY(int y) {
+        currentY = y;
+    }
 }

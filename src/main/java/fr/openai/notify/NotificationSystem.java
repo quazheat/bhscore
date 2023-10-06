@@ -3,34 +3,43 @@ package fr.openai.notify;
 import fr.openai.database.customui.CustomClose;
 import fr.openai.database.customui.CustomDialog;
 import fr.openai.database.customui.CustomField;
-import fr.openai.handler.filter.NameFix;
+import fr.openai.filter.NameFix;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.List; // Добавляем импорт для java.util.List
 
 public class NotificationSystem {
-    private final Queue<NotificationDialogPair> notificationPairs = new LinkedList<>();
-    private static final int MAX_NOTIFICATIONS = 99;
+    private final Queue<Notification> notifications = new LinkedList<>();
+    private final List<CustomDialog> activeNotifications = new ArrayList<>(); // Создаем список для отслеживания активных уведомлений
+
+    private static final int MAX_NOTIFICATIONS = 5;
     private final NotificationHeightManager heightManager = new NotificationHeightManager();
 
     public void showNotification(String playerName, String violation) {
-        int currentYBeforeNotification = heightManager.getNotificationY();
+        Notification notification = new Notification(playerName, violation);
+        notifications.offer(notification);
 
-        while (notificationPairs.size() >= MAX_NOTIFICATIONS) {
-            NotificationDialogPair removedPair = notificationPairs.poll();
-            heightManager.setNotificationHeight(notificationPairs.size(), removedPair.getDialog().getHeight());
+        if (notifications.size() > MAX_NOTIFICATIONS) {
+            notifications.clear(); // Удаляем все уведомления при достижении лимита
+            heightManager.setCurrentY(50); // Устанавливаем высоту на базовую (50)
+            closeAllNotifications(); // Закрываем все активные уведомления
+            System.out.println("closeAllNotifications");
         }
 
-        Notification notification = new Notification(playerName, violation);
-        CustomDialog notificationDialog = new CustomDialog();
+        SwingUtilities.invokeLater(() -> displayNotification(notification));
+    }
 
-        // Create a pair to associate the notification with the dialog
-        NotificationDialogPair pair = new NotificationDialogPair(notification, notificationDialog);
-        notificationPairs.offer(pair);
+    private void displayNotification(Notification notification) {
+        System.out.println("NotificationSystem");
+        int currentYBeforeNotification = heightManager.getNotificationY();
+
+        CustomDialog notificationDialog = new CustomDialog();
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) (screenSize.getWidth() - notificationDialog.getWidth());
@@ -41,21 +50,18 @@ public class NotificationSystem {
         notificationPanel.setLayout(new BorderLayout());
         notificationPanel.setBackground(Color.DARK_GRAY);
 
-        JLabel playerNameLabel = new JLabel(playerName, SwingConstants.CENTER);
+        JLabel playerNameLabel = new JLabel(notification.playerName(), SwingConstants.CENTER);
         playerNameLabel.setFont(new Font("Serif", Font.BOLD, 18));
         playerNameLabel.setForeground(Color.BLACK);
 
-        CustomField violationField = new CustomField(violation);
+        CustomField violationField = new CustomField(notification.violation());
         CustomClose closeButton = new CustomClose("x", notificationDialog, this, heightManager);
 
         closeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (notificationPairs.contains(pair)) {
-                    notificationPairs.remove(pair);
-                    notificationDialog.dispose();
-                    heightManager.updateCurrentY(-20);
-                }
+                notificationDialog.dispose();
+                heightManager.updateCurrentY(-20);
             }
         });
 
@@ -68,6 +74,7 @@ public class NotificationSystem {
         warnButton.setBackground(new Color(29, 29, 29));
         warnButton.setForeground(Color.WHITE);
         warnButton.setFocusPainted(false);
+
         muteButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -75,11 +82,8 @@ public class NotificationSystem {
                     String playerName = NameFix.sbFix(playerNameLabel.getText());
                     String command = "/mute " + playerName + "  ";
                     ClipboardUtil.copyToClipboard(command);
-                    if (notificationPairs.contains(pair)) {
-                        notificationPairs.remove(pair);
-                        notificationDialog.dispose();
-                        heightManager.updateCurrentY(-20);
-                    }
+                    notificationDialog.dispose();
+                    heightManager.updateCurrentY(-20);
                 }
             }
         });
@@ -91,7 +95,6 @@ public class NotificationSystem {
                     String playerName = NameFix.sbFix(playerNameLabel.getText());
                     String command = "/warn " + playerName + "  ";
                     ClipboardUtil.copyToClipboard(command);
-                    notificationPairs.remove(pair);
                     notificationDialog.dispose();
                     heightManager.updateCurrentY(-20);
                 }
@@ -112,23 +115,16 @@ public class NotificationSystem {
         notificationDialog.add(notificationPanel);
         notificationDialog.setVisible(true);
         heightManager.updateCurrentY(20);
+
+        // Добавляем отображенное уведомление в список активных уведомлений
+        activeNotifications.add(notificationDialog);
     }
 
-    private static class NotificationDialogPair {
-        private final Notification notification;
-        private final CustomDialog dialog;
-
-        public NotificationDialogPair(Notification notification, CustomDialog dialog) {
-            this.notification = notification;
-            this.dialog = dialog;
+    // Метод для закрытия всех активных уведомлений
+    private void closeAllNotifications() {
+        for (CustomDialog notificationDialog : activeNotifications) {
+            notificationDialog.dispose();
         }
-
-        public Notification getNotification() {
-            return notification;
-        }
-
-        public CustomDialog getDialog() {
-            return dialog;
-        }
+        activeNotifications.clear();
     }
 }

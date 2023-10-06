@@ -125,18 +125,9 @@ public class Editor {
         return panel;
     }
 
-
     public void setOutputText(String message) {
         // Устанавливаем фон и цвет текста для outputLabel
         outputLabel.setText(message);
         outputLabel.setForeground(Color.BLACK); // Цвет текста внутри outputLabel
-
-        // Если вы хотите изменить фон и цвет текста для других элементов, таких как кнопки или текстовые поля,
-        // вы можете делать это аналогичным образом, как показано ниже:
-
-
-        // И так далее для других элементов, которые вы хотите изменить
     }
-
-
 }

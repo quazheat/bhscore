@@ -1,6 +1,7 @@
 package fr.openai.database.files;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -14,11 +15,23 @@ import fr.openai.starter.uuid.UuidChecker;
 import org.bson.Document;
 
 public class TicketSubmissionApp {
+    private static TicketSubmissionApp instance;
     private MongoClient mongoClient;
     private JTextArea textArea;
     private CustomFrame frame;
 
+    public static TicketSubmissionApp getInstance() {
+        if (instance == null) {
+            instance = new TicketSubmissionApp();
+        }
+        return instance;
+    }
+
     public void showAppWindow() {
+        if (frame != null && frame.isVisible()) {
+            return;
+        }
+
         mongoClient = ConnectDb.getMongoClient();
 
         ActionListener submitActionListener = e -> {
@@ -31,35 +44,39 @@ public class TicketSubmissionApp {
             String databaseName = "BHScore";
             String collectionName = "tickets";
 
-            AtomicBoolean submitted = new AtomicBoolean(false);
+            AtomicBoolean isSubmitting = new AtomicBoolean(false);
+
+            JButton submitButton = (JButton) e.getSource();
+            submitButton.setEnabled(false); // Отключаем кнопку перед отправкой
 
             Thread submissionThread = new Thread(() -> {
-                while (!submitted.get()) {
+                while (!isSubmitting.get()) {
                     try {
                         MongoDatabase database = mongoClient.getDatabase(databaseName);
                         MongoCollection<Document> collection = database.getCollection(collectionName);
 
-                        // Create a TicketDocument
                         TicketDocument ticketDocument = new TicketDocument(timestamp, problemText, isUuidAllowed ? HwidManager.getHwid() : "UNKNOWN");
 
-                        // Insert the ticket document
                         collection.insertOne(ticketDocument.toDocument());
 
                         SwingUtilities.invokeLater(() -> {
                             JOptionPane.showMessageDialog(frame, "Тикет успешно создан.");
                             frame.dispose();
                         });
-                        submitted.set(true);
+                        isSubmitting.set(true);
                     } catch (Exception ex) {
                         SwingUtilities.invokeLater(() -> {
                             SubmitTicketDialog submitTicketDialog = new SubmitTicketDialog(frame);
                             submitTicketDialog.showDialog();
                             if (submitTicketDialog.isCanceled()) {
-                                submitted.set(true);
+                                isSubmitting.set(true);
                             }
                         });
                     }
                 }
+                SwingUtilities.invokeLater(() -> {
+                    submitButton.setEnabled(true); // Включаем кнопку после отправки
+                });
             });
 
             submissionThread.start();

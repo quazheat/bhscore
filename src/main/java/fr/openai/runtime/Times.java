@@ -1,27 +1,37 @@
 package fr.openai.runtime;
 
-import com.google.gson.JsonObject;
 import fr.openai.exec.Messages;
 import fr.openai.database.Names;
+import fr.openai.filter.ChatMessage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Times {
-    private final List<JsonObject> liveChat; // Список live_chat
+    private final List<ChatMessage> liveChat; // Список live_chat
 
-    public Times(List<JsonObject> liveChat) {
-        this.liveChat = liveChat;
+    public Times() {
+        this.liveChat = new ArrayList<>();
     }
 
     public void timestamp(String line, Names names) {
         String message = Messages.getMessage(line);
         String playerName = names.getFinalName(line);
+        long timestamp = System.currentTimeMillis() / 1000;
 
-        JsonObject jsonMessage = new JsonObject();
-        jsonMessage.addProperty("timestamp", System.currentTimeMillis() / 1000);
-        jsonMessage.addProperty("message", message);
-        jsonMessage.addProperty("player_name", playerName);
-        System.out.println(playerName + " " + message);
-        liveChat.add(jsonMessage);
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setMessage(message);
+        chatMessage.setPlayerName(playerName);
+        chatMessage.setTimestamp(timestamp);
+
+        if (playerName == null || playerName.equals("Unknown")) {
+            return;
+        }
+
+        liveChat.add(chatMessage); // Добавляем chatMessage в liveChat
+    }
+
+    public List<ChatMessage> getLiveChat() {
+        return liveChat;
     }
 }

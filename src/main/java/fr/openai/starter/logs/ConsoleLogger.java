@@ -6,9 +6,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.Date;
-
-import static fr.openai.runtime.TimeUtil.getCurrentTime;
 
 public class ConsoleLogger {
     private static final String LOG_FILE_NAME = "last.log";
@@ -34,8 +31,13 @@ public class ConsoleLogger {
             System.out.println(currentTime);
             System.out.println(" ");
             System.out.println(" \\\\\\\\\\\\ ");
+
+            // Убедитесь, что данные записаны в файл и сброшены
+            fileOutputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // Добавьте эту строку, чтобы завершить выполнение программы после записи данных
     }
 }

@@ -3,19 +3,21 @@ package fr.openai.runtime;
 import fr.openai.database.files.TicketSubmissionApp;
 import fr.openai.database.files.TrayIconLoader;
 import fr.openai.database.editor.Editor;
+import fr.openai.filter.Filtering;
+import fr.openai.notify.WindowsNotification;
+import fr.openai.starter.logs.ConsoleLogger;
 
 import java.awt.*;
 
 public class SystemTrayManager {
     private volatile boolean stopRequested = false;
-
     private Editor editor;
     private TicketSubmissionApp ticketApp;
-
+    private boolean rageModeEnabled = false;
 
     public void setupSystemTray() {
         TrayIconLoader iconLoader = new TrayIconLoader();
-        Image icon = iconLoader.loadIcon();
+        Image appIcon = iconLoader.loadIcon();
 
         if (SystemTray.isSupported()) {
             SystemTray tray = SystemTray.getSystemTray();
@@ -28,15 +30,14 @@ public class SystemTrayManager {
             MenuItem showReports = new MenuItem("Report");
             popupMenu.add(showReports);
 
-            MenuItem closeMenu = new MenuItem("Hide menu");
+            CheckboxMenuItem toggleRageModeItem = new CheckboxMenuItem("Rage Mode");
+            popupMenu.add(toggleRageModeItem);
 
-            closeMenu.addActionListener(e -> {
-                // Закрыть поп-ап меню без завершения программы
-            });
+            MenuItem closeMenu = new MenuItem("Hide menu");
+            popupMenu.add(closeMenu);
 
             MenuItem exitItem = new MenuItem("Exit program");
             popupMenu.add(exitItem);
-            popupMenu.add(closeMenu);
 
             exitItem.addActionListener(e -> {
                 try {
@@ -44,14 +45,18 @@ public class SystemTrayManager {
                         this.ticketApp.closeDb();
                     }
                 } catch (Exception ex) {
-                    ex.printStackTrace(); // Здесь можно обработать исключение, вывести сообщение или выполнить другие действия
+                    ex.printStackTrace();
                 }
-
                 stopRequested = true;
-                System.exit(1);
+                ConsoleLogger.consoleLog();
+                System.exit(0);
+
             });
 
-            TrayIcon trayIcon = new TrayIcon(icon, "BHScore", popupMenu);
+            Image rageIconEnabled = iconLoader.loadRageIcon();
+            Image rageIconDisabled = iconLoader.loadRageIconDisabled();
+
+            TrayIcon trayIcon = new TrayIcon(appIcon, "BHScore", popupMenu);
             try {
                 tray.add(trayIcon);
             } catch (AWTException e) {
@@ -68,14 +73,28 @@ public class SystemTrayManager {
 
             showReports.addActionListener(e -> {
                 if (ticketApp == null) {
-                    ticketApp = new TicketSubmissionApp(); // Создайте экземпляр TicketSubmissionApp
+                    ticketApp = new TicketSubmissionApp();
                 }
-                ticketApp.showAppWindow(); // Вызовите метод для отображения окна системы тикетов
+                ticketApp.showAppWindow();
             });
 
+            toggleRageModeItem.addItemListener(e -> {
+                boolean newState = toggleRageModeItem.getState();
+
+                if (rageModeEnabled && !newState) {
+                    WindowsNotification.removeTrayIcon();
+                    trayIcon.setImage(rageIconDisabled);
+                }
+
+                rageModeEnabled = newState;
+                if (rageModeEnabled) {
+                    WindowsNotification.initTrayIcon();
+                    trayIcon.setImage(rageIconEnabled);
+                }
+
+                Filtering.toggleRageMode();
+            });
         }
-        if (icon != null) {
-            iconLoader.imageAutoSize(true);
-        }
+        iconLoader.imageAutoSize(true);
     }
 }

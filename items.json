@@ -1,0 +1,455 @@
+{
+  "items": [
+    {
+      "type": "BASED",
+      "id": "test",
+      "name": "Тестовый меч",
+      "material": "STONE_SWORD",
+      "stats": {
+        "DAMAGE": 10,
+        "PROTECTION": 1,
+        "HEALTH": 1,
+        "CRITICAL_CHANCE": 10,
+        "CRITICAL_DAMAGE": 10,
+        "PENETRATION": 1,
+        "VAMPIRIC": 1,
+        "EVASION": 1,
+        "REGENERATION": 1
+      }
+    },
+    {
+      "type": "BASED",
+      "id": "recipe_halberd",
+      "name": "&9Рецепт&f: &d&lНебесная Алебарда",
+      "material": "PAPER",
+      "cost": 200
+    },
+    {
+      "type": "BASED",
+      "id": "recipe_crystallis",
+      "name": "&9Рецепт&f: &4Кристалайз",
+      "material": "PAPER",
+      "cost": 500
+    },
+    {
+      "type": "BASED",
+      "id": "recipe_mkb",
+      "name": "&9Рецепт&f: &6&lПосох Короля Обезьян",
+      "material": "PAPER",
+      "cost": 700
+    },
+    {
+      "type": "BASED",
+      "id": "recipe_blademail",
+      "name": "&9Рецепт&f: &5Броня Мученика",
+      "material": "PAPER",
+      "cost": 850
+    },
+    {
+      "type": "BASED",
+      "id": "recipe_mjollnir",
+      "name": "&9Рецепт&f: &b&lМьёльнир",
+      "material": "PAPER",
+      "cost": 900
+    },
+    {
+      "type": "BASED",
+      "id": "recipe_mekansm",
+      "name": "&9Рецепт&f: &aМеханизм",
+      "material": "PAPER",
+      "cost": 900
+    },
+    {
+      "type": "BASED",
+      "id": "recipe_butterfly",
+      "name": "&9Рецепт&f: &6&lБабочка",
+      "material": "PAPER",
+      "cost": 975
+    },
+    {
+      "type": "BASED",
+      "id": "recipe_daedalus",
+      "name": "&9Рецепт&f: &l&4Сокрушитель Даэдалия",
+      "material": "PAPER",
+      "cost": 1000
+    },
+    {
+      "type": "BASED",
+      "id": "recipe_heart",
+      "name": "&9Рецепт&f: &a&lСердце Чудовища",
+      "material": "PAPER",
+      "cost": 1200
+    },
+    {
+      "type": "BASED",
+      "id": "recipe_radiance",
+      "name": "&9Рецепт&f: &6&lСияние",
+      "material": "PAPER",
+      "cost": 1300
+    },
+    {
+      "type": "BASED",
+      "id": "recipe_greaves",
+      "name": "&9Рецепт&f: &5&lХранитель",
+      "material": "PAPER",
+      "cost": 1450
+    },
+    {
+      "type": "BASED",
+      "id": "recipe_refresher",
+      "name": "&9Рецепт&f: &d&lМашина Времени",
+      "material": "PAPER",
+      "cost": 1700
+    },
+    {
+      "type": "BASED",
+      "id": "desolator_orb",
+      "name": "&cКамень Пустоты",
+      "material": "COAL",
+      "stats": {
+        "PENETRATION": 2
+      },
+      "cost": 300
+    },
+    {
+      "type": "BASED",
+      "id": "damage_1",
+      "name": "&cШирокий Меч",
+      "material": "WOOD_SWORD",
+      "stats": {
+        "DAMAGE": 9
+      },
+      "cost": 450
+    },
+    {
+      "type": "BASED",
+      "id": "heal_1",
+      "name": "&aВенец Целителя",
+      "material": "GOLDEN_HELMET",
+      "stats": {
+        "DAMAGE": 9
+      },
+      "cost": 450
+    },
+    {
+      "type": "BASED",
+      "id": "boots",
+      "name": "&5Ботинки",
+      "material": "LEATHER_BOOTS",
+      "stats": {
+        "MOVEMENT_SPEED": 10
+      },
+      "cost": 500
+    },
+    {
+      "type": "BASED",
+      "id": "armor_1",
+      "name": "&5Кольчуга",
+      "material": "CHAINMAIL_CHESTPLATE",
+      "stats": {
+        "PROTECTION": 4
+      },
+      "cost": 550
+    },
+    {
+      "type": "BASED",
+      "id": "damage_stick",
+      "name": "&cКопье",
+      "material": "STICK",
+      "cost": 1100
+    },
+    {
+      "type": "BASED",
+      "id": "evasion_1",
+      "name": "&6Талисман уклонения",
+      "material": "MAGMA_CREAM",
+      "stats": {
+        "EVASION": 15
+      },
+      "cost": 1400
+    },
+    {
+      "type": "BASED",
+      "id": "perseverance",
+      "name": "&aНепоколебимость",
+      "material": "GOLD_NUGGET",
+      "stats": {
+        "HEALTH": 150,
+        "REGENERATION": 10
+      },
+      "cost": 1400
+    },
+    {
+      "type": "BASED",
+      "id": "damage_2",
+      "name": "&cКлеймор",
+      "material": "STONE_SWORD",
+      "stats": {
+        "DAMAGE": 15
+      },
+      "cost": 1400
+    },
+    {
+      "type": "BASED",
+      "id": "damage_3",
+      "name": "&cМифриловый Молот",
+      "material": "STONE_SWORD",
+      "stats": {
+        "DAMAGE": 10
+
+      },
+      "cost": 1600
+    },
+    {
+      "type": "BASED",
+      "id": "damage_4",
+      "name": "&cКлинок Демона",
+      "material": "IRON_SWORD",
+      "stats": {
+        "DAMAGE": 40
+      },
+      "cost": 2200
+    },
+    {
+      "type": "BASED",
+      "id": "sacred",
+      "name": "&6Сакральная Реликвия",
+      "material": "GOLD_SWORD",
+      "stats": {
+        "DAMAGE": 55
+      },
+      "cost": 3400
+    },
+    {
+      "type": "BASED",
+      "id": "eagle",
+      "name": "&6Песнь Небесных Крыльев",
+      "material": "REEDS",
+      "stats": {
+        "DAMAGE": 45
+      },
+      "cost": 2800
+    },
+    {
+      "type": "ARTIFACT",
+      "id": "crystallis",
+      "name": "Кристаллайз",
+      "material": "GOLD_SWORD",
+      "glow": true,
+      "stats": {
+        "DAMAGE": 32,
+        "CRITICAL_CHANCE": 30,
+        "CRITICAL_DAMAGE": 160
+      },
+      "description": ["Клинок, скованный из редких кристаллов,", "находит слабые места в броне врага."],
+      "ingredients": {
+        "damage_1": 1,
+        "damage_2": 1,
+        "recipe_crystallis": 1
+      }
+    },
+    {
+      "type": "ARTIFACT",
+      "id": "daedalus",
+      "name": "Сокрушитель Даэдалия",
+      "material": "DIAMOND_SWORD",
+      "glow": true,
+      "stats": {
+        "DAMAGE": 88,
+        "CRITICAL_DAMAGE": 225,
+        "CRITICAL_CHANCE": 30
+      },
+      "description": ["Оружие невероятной силы,", " которой трудно управлять", "даже самому сильному воину."],
+      "ingredients": {
+        "damage_1": 1,
+        "damage_2": 1,
+        "recipe_daedalus": 1
+      }
+    },
+    {
+      "type": "ARTIFACT",
+      "id": "desolator",
+      "name": "&c&lРазрушитель",
+      "material": "GOLD_AXE",
+      "stats": {
+        "DAMAGE": 65,
+        "PENETRATION": 7
+      },
+      "description": ["Это проклятое оружие использовалось", "при пытках особо опасных преступников."],
+      "ingredients": {
+        "damage_3": 2,
+        "desolator_1": 1
+      }
+    },
+    {
+      "type": "ARTIFACT",
+      "id": "blade_mail",
+      "name": "&5Броня Мученика",
+      "material": "IRON_CHESTPLATE",
+      "glow": true,
+      "stats": {
+        "DAMAGE": 28,
+        "PROTECTION": 6
+      },
+      "description": ["Острый, как лезвие бритвы, панцирь —", "  выбор самоотверженных мучеников."],
+      "ingredients": {
+        "armor_1": 1,
+        "damage_1": 1,
+        "recipe_blademail": 1
+      }
+    },
+    {
+      "type": "ARTIFACT",
+      "id": "mkb",
+      "name": "&6&lПосох Короля Обезьян",
+      "material": "BLAZE_ROD",
+      "glow": true,
+      "stats": {
+        "DAMAGE": 55,
+        "MOVEMENT_SPEED": 20
+
+      },
+      "description": ["Могущественный посох, ", "которым пользовался искусный воин."],
+      "ingredients": {
+        "damage_4": 1,
+        "damage_stick": 2,
+        "recipe_mkb": 1
+      }
+    },
+    {
+      "type": "ARTIFACT",
+      "id": "butterfly",
+      "name": "&6&lБабочка",
+      "material": "EMERALD",
+      "glow": true,
+      "stats": {
+        "DAMAGE": 55,
+        "EVASION": 35,
+        "MOVEMENT_SPEED": 10
+      },
+      "description": ["Этот клинок могут обуздать", "лишь самые могучие и опытные воины,","но владельцу он даёт невероятное проворство в бою."],
+      "ingredients": {
+        "damage_6": 1,
+        "evasion_1": 1,
+        "recipe_butterfly": 1
+      }
+    },
+    {
+      "type": "ARTIFACT",
+      "id": "refresher",
+      "name": "&6&lМашина времени",
+      "material": "ENDER_PEARL",
+      "glow": true,
+      "stats": {
+        "HEALTH": 400,
+        "REGENERATION": 32
+      },
+      "description": ["Могущественный артефакт,", "созданный для магов."],
+      "ingredients": {
+        "perseverance": 2,
+        "recipe_refresher": 1
+      }
+    },
+    {
+      "type": "ARTIFACT",
+      "id": "boots_up",
+      "name": "&5Удобная обувь",
+      "material": "GOLD_BOOTS",
+      "glow": true,
+      "stats": {
+        "DAMAGE": 18,
+        "PROTECTION": 4,
+        "MOVEMENT_SPEED": 15
+      },
+      "description": ["Пара сапог,", "выделанных из жесткой кожи"],
+      "ingredients": {
+        "damage_1": 1,
+        "armor_1": 1,
+        "boots_1": 1
+      }
+    },
+    {
+      "type": "ARTIFACT",
+      "id": "greaves",
+      "name": "&5&lХранитель",
+      "material": "DIAMOND_BOOTS",
+      "glow": true,
+      "stats": {
+        "PROTECTION": 6,
+        "HEALTH": 250,
+        "REGENERATION": 10,
+        "MOVEMENT_SPEED": 35
+      },
+      "description": ["Один из множества священных инструментов, ", "созданных во славу Всезнающего."],
+      "ingredients": {
+        "mekansm": 1,
+        "armor_1": 1,
+        "boots_2": 1,
+        "recipe_greaves": 1
+      }
+    },
+    {
+      "type": "ARTIFACT",
+      "id": "mekansm",
+      "name": "&aМеханизм",
+      "material": "DIAMOND",
+      "glow": true,
+      "stats": {
+        "PROTECTION": 4,
+        "HEALTH": 50,
+        "REGENERATION": 2
+      },
+      "description": ["Сияющий алмаз, собранный из разных частей,  ", "которые почему-то прекрасно объединяются."],
+      "ingredients": {
+        "heal_1": 1,
+        "armor_1": 1,
+        "recipe_mekansm": 1
+      }
+    },
+    {
+      "type": "ARTIFACT",
+      "id": "maelstrom",
+      "name": "&6Мейлстром",
+      "material": "DIAMOND_AXE",
+      "stats": {
+        "DAMAGE": 24
+      },
+      "description": ["Молот Maelstrom, будучи кованным самими богами,", "позволяет своему владельцу", "подчинить силу молнии."],
+      "ingredients": {
+        "damage_3": 1,
+        "damage_stick": 1
+      }
+    },
+    {
+      "type": "ARTIFACT",
+      "id": "mjollnir",
+      "name": "&6Мьёльнир",
+      "material": "DIAMOND_AXE",
+      "glow": true,
+      "stats": {
+        "DAMAGE": 45
+      },
+      "description": ["Магический молот Тора,", "выкованный для него гномами", "по имени Брок и Эйтри."],
+      "ingredients": {
+        "maelstrom": 1,
+        "damage_4": 1,
+        "recipe_mjollnir": 1
+      }
+    },
+    {
+      "type": "ARTIFACT",
+      "id": "rapier",
+      "name": "&4&l&nСвященное&f &4&l&nяблоко",
+      "material": "GOLDEN_APPLE",
+      "glow": true,
+      "stats": {
+        "DAMAGE": 350
+      },
+      "description": ["Настолько могущественное,", "что у него даже не может быть", "единоличного владельца."],
+      "ingredients": {
+        "sacred": 1,
+        "damage_4": 1
+      }
+    }
+  ]
+}

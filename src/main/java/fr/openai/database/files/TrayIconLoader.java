@@ -14,7 +14,42 @@ public class TrayIconLoader {
     public Image loadIcon() {
         // Проверяем наличие файла tray_icon.png в папке программы
         File iconFile = new File("tray_icon.png");
-        return iconFile.exists() ? loadIconFromFile(iconFile) : loadTrayIconFromURL();
+
+        if (iconFile.exists()) {
+            return loadIconFromFile(iconFile);
+        } else {
+            return loadTrayIconFromURL();
+        }
+    }
+
+    public Image loadRageIcon() {
+        return loadEnabledIcon();
+    }
+
+    public Image loadRageIconDisabled() {
+        try {
+            URL rageURL = new URL("https://cdn-icons-png.flaticon.com/128/2164/2164313.png");
+            InputStream rageIn = rageURL.openStream();
+            Path ragePath = Path.of("rage_mode_disabled.png");
+            Files.copy(rageIn, ragePath, StandardCopyOption.REPLACE_EXISTING);
+            return Toolkit.getDefaultToolkit().getImage(ragePath.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Image loadEnabledIcon() {
+        try {
+            URL rageURL = new URL("https://cdn-icons-png.flaticon.com/128/982/982989.png");
+            InputStream rageIn = rageURL.openStream();
+            Path ragePath = Path.of("rage_mode.png");
+            Files.copy(rageIn, ragePath, StandardCopyOption.REPLACE_EXISTING);
+            return Toolkit.getDefaultToolkit().getImage(ragePath.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private Image loadIconFromFile(File iconFile) {
@@ -27,15 +62,12 @@ public class TrayIconLoader {
     }
 
     private Image loadTrayIconFromURL() {
-        // Загрузка и сохранение изображения
         try {
-            URL imageURL = new URL("https://cdn-icons-png.flaticon.com/128/7505/7505050.png");
-            InputStream in = imageURL.openStream();
-            Path imagePath = Path.of("tray_icon.png"); // Имя файла в корневой папке программы
-
-            Files.copy(in, imagePath, StandardCopyOption.REPLACE_EXISTING);
-
-            return Toolkit.getDefaultToolkit().getImage(imagePath.toString());
+            URL iconURL = new URL("https://cdn-icons-png.flaticon.com/128/2839/2839162.png");
+            InputStream iconIn = iconURL.openStream();
+            Path iconPath = Path.of("tray_icon.png");
+            Files.copy(iconIn, iconPath, StandardCopyOption.REPLACE_EXISTING);
+            return Toolkit.getDefaultToolkit().getImage(iconPath.toString());
         } catch (IOException e) {
             e.printStackTrace();
             return null;

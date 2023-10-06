@@ -1,49 +1,86 @@
-package fr.openai.database.files;
+    package fr.openai.database.files;
 
-import java.io.FileWriter;
-import java.io.IOException;
+    import java.io.FileWriter;
+    import java.io.IOException;
 
-public class ReadmeFileCreator {
-    private static final String README_PATH = "README.txt";
+    public class ReadmeFileCreator {
+        private static final String README_PATH = "README.txt";
 
-    public void createReadmeFile() {
-        try {
-            FileWriter readmeWriter = new FileWriter(README_PATH);
-            String readmeContent = "Привет!\n";
-            readmeContent += "Это файл с начальной информацией.\n";
-            readmeContent += " \n";
-            readmeContent += "СНАЧАЛА НУЖНО ХОТЯ БЫ ЗАЙТИ В ХАБ\n";
-            readmeContent += "ТОЛЬКО ПОТОМ ПРОГРАММУ \n";
-            readmeContent += " \n";
-            readmeContent += "Чтобы получить доступ к приложению, нужно скопировать ID компьютера в экране с ошибкой логина.\n";
-            readmeContent += " \n";
-            readmeContent += "В файле config.properties есть переменная upFQ = 100,\n";
-            readmeContent += "Можете менять ее в пределах 10-500, где 10 = Наивысшее быстродействие, Наивысшие затраты ресурсов ПК.\n";
-            readmeContent += "500 = Самая едленная работа программы, Самые низкие затраты ресурсов ПК.\n";
-            readmeContent += " \n";
-            readmeContent += "Вы можете добавлять новые слова в список запрещенных:\n";
-            readmeContent += "Внизу экрана (там где время) появится иконка приложения (в трей),\n";
-            readmeContent += "Нажав ПКМ по ней, вы можете открыть редактор слов.\n";
-            readmeContent += "Помните, что запрещенные слова работают по принципу однокоренных, а именно:\n";
-            readmeContent += "Если вы внесете в список запрещенных слов «ху», то программа будет считать «ХУтава» нарушением,\n";
-            readmeContent += "Потому что там есть корень ху, который Вы добавили.\n";
-            readmeContent += " \n";
-            readmeContent += "Список whitelist (Белый список) не действует по такому принципу, вы должны добавить идентичное слово,\n";
-            readmeContent += "чтобы программа перестала на него реагировать, например: \n";
-            readmeContent += "вы внесете в список запрещенных слов «ху», , но «хутава» в белый список,\n";
-            readmeContent += "теперь это слово 100% не нарушение, но как только в чате напишут «хуб, хубабуба», это будет считаться нарушением.\n";
-            readmeContent += " \n";
-            readmeContent += "Вы можете добавлять слова напрямую в файле WORDS.json, если умеете. \n";
-            readmeContent += " \n";
-            readmeContent += "Чтобы слова вступили в силу, требуется перезапуск программы (НЕ ИГРЫ). \n";
-            readmeContent += " \n";
-            readmeContent += "Если какая-то ошибка в отправке репорта, попробуйте просто покликать отправить или изменить текст, так бывает)))\n";
-            readmeContent += " Не пишите туда всякую хуйню, я вижу ваш айдишник\n";
-            readmeContent += " Если несколько раз отправите одно и то же, не страшно, можно кидать ссылки на скриншоты \n";
-            readmeWriter.write(readmeContent);
-            readmeWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        public void createReadmeFile() {
+            try {
+                FileWriter readmeWriter = new FileWriter(README_PATH);
+                String readmeContent = "Привет, читатель благородный!\n";
+                readmeContent += "Вас встречает информационный текст,\n";
+                readmeContent += "Сначала в хабе загляните, добрый сэр,\n";
+                readmeContent += "А затем устремитесь в мир компьютерных фей.\n";
+                readmeContent += "\n";
+                readmeContent += "Для доступа к приложению волшебному,\n";
+                readmeContent += "Скопируйте ID, логина чудного экрана.\n";
+                readmeContent += "\n";
+                readmeContent += "В файле config.properties строка upFQ = 100,\n";
+                readmeContent += "Изменить можно, где 10 - быстродействие высшее,\n";
+                readmeContent += "И затраты великие на вашем ПК оно.\n";
+                readmeContent += "500 - медлительность, но затраты невелики.\n";
+                readmeContent += "\n";
+                readmeContent += "Слова в список запрещенных добавить можно,\n";
+                readmeContent += "В трее иконка появится там, внизу экрана.\n";
+                readmeContent += "Кликните правой, редактор слов откроется вам,\n";
+                readmeContent += "Запрещенных слов просто несчислимо.\n";
+                readmeContent += "Там можно и белый список ведать немало.\n";
+                readmeContent += "\n";
+                readmeContent += "Они работают по принципу корневому,\n";
+                readmeContent += "«Ху» внесете, нарушение придется вам.\n";
+                readmeContent += "Ибо корень ху в слове есть, и даже если нечто плодное,\n";
+                readmeContent += "Программа считает - ваша вина оно.\n";
+                readmeContent += "\n";
+                readmeContent += "Белый список по-другому работает великолепно,\n";
+                readmeContent += "Слово идентичное внесете - программа молчит.\n";
+                readmeContent += "«Хутава» в белом списке, в него внесено светло,\n";
+                readmeContent += "И слово это больше не нарушит спокойствия ночи.\n";
+                readmeContent += "\n";
+                readmeContent += "Слова в редакторе слов добавить можно новые,\n";
+                readmeContent += "Теперь не через JSON, а в программе прямо.\n";
+                readmeContent += "И есть злостный мод, рейдж без предупреждения,\n";
+                readmeContent += "Копируются в буфер - нарушение ужасное.\n";
+                readmeContent += "\n";
+                readmeContent += "Добавлять слова можно в WORDS.json, если умеете,\n";
+                readmeContent += "Перезапустите программу - слова в силе будут теперь.\n";
+                readmeContent += "\n";
+                readmeContent += "А если ошибку в репорте замечаете вы, добрейший мой друг,\n";
+                readmeContent += "Попробуйте покликать отправить, текст изменить - так бывает, как сглаз.\n";
+                readmeContent += "И не пишите сюда пустые слова и бессмысленный мрак,\n";
+                readmeContent += "Айдишник виден мне всегда, не ведитесь на звук.\n";
+                readmeContent += "\n";
+                readmeContent += "И если отправите много раз одну же ноту,\n";
+                readmeContent += "Не страшно, ссылки на скриншоты кидайте в охапку свою.\n";
+
+                // Рисунок огромной розы
+                String roseArt =
+                        "            __  \n" +
+                                "   _       //\\  \n" +
+                                "  /\\)_____//__\\  \n" +
+                                "  \\ -   -  -   -) \n" +
+                                "   \\   .- .-.   /  \n" +
+                                "    /  | | | |  \\  \n" +
+                                "   |   | | | |   |  \n" +
+                                "    \\  | | | |  /  \n" +
+                                "     \\  \\ | /  /  \n" +
+                                "      \\_ | | _/  \n" +
+                                "        \\| |/   \n" +
+                                "         (  \\  \n" +
+                                "         )   )  \n" +
+                                "        (   (  \n" +
+                                "         )   )  \n" +
+                                "        (   (  \n" +
+                                "         \\   \\  \n" +
+                                "          \\___\\  \n";
+
+                readmeContent += roseArt;
+
+                readmeWriter.write(readmeContent);
+                readmeWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
-}
