@@ -1,6 +1,7 @@
 package fr.openai.exec;
 
 import fr.openai.database.Names;
+import fr.openai.database.files.ConnectDb;
 import fr.openai.filter.ChatMessage;
 import fr.openai.filter.Filtering;
 import fr.openai.filter.Validator;
@@ -9,6 +10,7 @@ import fr.openai.filter.LiveChatAnalyzer;
 import fr.openai.reader.handler.LiveChatCleaner;
 import fr.openai.reader.handler.LiveChatWriter;
 import fr.openai.runtime.Times;
+import fr.openai.starter.logs.ConsoleLogger;
 
 import java.util.List;
 import java.util.concurrent.*;
@@ -30,8 +32,8 @@ public class Executor {
     public void periodic() {
         LiveChatAnalyzer liveChatAnalyzer = new LiveChatAnalyzer(notificationSystem);
 
-        executorService.submit(LiveChatCleaner::startCleaning);
         executorService.submit(() -> liveChatAnalyzer.startFindingFlood("livechat.json"));
+
     }
 
     public void execute(String line, Names names) {
@@ -45,9 +47,15 @@ public class Executor {
 
 
         // Используем executorService для выполнения задач в пуле потоков
-        executorService.submit(() -> filtering.onFilter(playerName, message));
-        executorService.submit(() -> times.timestamp(line, names));
-        executorService.submit(() -> LiveChatWriter.writeLiveChat(chatMessages, "livechat.json"));
+        executorService.submit(() -> {
+            ConsoleLogger.consoleLog();
+
+            filtering.onFilter(playerName, message);
+            times.timestamp(line, names);
+            LiveChatWriter.writeLiveChat(chatMessages, "livechat.json");
+            LiveChatCleaner.cleanLiveChat();
+        });
+
 
     }
 

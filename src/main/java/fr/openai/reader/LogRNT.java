@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import fr.openai.database.files.ConnectDb;
 import fr.openai.exec.Executor;
 import fr.openai.database.Names;
 import fr.openai.filter.Filtering;
@@ -15,8 +16,6 @@ import fr.openai.runtime.ConfigManager;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class LogRNT {
 
@@ -28,14 +27,14 @@ public class LogRNT {
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 
-    public LogRNT(NotificationSystem notificationSystem) {
+    public LogRNT(NotificationSystem notificationSystem) throws InterruptedException {
         this.notificationSystem = notificationSystem;
         this.configManager = new ConfigManager();
         this.executor = new Executor(notificationSystem); // Передайте liveChat в Executor
         this.names = new Names();
     }
 
-    public void starter() {
+    public void starter() throws InterruptedException {
         LogRNT logReader = new LogRNT(notificationSystem);
 
         SystemTrayManager trayManager = new SystemTrayManager();
@@ -44,6 +43,8 @@ public class LogRNT {
     }
 
     private void run() {
+
+
         executor.periodic();
 
         long previousSize = getFileSize();

@@ -1,17 +1,10 @@
 package fr.openai.database.editor;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import fr.openai.database.JsonManager;
-import fr.openai.database.editor.Editor;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
-import java.io.FileWriter;
-import java.io.IOException;
+import com.mongodb.client.MongoCollection;
+import fr.openai.database.files.ConnectDb;
+import org.bson.Document;
 
 public class RemoveWord {
-    private static final String WORDS_JSON_PATH = "words.json";
     private final Editor editor; // Добавьте поле для доступа к Editor
 
     public RemoveWord(Editor editor) {
@@ -19,46 +12,27 @@ public class RemoveWord {
     }
 
     public void removeWord(String wordToRemove) {
-        // Convert the input word to lowercase
-        wordToRemove = wordToRemove.toLowerCase();
+        // Приводим входное слово к нижнему регистру и удаляем лишние символы
+        wordToRemove = wordToRemove.toLowerCase().replaceAll("[^a-zа-яё]", "");
 
-        // Read the current JSON from the file
-        JsonManager jsonManager = new JsonManager();
-        JsonObject jsonObject = jsonManager.parseJsonFile(WORDS_JSON_PATH);
+        // Получить коллекцию из MongoDB
+        MongoCollection<Document> collection = ConnectDb.getMongoCollection("words");
 
-        if (jsonObject != null) {
-            // Get the forbidden_words array
-            JsonArray forbiddenWordsArray = jsonObject.getAsJsonArray("forbidden_words");
+        // Создаем фильтр для поиска документа, содержащего удаляемое слово
+        Document filter = new Document("forbidden_words", wordToRemove);
 
-            // Convert all words in the array to lowercase and remove extra characters
-            JsonArray updatedForbiddenWordsArray = new JsonArray();
-            for (JsonElement element : forbiddenWordsArray) {
-                String existingWord = element.getAsString();
-                existingWord = existingWord.toLowerCase().replaceAll("[^a-zа-яё]", "");
-                updatedForbiddenWordsArray.add(new JsonPrimitive(existingWord));
-            }
+        // Проверяем, существует ли слово в массиве forbidden_words
+        if (collection.countDocuments(filter) > 0) {
+            // Создаем документ для обновления
+            Document updateDocument = new Document("$pull", new Document("forbidden_words", wordToRemove));
 
-            // Check if the word exists in the array
-            if (updatedForbiddenWordsArray.contains(new JsonPrimitive(wordToRemove))) {
-                // Remove the specified word from the array
-                updatedForbiddenWordsArray.remove(new JsonPrimitive(wordToRemove));
+            // Удаляем слово из массива forbidden_words
+            collection.updateOne(new Document(), updateDocument);
 
-                // Update the JSON object
-                jsonObject.add("forbidden_words", updatedForbiddenWordsArray);
-
-                // Rewrite the file
-                try (FileWriter fileWriter = new FileWriter(WORDS_JSON_PATH)) {
-                    fileWriter.write(jsonManager.gson.toJson(jsonObject));
-                    editor.setOutputText("Слово " + wordToRemove + " удалено из списка.");
-                } catch (IOException e) {
-                    System.err.println("Failed to update JSON file: " + WORDS_JSON_PATH);
-                    e.printStackTrace();
-                }
-            } else {
-                editor.setOutputText("Слово " + wordToRemove + " не найдено.");
-            }
+            editor.setOutputText("Слово " + wordToRemove + " удалено из списка.");
+            ConnectDb.getWordsDB();
         } else {
-            editor.setOutputText("Файла words.json не существует.");
+            editor.setOutputText("Слово " + wordToRemove + " не найдено.");
         }
     }
 }

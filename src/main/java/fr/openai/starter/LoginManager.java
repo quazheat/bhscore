@@ -6,7 +6,7 @@ import fr.openai.reader.LogRNT;
 import fr.openai.starter.uuid.UuidChecker;
 
 public class LoginManager {
-    public static void attemptLogin() {
+    public static void attemptLogin() throws InterruptedException {
         NotificationSystem notificationSystem = new NotificationSystem();
         UuidChecker uuidChecker = new UuidChecker();
 

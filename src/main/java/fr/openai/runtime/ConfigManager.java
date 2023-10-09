@@ -1,6 +1,7 @@
 package fr.openai.runtime;
 
-import fr.openai.database.WordsFileManager;
+
+import fr.openai.database.files.ConnectDb;
 
 import java.io.*;
 import java.util.Properties;
@@ -12,14 +13,12 @@ public class ConfigManager {
     private static final int DEFAULT_UPFQ = 100; // Значение по умолчанию для upFQ
 
     private final Properties properties;
-    private final WordsFileManager wordsFileManager;
 
-    public ConfigManager() {
+    public ConfigManager() throws InterruptedException {
         this.properties = new Properties();
-        this.wordsFileManager = new WordsFileManager();
 
         loadConfig();
-        createWords();
+        ConnectDb.getWordsDB();
     }
 
     private void loadConfig() {
@@ -40,9 +39,6 @@ public class ConfigManager {
         }
     }
 
-    private void createWords() {
-        wordsFileManager.createWordsFile();
-    }
 
     public String getLogRntPath() {
         String path = properties.getProperty("log_rnt_path");

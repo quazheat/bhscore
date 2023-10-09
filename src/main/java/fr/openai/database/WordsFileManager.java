@@ -1,3 +1,4 @@
+/*
 package fr.openai.database;
 
 import fr.openai.database.files.FileManager;
@@ -6,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class WordsFileManager {
-    private static final String WORDS_JSON_PATH = "words.json";
+    private static final String WORDS_JSON_PATH = "words1.json";
     private final List<String> defWords = Arrays.asList(
             "nigg", "бля", "пизд", "хуй", "крым", "ауе", "gblj", "fuc", "pido", "pida", "cerf", "долбае", "pizd",
             "соси", "sosi","ahue","ahui","мать тво","отчим","твоя мать",
@@ -40,4 +41,4 @@ public class WordsFileManager {
             jsonManager.parseJsonFile(WORDS_JSON_PATH);
         }
     }
-}
+}*/

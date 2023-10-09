@@ -32,4 +32,12 @@ public class ChatMessage {
         this.timestamp = timestamp;
     }
 
+    @Override
+    public String toString() {
+        return "ChatMessage{" +
+                "playerName='" + playerName + '\'' +
+                ", timestamp=" + timestamp +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

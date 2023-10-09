@@ -15,6 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static fr.openai.filter.Filtering.isLoyal;
 import static fr.openai.filter.Filtering.isRage;
 
 
@@ -52,15 +53,19 @@ public class LiveChatAnalyzer {
 
                 if (messageCount + 1 == 3) {
                     long currentTime = System.currentTimeMillis();
-                    if (!lastNotificationTimes.containsKey(name) || currentTime - lastNotificationTimes.get(name) >= 60000) {
+                    if (!lastNotificationTimes.containsKey(name) || currentTime - lastNotificationTimes.get(name) >= 70000) {
                         lastNotificationTimes.put(name, currentTime);
 
                         // Используйте переменную isRage из класса Filtering
-                        if (!Filtering.isRage) {
-                            System.out.println("DETECTED: 5 одинаковых слов");
+                        if (isLoyal) {
+                            WindowsNotification.showWindowsNotification("LOYAL", "3 msg", TrayIcon.MessageType.INFO);
+                            String textToCopy = "/warn " + name + " Не флуди";
+                            ClipboardUtil.copyToClipboard(textToCopy);
+                        } else if (!isRage) {
+                            System.out.println("DETECTED: 3 same messages");
                             notificationSystem.showNotification(name, "3 same messages");
                         } else {
-                            WindowsNotification.showWindowsNotification("RAGE", "2.10", TrayIcon.MessageType.ERROR);
+                            WindowsNotification.showWindowsNotification("RAGE", "3 msg", TrayIcon.MessageType.ERROR);
                             String textToCopy = "/mute " + name + " 2.10";
                             ClipboardUtil.copyToClipboard(textToCopy);
                         }

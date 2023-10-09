@@ -7,14 +7,19 @@ import fr.openai.filter.NameFix;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.List; // Добавляем импорт для java.util.List
+import java.util.concurrent.Semaphore; // Импортируем Semaphore
 
 public class NotificationSystem {
+    private final Semaphore semaphore = new Semaphore(1); // Создаем семафор с одним разрешением
+
     private final Queue<Notification> notifications = new LinkedList<>();
     private final List<CustomDialog> activeNotifications = new ArrayList<>(); // Создаем список для отслеживания активных уведомлений
 
@@ -61,7 +66,8 @@ public class NotificationSystem {
             @Override
             public void mouseClicked(MouseEvent e) {
                 notificationDialog.dispose();
-                heightManager.updateCurrentY(-20);
+                // Удаляем уведомление из списка активных уведомлений
+                activeNotifications.remove(notificationDialog);
             }
         });
 
@@ -81,9 +87,21 @@ public class NotificationSystem {
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     String playerName = NameFix.sbFix(playerNameLabel.getText());
                     String command = "/mute " + playerName + "  ";
-                    ClipboardUtil.copyToClipboard(command);
-                    notificationDialog.dispose();
+
+                    try {
+                        semaphore.acquire(); // Захватываем разрешение семафора
+                        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                        clipboard.setContents(new StringSelection(command), null);
+                        semaphore.release(); // Освобождаем разрешение семафора
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+
                     heightManager.updateCurrentY(-20);
+
+                    // Закрыть уведомление
+                    notificationDialog.dispose();
+                    activeNotifications.remove(notificationDialog);
                 }
             }
         });
@@ -94,12 +112,25 @@ public class NotificationSystem {
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     String playerName = NameFix.sbFix(playerNameLabel.getText());
                     String command = "/warn " + playerName + "  ";
-                    ClipboardUtil.copyToClipboard(command);
-                    notificationDialog.dispose();
+
+                    try {
+                        semaphore.acquire(); // Захватываем разрешение семафора
+                        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                        clipboard.setContents(new StringSelection(command), null);
+                        semaphore.release(); // Освобождаем разрешение семафора
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+
                     heightManager.updateCurrentY(-20);
+
+                    // Закрыть уведомление
+                    notificationDialog.dispose();
+                    activeNotifications.remove(notificationDialog);
                 }
             }
         });
+
 
         JPanel buttonPanel = new JPanel(new BorderLayout());
         muteButton.setPreferredSize(new Dimension((int) (0.43 * notificationDialog.getWidth()), 18));
@@ -114,11 +145,20 @@ public class NotificationSystem {
         notificationPanel.add(buttonPanel, BorderLayout.SOUTH);
         notificationDialog.add(notificationPanel);
         notificationDialog.setVisible(true);
-        heightManager.updateCurrentY(20);
 
         // Добавляем отображенное уведомление в список активных уведомлений
         activeNotifications.add(notificationDialog);
+
+        // Проверяем, если количество активных уведомлений больше максимального, то закрываем первое
+        if (activeNotifications.size() > MAX_NOTIFICATIONS) {
+            CustomDialog firstNotification = activeNotifications.get(0);
+            firstNotification.dispose();
+            activeNotifications.remove(firstNotification);
+        }
+
+        heightManager.updateCurrentY(20);
     }
+
 
     // Метод для закрытия всех активных уведомлений
     private void closeAllNotifications() {

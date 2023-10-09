@@ -3,7 +3,7 @@ package fr.openai.starter.internet;
 import fr.openai.starter.LoginManager;
 
 public class InternetManager {
-    public static void check() {
+    public static void check() throws InterruptedException {
         if (InternetChecker.isReachable("https://pastebin.com")) {
             LoginManager.attemptLogin();
         } else {

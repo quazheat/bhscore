@@ -1,16 +1,10 @@
 package fr.openai.database.editor;
 
-import com.google.gson.JsonElement;
-import fr.openai.database.JsonManager;
-import fr.openai.database.editor.Editor;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
-import java.io.FileWriter;
-import java.io.IOException;
+import com.mongodb.client.MongoCollection;
+import fr.openai.database.files.ConnectDb;
+import org.bson.Document;
 
 public class AddNewWhitelistWord {
-    private static final String WORDS_JSON_PATH = "words.json";
     private final Editor editor; // поле для доступа к Editor
 
     public AddNewWhitelistWord(Editor editor) {
@@ -18,46 +12,24 @@ public class AddNewWhitelistWord {
     }
 
     public void addNewWhitelistWord(String newWord) {
-        // Prune the new word to lowercase and remove extra characters
+        // Приводим новое слово к нижнему регистру и удаляем лишние символы
         newWord = newWord.toLowerCase().replaceAll("[^a-zа-яё]", "");
 
-        // Read the current JSON from the file
-        JsonManager jsonManager = new JsonManager();
-        JsonObject jsonObject = jsonManager.parseJsonFile(WORDS_JSON_PATH);
+        // Получить коллекцию из MongoDB
+        MongoCollection<Document> collection = ConnectDb.getMongoCollection("words");
 
-        if (jsonObject != null) {
-            // Get the whitelist array
-            JsonArray whitelistArray = jsonObject.getAsJsonArray("whitelist");
+        // Создаем документ для обновления
+        Document updateDocument = new Document();
+        updateDocument.append("$addToSet", new Document("whitelist", newWord));
 
-            // Check if the word already exists in the whitelist
-            boolean wordExists = false;
-            for (JsonElement element : whitelistArray) {
-                if (element.isJsonPrimitive() && element.getAsString().equals(newWord)) {
-                    wordExists = true;
-                    break;
-                }
-            }
-
-            if (!wordExists) {
-                // Add the new word to the whitelist array
-                whitelistArray.add(newWord);
-
-                // Update the JSON object
-                jsonObject.add("whitelist", whitelistArray);
-
-                // Rewrite the file
-                try (FileWriter fileWriter = new FileWriter(WORDS_JSON_PATH)) {
-                    fileWriter.write(JsonManager.gson.toJson(jsonObject));
-                    editor.setOutputText(newWord + " добавлено в whitelist.");
-                } catch (IOException e) {
-                    System.err.println("Failed to update JSON file: " + WORDS_JSON_PATH);
-                    e.printStackTrace();
-                }
-            } else {
-                editor.setOutputText(newWord + " уже существует в whitelist.");
-            }
+        // Проверяем, не существует ли уже такого слова в массиве whitelist
+        if (collection.countDocuments(new Document("whitelist", newWord)) == 0) {
+            // Добавляем новое слово в массив whitelist
+            collection.updateOne(new Document(), updateDocument);
+            editor.setOutputText(newWord + " добавлено в whitelist.");
+            ConnectDb.getWordsDB();
         } else {
-            editor.setOutputText("Файла words.json не существует.");
+            editor.setOutputText(newWord + " уже существует в whitelist.");
         }
     }
 }

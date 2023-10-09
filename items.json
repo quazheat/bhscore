@@ -75,13 +75,6 @@
     },
     {
       "type": "BASED",
-      "id": "recipe_heart",
-      "name": "&9Рецепт&f: &a&lСердце Чудовища",
-      "material": "PAPER",
-      "cost": 1200
-    },
-    {
-      "type": "BASED",
       "id": "recipe_radiance",
       "name": "&9Рецепт&f: &6&lСияние",
       "material": "PAPER",
@@ -100,6 +93,13 @@
       "name": "&9Рецепт&f: &d&lМашина Времени",
       "material": "PAPER",
       "cost": 1700
+    },
+    {
+      "type": "BASED",
+      "id": "recipe_heart",
+      "name": "&9Рецепт&f: &a&lСердце Чудовища",
+      "material": "PAPER",
+      "cost": 1800
     },
     {
       "type": "BASED",
@@ -156,6 +156,17 @@
       "id": "damage_stick",
       "name": "&cКопье",
       "material": "STICK",
+      "cost": 1100
+    },
+    {
+      "type": "BASED",
+      "id": "health",
+      "name": "&aСфера жизни",
+	  "stats": {
+        "HEALTH": 350,
+        "REGENERATION": 10
+      },
+      "material": "FERMENTED_SPIDER_EYE",
       "cost": 1100
     },
     {
@@ -233,7 +244,7 @@
     {
       "type": "ARTIFACT",
       "id": "crystallis",
-      "name": "Кристаллайз",
+      "name": "&4Кристаллайз",
       "material": "GOLD_SWORD",
       "glow": true,
       "stats": {
@@ -251,7 +262,7 @@
     {
       "type": "ARTIFACT",
       "id": "daedalus",
-      "name": "Сокрушитель Даэдалия",
+      "name": "&4&lСокрушитель Даэдалия",
       "material": "DIAMOND_SWORD",
       "glow": true,
       "stats": {
@@ -259,7 +270,7 @@
         "CRITICAL_DAMAGE": 225,
         "CRITICAL_CHANCE": 30
       },
-      "description": ["Оружие невероятной силы,", " которой трудно управлять", "даже самому сильному воину."],
+      "description": ["Оружие невероятной силы,", "которой трудно управлять", "даже самому сильному воину."],
       "ingredients": {
         "damage_1": 1,
         "damage_2": 1,
@@ -309,7 +320,7 @@
         "MOVEMENT_SPEED": 20
 
       },
-      "description": ["Могущественный посох, ", "которым пользовался искусный воин."],
+      "description": ["Могущественный посох,", "которым пользовался искусный воин."],
       "ingredients": {
         "damage_4": 1,
         "damage_stick": 2,
@@ -380,7 +391,7 @@
         "REGENERATION": 10,
         "MOVEMENT_SPEED": 35
       },
-      "description": ["Один из множества священных инструментов, ", "созданных во славу Всезнающего."],
+      "description": ["Один из множества священных инструментов,", "созданных во славу Всезнающего."],
       "ingredients": {
         "mekansm": 1,
         "armor_1": 1,
@@ -399,7 +410,7 @@
         "HEALTH": 50,
         "REGENERATION": 2
       },
-      "description": ["Сияющий алмаз, собранный из разных частей,  ", "которые почему-то прекрасно объединяются."],
+      "description": ["Сияющий алмаз, собранный из разных частей,", "которые почему-то прекрасно объединяются."],
       "ingredients": {
         "heal_1": 1,
         "armor_1": 1,
@@ -439,16 +450,44 @@
     {
       "type": "ARTIFACT",
       "id": "rapier",
-      "name": "&4&l&nСвященное&f &4&l&nяблоко",
-      "material": "GOLDEN_APPLE",
-      "glow": true,
+      "name": "&4&l&nСвященная&f &4&l&nзвезда",
+      "material": "NETHER_STAR",
       "stats": {
         "DAMAGE": 350
       },
-      "description": ["Настолько могущественное,", "что у него даже не может быть", "единоличного владельца."],
+      "description": ["Настолько могущественная,", "что у нее даже не может быть", "единоличного владельца."],
       "ingredients": {
         "sacred": 1,
         "damage_4": 1
+      }
+    },
+    {
+      "type": "ARTIFACT",
+      "id": "radiance",
+      "name": "&6&lСияние",
+      "material": "BLAZE_POWDER",
+      "stats": {
+        "DAMAGE": 55,
+        "EVASION": 15
+      },
+      "description": ["Божественное пламя, окружающее владельца", "ярким сиянием,", "которое обращает в пепел всех врагов вокруг."],
+      "ingredients": {
+        "sacred": 1,
+        "recipe_radiance": 1
+      }
+    {
+      "type": "ARTIFACT",
+      "id": "radiance",
+      "name": "&a&lСердце Чудовища", 
+      "material": "BLAZE_POWDER",
+      "stats": {
+        "DAMAGE": 900,
+        "REGENERATION": 40
+      },
+      "description": ["Сохранившееся сердце вымершего монстра,", "с которым его владелец становится мужественнее."],
+      "ingredients": {
+        "health": 2,
+        "recipe_heart": 1
       }
     }
   ]

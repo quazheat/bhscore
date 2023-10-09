@@ -1,15 +1,10 @@
 package fr.openai.database.editor;
 
-import fr.openai.database.JsonManager;
-import fr.openai.database.editor.Editor;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
-import java.io.FileWriter;
-import java.io.IOException;
+import com.mongodb.client.MongoCollection;
+import fr.openai.database.files.ConnectDb;
+import org.bson.Document;
 
 public class AddNewWord {
-    private static final String WORDS_JSON_PATH = "words.json";
     private final Editor editor; // Добавьте поле для доступа к Editor
 
     public AddNewWord(Editor editor) {
@@ -19,45 +14,25 @@ public class AddNewWord {
     public void addNewWord(String newWord) {
         // Приводим новое слово к нижнему регистру
         newWord = newWord.toLowerCase();
+        newWord = newWord.toLowerCase().replaceAll("[^a-zа-яё]", "");
 
-        // Считываем текущий JSON из файла
-        JsonManager jsonManager = new JsonManager();
-        JsonObject jsonObject = jsonManager.parseJsonFile(WORDS_JSON_PATH);
+        // Получить коллекцию из MongoDB
+        MongoCollection<Document> collection = ConnectDb.getMongoCollection("words");
 
-        if (jsonObject != null) {
-            // Получаем массив forbidden_words
-            JsonArray forbiddenWordsArray = jsonObject.getAsJsonArray("forbidden_words");
+        // Создаем документ для обновления
+        Document updateDocument = new Document();
+        updateDocument.append("$addToSet", new Document("forbidden_words", newWord));
 
-            // Проверяем, не существует ли уже такого слова в массиве
-            boolean wordExists = false;
-            for (int i = 0; i < forbiddenWordsArray.size(); i++) {
-                String word = forbiddenWordsArray.get(i).getAsString();
-                if (word.toLowerCase().equals(newWord)) {
-                    wordExists = true;
-                    break;
-                }
-            }
+        // Проверяем, не существует ли уже такого слова в массиве
+        if (collection.countDocuments(new Document("forbidden_words", newWord)) == 0) {
 
-            if (!wordExists) {
-                // Добавляем новое слово в массив
-                forbiddenWordsArray.add(newWord);
-
-                // Обновляем JSON объект
-                jsonObject.add("forbidden_words", forbiddenWordsArray);
-
-                // Перезаписываем файл
-                try (FileWriter fileWriter = new FileWriter(WORDS_JSON_PATH)) {
-                    fileWriter.write(jsonManager.gson.toJson(jsonObject));
-                    editor.setOutputText(newWord + " добавлено.");
-                } catch (IOException e) {
-                    System.err.println("Failed to update JSON file: " + WORDS_JSON_PATH);
-                    e.printStackTrace();
-                }
-            } else {
-                editor.setOutputText(newWord + " уже в списке");
-            }
+            // Добавляем новое слово в массив forbidden_words
+            collection.updateOne(new Document(), updateDocument);
+            collection.updateOne(new Document(), updateDocument);
+            editor.setOutputText(newWord + " добавлено.");
+            ConnectDb.getWordsDB();
         } else {
-            editor.setOutputText("Файла words.json не существует.");
+            editor.setOutputText(newWord + " уже в списке.");
         }
     }
 }

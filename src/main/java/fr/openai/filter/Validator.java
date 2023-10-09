@@ -9,16 +9,23 @@ public class Validator {
                 line.contains("получил награду с лутбокса") ||
                 line.contains("\\n") ||
                 line.contains("проводит ивент:") ||
-                line.contains("[CHAT] [SC]") ||
+                line.contains(": [CHAT] [SC]") ||
                 line.contains("㰳") || /*Это анмут!!!*/
                 line.contains("㨏") ||
                 line.contains("㰳 ") || /*Это чужой;мут*/
                 line.contains("㐎") || /*Это ;жалоба*/
                 line.contains("㥐") || /*Это выдача варна*/
-                line.contains("[CHAT] Очистка ┃ ") ||
-                line.contains("[CHAT] [Уборщик] ") ||
-                line.contains("[CHAT] Предмет") ||
-                line.contains("[CHAT] [I] У нас есть группа VK!") ||
+                line.contains(": [CHAT] Очистка ┃ ") ||
+                line.contains(": [CHAT] [Уборщик] ") ||
+                line.contains("INFO]: [CHAT] H |") ||
+                line.contains("INFO]: [CHAT] M |") ||
+                line.contains("INFO]: [CHAT] Sr.M |") ||
+                line.contains("INFO]: [CHAT] Own |") ||
+                line.contains("INFO]: [CHAT] Owner |") ||
+                line.contains("INFO]: [CHAT] ADM |") ||
+                line.contains(": [CHAT] Предмет") ||
+                line.contains(": [CHAT] VK") ||
+                line.contains(": [CHAT] [I]") ||
                 line.contains("размутил игрока");
     }
 }
