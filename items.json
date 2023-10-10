@@ -89,6 +89,13 @@
     },
     {
       "type": "BASED",
+      "id": "recipe_cuirass",
+      "name": "&9Рецепт&f: &5&lКираса Преисподней",
+      "material": "PAPER",
+      "cost": 1550
+    },
+    {
+      "type": "BASED",
       "id": "recipe_refresher",
       "name": "&9Рецепт&f: &d&lМашина Времени",
       "material": "PAPER",
@@ -187,6 +194,16 @@
       "stats": {
         "HEALTH": 150,
         "REGENERATION": 10
+      },
+      "cost": 1400
+    },
+    {
+      "type": "BASED",
+      "id": "platemail",
+      "name": "&5Бронепластина",
+      "material": "GOLD_PLATE",
+      "stats": {
+        "ARMOR": 10
       },
       "cost": 1400
     },
@@ -474,10 +491,10 @@
       "ingredients": {
         "sacred": 1,
         "recipe_radiance": 1
-      }
+      },
     {
       "type": "ARTIFACT",
-      "id": "radiance",
+      "id": "heart",
       "name": "&a&lСердце Чудовища", 
       "material": "BLAZE_POWDER",
       "stats": {
@@ -488,6 +505,21 @@
       "ingredients": {
         "health": 2,
         "recipe_heart": 1
+      }
+    },
+    {
+      "type": "ARTIFACT",
+      "id": "cuirass",
+      "name": "&5&lКираса преисподней", 
+      "material": "BLAZE_POWDER",
+      "stats": {
+        "DAMAGE": 900,
+        "REGENERATION": 40
+      },
+      "description": ["Это адская броня,", "выкованная в кузнях преисподней."],
+      "ingredients": {
+        "platemail": 2,
+        "recipe_cuirass": 1
       }
     }
   ]

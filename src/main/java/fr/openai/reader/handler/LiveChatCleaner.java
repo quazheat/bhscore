@@ -27,14 +27,8 @@ public class LiveChatCleaner {
                     cleanedChatMessages.add(message);
                 }
             }
-            for (ChatMessage message : cleanedChatMessages) {
-                System.out.println("Player Name: " + message.getPlayerName());
-                System.out.println("Message: " + message.getMessage());
-                System.out.println("------------------------");
-            }
 
             LiveChatWriter.writeLiveChat(cleanedChatMessages, LIVE_CHAT_FILE_PATH);
-            System.out.println("CLEANER DEBUG: " + cleanedChatMessages);
             cleanedChatMessages.clear();
         }
     }

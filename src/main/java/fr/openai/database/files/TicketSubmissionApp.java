@@ -1,7 +1,6 @@
 package fr.openai.database.files;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -10,6 +9,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import fr.openai.database.customui.CustomFrame;
+import fr.openai.database.customui.SubmitTicketDialog;
 import fr.openai.starter.uuid.HwidManager;
 import fr.openai.starter.uuid.UuidChecker;
 import org.bson.Document;

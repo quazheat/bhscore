@@ -8,6 +8,7 @@ public class Validator {
                 line.contains(". Причина: ") ||
                 line.contains("получил награду с лутбокса") ||
                 line.contains("\\n") ||
+                line.contains("[CHAT] (FAWE)") ||
                 line.contains("проводит ивент:") ||
                 line.contains(": [CHAT] [SC]") ||
                 line.contains("㰳") || /*Это анмут!!!*/

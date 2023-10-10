@@ -5,13 +5,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import fr.openai.database.files.ConnectDb;
 import fr.openai.exec.Executor;
-import fr.openai.database.Names;
+import fr.openai.filter.fixer.Names;
 import fr.openai.filter.Filtering;
 import fr.openai.notify.NotificationSystem;
 import fr.openai.runtime.SystemTrayManager;
-import fr.openai.runtime.ConfigManager;
+import fr.openai.database.ConfigManager;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -45,7 +44,6 @@ public class LogRNT {
     private void run() {
 
 
-        executor.periodic();
 
         long previousSize = getFileSize();
         long currentTime = System.currentTimeMillis();

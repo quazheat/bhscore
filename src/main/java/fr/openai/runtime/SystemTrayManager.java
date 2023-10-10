@@ -76,6 +76,20 @@ public class SystemTrayManager {
             } catch (AWTException e) {
                 e.printStackTrace();
             }
+            showEditor.addActionListener(e -> {
+                if (editor == null) {
+                    editor = new Editor();
+                } else {
+                    editor.setVisible(true);
+                }
+            });
+
+            showReports.addActionListener(e -> {
+                if (ticketApp == null) {
+                    ticketApp = new TicketSubmissionApp();
+                }
+                ticketApp.showAppWindow();
+            });
 
             toggleRageModeItem.addItemListener(e -> {
                 boolean newState = toggleRageModeItem.getState();
@@ -98,6 +112,8 @@ public class SystemTrayManager {
                 }
 
                 Filtering.toggleRageMode();
+                MessageProcessor.toggleRageMode();
+
             });
 
             toggleLoyalModeItem.addItemListener(e -> {
@@ -130,14 +146,7 @@ public class SystemTrayManager {
                 }
 
                 Filtering.togglLoyalMode();
-            });
-
-            toggleRageModeItem.addActionListener(e -> {
-                // Пустой обработчик, который ничего не делает
-            });
-
-            toggleLoyalModeItem.addActionListener(e -> {
-                // Пустой обработчик, который ничего не делает
+                MessageProcessor.togglLoyalMode();
             });
         }
         iconLoader.imageAutoSize(true);

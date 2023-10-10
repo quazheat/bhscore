@@ -5,9 +5,6 @@ import fr.openai.database.files.TrayIconLoader;
 import java.awt.*;
 import java.awt.event.*;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class WindowsNotification {
     private static TrayIcon trayIcon;
@@ -18,7 +15,7 @@ public class WindowsNotification {
             TrayIconLoader iconLoader = new TrayIconLoader();
             Image icon = iconLoader.loadRageIcon();
 
-            trayIcon = new TrayIcon(icon, "RAGE");
+            trayIcon = new TrayIcon(icon, "DO NOT LOOK AT ME");
 
             // Устанавливаем пустой обработчик событий мыши, чтобы предотвратить клики
             trayIcon.addMouseListener(new MouseAdapter() {});

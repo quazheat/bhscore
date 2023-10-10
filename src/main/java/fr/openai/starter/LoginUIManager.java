@@ -1,7 +1,6 @@
 package fr.openai.starter;
 
-import fr.openai.database.files.FileManager;
-import fr.openai.notify.ClipboardUtil;
+import fr.openai.exec.ClipboardUtil;
 import fr.openai.starter.uuid.UUIDManager;
 
 import javax.swing.*;

@@ -1,7 +1,7 @@
 package fr.openai.runtime;
 
 import fr.openai.exec.Messages;
-import fr.openai.database.Names;
+import fr.openai.filter.fixer.Names;
 import fr.openai.filter.ChatMessage;
 
 import java.util.ArrayList;

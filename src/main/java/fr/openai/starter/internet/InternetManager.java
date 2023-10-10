@@ -4,7 +4,7 @@ import fr.openai.starter.LoginManager;
 
 public class InternetManager {
     public static void check() throws InterruptedException {
-        if (InternetChecker.isReachable("https://pastebin.com")) {
+        if (InternetChecker.isReachable("https://google.com")) {
             LoginManager.attemptLogin();
         } else {
             InternetErrorHandler.showErrorDialog();

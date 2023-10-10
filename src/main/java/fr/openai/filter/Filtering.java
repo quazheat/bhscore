@@ -2,7 +2,7 @@ package fr.openai.filter;
 
 import fr.openai.exec.Messages;
 import fr.openai.filter.fixer.SbFix;
-import fr.openai.notify.ClipboardUtil;
+import fr.openai.exec.ClipboardUtil;
 import fr.openai.notify.NotificationSystem;
 import fr.openai.notify.WindowsNotification;
 
@@ -25,8 +25,9 @@ public class Filtering {
     public void onFilter(String name, String line) {
         if ("Unknown".equalsIgnoreCase(name)) return;
         String message = Messages.getMessage(line);
-        String messageFlood = "Symbol flood";
-        String textToCopyF = "/warn " + name + " Не флуди";
+        String playerName = NameFix.sbFix(name);
+        String textToCopyF = "/warn " + playerName + " Не флуди";
+
 
 
         if (message != null) {
@@ -37,14 +38,14 @@ public class Filtering {
             if (filters.hasSwearing(message)) {
                 if (isLoyal){
                     WindowsNotification.showWindowsNotification("LOYAL", message, INFO);
-                    String textToCopy = "/warn " + name + " Не матерись";
+                    String textToCopy = "/warn " + playerName + " Не матерись";
                     ClipboardUtil.copyToClipboard(textToCopy);
                 } else if (!isRage) {
-                    notificationSystem.showNotification(name, "Swearing");
+                    notificationSystem.showNotification(playerName, "Swearing");
                     violationDetected = true;
                 } else {
                     WindowsNotification.showWindowsNotification("RAGE", message, ERROR);
-                    String textToCopy = "/mute " + name + " 2.";
+                    String textToCopy = "/mute " + playerName + " 2.";
                     ClipboardUtil.copyToClipboard(textToCopy);
                 }
             }
@@ -54,11 +55,13 @@ public class Filtering {
                     WindowsNotification.showWindowsNotification("LOYAL", "2.10", INFO);
                     ClipboardUtil.copyToClipboard(textToCopyF);
                 } else if (!isRage) {
-                    notificationSystem.showNotification(name, message);
+                    notificationSystem.showNotification(playerName, message);
                     violationDetected = true;
                 } else {
                     WindowsNotification.showWindowsNotification("RAGE", "2.10", ERROR);
-                    ClipboardUtil.copyToClipboard(textToCopyF);
+
+                    String textToCopy = "/mute " + playerName + " 2.10+";
+                    ClipboardUtil.copyToClipboard(textToCopy);
                 }
 
             if (!violationDetected && filters.hasLaugh(message))
@@ -66,11 +69,11 @@ public class Filtering {
                     WindowsNotification.showWindowsNotification("LOYAL", "2.10", INFO);
                     ClipboardUtil.copyToClipboard(textToCopyF);
                 } else if (!isRage) {
-                    notificationSystem.showNotification(name, "Laugh flood");
+                    notificationSystem.showNotification(playerName, "Laugh flood");
                     violationDetected = true;
                 } else {
                     WindowsNotification.showWindowsNotification("RAGE", "2.10", ERROR);
-                    String textToCopy = "/mute " + name + " 2.10";
+                    String textToCopy = "/mute " + playerName + " 2.10+";
                     ClipboardUtil.copyToClipboard(textToCopy);
                 }
 
@@ -79,23 +82,24 @@ public class Filtering {
                     WindowsNotification.showWindowsNotification("LOYAL", "2.10", INFO);
                     ClipboardUtil.copyToClipboard(textToCopyF);
                 } else if (!isRage) {
-                    notificationSystem.showNotification(name, "Flood");
+                    notificationSystem.showNotification(playerName, "Flood");
                     violationDetected = true;
                 } else {
                     WindowsNotification.showWindowsNotification("RAGE", "2.10", ERROR);
-                    ClipboardUtil.copyToClipboard(textToCopyF);
+                    String textToCopy = "/mute " + playerName + " 2.10+";
+                    ClipboardUtil.copyToClipboard(textToCopy);
                 }
             }
             if (!violationDetected && filters.hasCaps(message))
                 if (isLoyal){
-                    WindowsNotification.showWindowsNotification("LOYAL", "2.10", INFO);
-                    String textToCopy = "/warn " + name + " Не капси";
+                    WindowsNotification.showWindowsNotification("LOYAL", "2.12", INFO);
+                    String textToCopy = "/warn " + playerName + " Не капси";
                     ClipboardUtil.copyToClipboard(textToCopy);
                 } else if (!isRage) {
-                    notificationSystem.showNotification(name, "CAPS");
+                    notificationSystem.showNotification(playerName, "CAPS");
                 } else {
                     WindowsNotification.showWindowsNotification("RAGE", "2.12", ERROR);
-                    String textToCopy = "/mute " + name + " 2.12";
+                    String textToCopy = "/mute " + playerName + " 2.12+";
                     ClipboardUtil.copyToClipboard(textToCopy);
                 }
         }
