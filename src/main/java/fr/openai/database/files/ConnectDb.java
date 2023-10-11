@@ -4,9 +4,6 @@ import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
 import org.bson.Document;
-import org.bson.json.JsonMode;
-import org.bson.json.JsonWriter;
-import org.bson.json.JsonWriterSettings;
 
 import java.io.FileWriter;
 import java.io.IOException;

@@ -11,25 +11,39 @@ public class AddNewWhitelistWord {
         this.editor = editor;
     }
 
-    public void addNewWhitelistWord(String newWord) {
-        // Приводим новое слово к нижнему регистру и удаляем лишние символы
-        newWord = newWord.toLowerCase().replaceAll("[^a-zа-яё]", "");
+    public void addNewWhitelistWord(String words) {
+        // Разделяем входную строку на слова, используя запятую как разделитель
+        String[] wordArray = words.split(",");
 
         // Получить коллекцию из MongoDB
         MongoCollection<Document> collection = ConnectDb.getMongoCollection("words");
 
-        // Создаем документ для обновления
-        Document updateDocument = new Document();
-        updateDocument.append("$addToSet", new Document("whitelist", newWord));
+        StringBuilder outputText = new StringBuilder(); // Создаем StringBuilder для накопления текста
 
-        // Проверяем, не существует ли уже такого слова в массиве whitelist
-        if (collection.countDocuments(new Document("whitelist", newWord)) == 0) {
-            // Добавляем новое слово в массив whitelist
-            collection.updateOne(new Document(), updateDocument);
-            editor.setOutputText(newWord + " добавлено в whitelist.");
-            ConnectDb.getWordsDB();
-        } else {
-            editor.setOutputText(newWord + " уже существует в whitelist.");
+        // Перебираем каждое слово и добавляем его в базу данных
+        for (String word : wordArray) {
+            // Приводим слово к нижнему регистру и удаляем лишние символы
+            word = word.trim().toLowerCase().replaceAll("[^a-zа-яё]", "");
+
+            if (!word.isEmpty()) {
+                // Создаем документ для обновления
+                Document updateDocument = new Document();
+                updateDocument.append("$addToSet", new Document("whitelist", word));
+
+                // Проверяем, не существует ли уже такого слова в массиве whitelist
+                if (collection.countDocuments(new Document("whitelist", word)) == 0) {
+                    // Добавляем новое слово в массив whitelist
+                    collection.updateOne(new Document(), updateDocument);
+                    outputText.append(word).append(" добавлено. ").append("\n");
+                } else {
+                    outputText.append(word).append(" уже есть. ").append("\n");
+                }
+            }
         }
+
+        // Установим собранный текст в нижней панели
+        editor.setOutputText(outputText.toString());
+        ConnectDb.getWordsDB();
     }
+
 }

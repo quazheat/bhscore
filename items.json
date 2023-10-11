@@ -85,7 +85,7 @@
       "id": "recipe_greaves",
       "name": "&9Рецепт&f: &5&lХранитель",
       "material": "PAPER",
-      "cost": 1450
+      "cost": 1450	
     },
     {
       "type": "BASED",
@@ -157,6 +157,17 @@
         "PROTECTION": 4
       },
       "cost": 550
+    },
+    {
+      "type": "BASED",
+      "id": "morbid",
+      "name": "&cЖуткая маска",
+      "material": "LEATHER_HELMET",
+	  "glow": true,
+      "stats": {
+        "VAMPIRIC": 10
+      },
+      "cost": 900
     },
     {
       "type": "BASED",
@@ -491,7 +502,7 @@
       "ingredients": {
         "sacred": 1,
         "recipe_radiance": 1
-      },
+     },
     {
       "type": "ARTIFACT",
       "id": "heart",
@@ -520,6 +531,22 @@
       "ingredients": {
         "platemail": 2,
         "recipe_cuirass": 1
+      }
+    },
+    {
+      "type": "ARTIFACT",
+      "id": "vampire",
+      "name": "&c&lКлыки вампира", 
+      "material": "BONE",
+      "stats": {
+        "HEALTH": 300,
+		"DAMAGE": 38,
+        "VAMPIRIC": 25
+      },
+      "description": ["Почти безграничная сила,", "в обмен на вашу душу."],
+      "ingredients": {
+        "morbid": 1,
+        "heart": 1
       }
     }
   ]

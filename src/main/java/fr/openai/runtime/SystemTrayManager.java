@@ -1,6 +1,5 @@
 package fr.openai.runtime;
 
-import fr.openai.database.files.TicketSubmissionApp;
 import fr.openai.database.files.TrayIconLoader;
 import fr.openai.database.editor.Editor;
 import fr.openai.filter.Filtering;
@@ -12,7 +11,6 @@ import java.awt.*;
 public class SystemTrayManager {
     private volatile boolean stopRequested = false;
     private Editor editor;
-    private TicketSubmissionApp ticketApp;
     private boolean rageModeEnabled = false;
     private boolean loyalModeEnabled = false;
 
@@ -20,10 +18,9 @@ public class SystemTrayManager {
         TrayIconLoader iconLoader = new TrayIconLoader();
         Image appIcon = iconLoader.loadIcon();
         if (SystemTray.isSupported()) {
-            MenuItem showEditor = new MenuItem("Show Editor");
-            MenuItem showReports = new MenuItem("Report");
-            MenuItem closeMenu = new MenuItem("Hide menu");
-            MenuItem exitItem = new MenuItem("Exit program");
+            MenuItem showEditor = new MenuItem("menu");
+            MenuItem closeMenu = new MenuItem("hide");
+            MenuItem exitItem = new MenuItem("exit program");
 
             // Создание подменю Modes
             Menu modesMenu = new Menu("Modes");
@@ -32,10 +29,6 @@ public class SystemTrayManager {
             modesMenu.add(toggleRageModeItem);
             modesMenu.add(toggleLoyalModeItem);
 
-            // Создание подменю Features
-            Menu featuresMenu = new Menu("Features");
-            featuresMenu.add(showEditor);
-            featuresMenu.add(showReports);
 
             // Добавление пунктов меню к подменю Modes
             modesMenu.add(toggleRageModeItem);
@@ -44,7 +37,7 @@ public class SystemTrayManager {
             // Добавление подменю к главному меню
             PopupMenu popupMenu = new PopupMenu();
             popupMenu.add(modesMenu); // Добавляем подменю Modes
-            popupMenu.add(featuresMenu); // Добавляем подменю Features
+            popupMenu.add(showEditor); //
             popupMenu.addSeparator(); // Разделитель между подменю и другими пунктами меню
             popupMenu.add(closeMenu);
             popupMenu.add(exitItem);
@@ -54,13 +47,6 @@ public class SystemTrayManager {
             SystemTray tray = SystemTray.getSystemTray();
 
             exitItem.addActionListener(e -> {
-                try {
-                    if (this.ticketApp != null) {
-                        this.ticketApp.closeDb();
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
                 stopRequested = true;
                 ConsoleLogger.consoleLog();
                 System.exit(0);
@@ -84,12 +70,6 @@ public class SystemTrayManager {
                 }
             });
 
-            showReports.addActionListener(e -> {
-                if (ticketApp == null) {
-                    ticketApp = new TicketSubmissionApp();
-                }
-                ticketApp.showAppWindow();
-            });
 
             toggleRageModeItem.addItemListener(e -> {
                 boolean newState = toggleRageModeItem.getState();
@@ -145,7 +125,7 @@ public class SystemTrayManager {
                     trayIcon.setImage(loyalModeDisabled);
                 }
 
-                Filtering.togglLoyalMode();
+                Filtering.toggleLoyalMode();
                 MessageProcessor.togglLoyalMode();
             });
         }

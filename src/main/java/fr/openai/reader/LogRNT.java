@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.openai.exec.Executor;
 import fr.openai.filter.fixer.Names;
-import fr.openai.filter.Filtering;
 import fr.openai.notify.NotificationSystem;
 import fr.openai.runtime.SystemTrayManager;
 import fr.openai.database.ConfigManager;
@@ -22,7 +21,6 @@ public class LogRNT {
     private final Executor executor;
     private final Names names;
     private final NotificationSystem notificationSystem;
-    Filtering filtering; // Добавьте поле для хранения экземпляра Filtering
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 
