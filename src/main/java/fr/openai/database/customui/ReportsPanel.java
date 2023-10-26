@@ -7,6 +7,7 @@ import fr.openai.database.files.ConnectDb;
 import fr.openai.database.files.TicketDocument;
 import fr.openai.starter.uuid.HwidManager;
 import fr.openai.starter.uuid.UuidChecker;
+import fr.openai.starter.uuid.UuidProvider;
 import org.bson.Document;
 
 import javax.swing.*;
@@ -16,6 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ReportsPanel extends JPanel {
     private final JTextArea textArea;
+    private final UuidProvider uuidProvider = new UuidProvider();
     private final JButton sendButton;
     private final JFrame frame;
     private MongoClient mongoClient;
@@ -65,7 +67,7 @@ public class ReportsPanel extends JPanel {
                     MongoDatabase database = mongoClient.getDatabase(databaseName);
                     MongoCollection<Document> collection = database.getCollection(collectionName);
 
-                    TicketDocument ticketDocument = new TicketDocument(timestamp, problemText, isUuidAllowed ? HwidManager.getHwid() : "UNKNOWN");
+                    TicketDocument ticketDocument = new TicketDocument(timestamp, problemText, isUuidAllowed ? HwidManager.getHwid(uuidProvider) : "UNKNOWN");
 
                     collection.insertOne(ticketDocument.toDocument());
 

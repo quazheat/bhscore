@@ -11,63 +11,47 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
 public class TrayIconLoader {
+    private static final String TRAY_ICON_URL = "https://cdn-icons-png.flaticon.com/128/2839/2839162.png";
+    private static final String RAGE_ICON_ENABLED_URL = "https://cdn-icons-png.flaticon.com/128/982/982989.png";
+    private static final String RAGE_ICON_DISABLED_URL = "https://cdn-icons-png.flaticon.com/128/2164/2164313.png";
+    private static final String ICON_FILE_NAME = "tray_icon.png";
+    private static final String RAGE_ICON_NAME = "rage_mode.png";
+    private static final String RAGE_ICON_DISABLED_NAME = "rage_mode_disabled.png";
+
     public Image loadIcon() {
-        // Проверяем наличие файла tray_icon.png в папке программы
-        File iconFile = new File("tray_icon.png");
+        File iconFile = new File(ICON_FILE_NAME);
 
         if (iconFile.exists()) {
-            return loadIconFromFile(iconFile);
+            return loadImageFromFile(iconFile);
         } else {
-            return loadTrayIconFromURL();
+            return loadImageFromURL(TRAY_ICON_URL, ICON_FILE_NAME);
         }
     }
 
     public Image loadRageIcon() {
-        return loadEnabledIcon();
+        return loadImageFromURL(RAGE_ICON_ENABLED_URL, RAGE_ICON_NAME);
     }
 
     public Image loadRageIconDisabled() {
-        try {
-            URL rageURL = new URL("https://cdn-icons-png.flaticon.com/128/2164/2164313.png");
-            InputStream rageIn = rageURL.openStream();
-            Path ragePath = Path.of("rage_mode_disabled.png");
-            Files.copy(rageIn, ragePath, StandardCopyOption.REPLACE_EXISTING);
-            return Toolkit.getDefaultToolkit().getImage(ragePath.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return loadImageFromURL(RAGE_ICON_DISABLED_URL, RAGE_ICON_DISABLED_NAME);
     }
 
-    public Image loadEnabledIcon() {
+    private Image loadImageFromURL(String url, String iconName) {
         try {
-            URL rageURL = new URL("https://cdn-icons-png.flaticon.com/128/982/982989.png");
-            InputStream rageIn = rageURL.openStream();
-            Path ragePath = Path.of("rage_mode.png");
-            Files.copy(rageIn, ragePath, StandardCopyOption.REPLACE_EXISTING);
-            return Toolkit.getDefaultToolkit().getImage(ragePath.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private Image loadIconFromFile(File iconFile) {
-        try {
-            return ImageIO.read(iconFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private Image loadTrayIconFromURL() {
-        try {
-            URL iconURL = new URL("https://cdn-icons-png.flaticon.com/128/2839/2839162.png");
+            URL iconURL = new URL(url);
             InputStream iconIn = iconURL.openStream();
-            Path iconPath = Path.of("tray_icon.png");
+            Path iconPath = Path.of(iconName);
             Files.copy(iconIn, iconPath, StandardCopyOption.REPLACE_EXISTING);
             return Toolkit.getDefaultToolkit().getImage(iconPath.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private Image loadImageFromFile(File iconFile) {
+        try {
+            return ImageIO.read(iconFile);
         } catch (IOException e) {
             e.printStackTrace();
             return null;

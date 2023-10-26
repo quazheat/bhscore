@@ -6,7 +6,7 @@ import com.sun.jna.platform.win32.WinReg;
 import java.util.UUID;
 
 public class UuidProvider {
-    public static UUID getUUID() {
+    public UUID getUUID() {
         String rawUuid = null;
         try {
             rawUuid = Advapi32Util.registryGetStringValue(

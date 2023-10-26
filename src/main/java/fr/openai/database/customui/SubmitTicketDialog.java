@@ -3,6 +3,8 @@ package fr.openai.database.customui;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class SubmitTicketDialog {
     private final JFrame parentFrame;
@@ -13,7 +15,7 @@ public class SubmitTicketDialog {
     }
 
     public void showDialog() {
-        Timer timer = new Timer(1000, new ActionListener() {
+        Timer timer = new Timer(500, new ActionListener() {
             int numDots = 2;
 
             @Override
@@ -24,7 +26,7 @@ public class SubmitTicketDialog {
                     canceled = true;
                     ((Timer) e.getSource()).stop(); // Stop the timer when canceled
                 }
-                numDots = (int) (Math.random() * 3) + 2; // Randomly change the number of dots
+                numDots = (int) (ThreadLocalRandom.current().nextDouble() * 3) + 2;
             }
         });
 

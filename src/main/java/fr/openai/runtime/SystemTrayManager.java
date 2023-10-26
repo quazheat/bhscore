@@ -2,7 +2,7 @@ package fr.openai.runtime;
 
 import fr.openai.database.files.TrayIconLoader;
 import fr.openai.database.editor.Editor;
-import fr.openai.filter.Filtering;
+import fr.openai.filter.FilteringModeManager;
 import fr.openai.notify.WindowsNotification;
 import fr.openai.starter.logs.ConsoleLogger;
 
@@ -29,7 +29,6 @@ public class SystemTrayManager {
             modesMenu.add(toggleRageModeItem);
             modesMenu.add(toggleLoyalModeItem);
 
-
             // Добавление пунктов меню к подменю Modes
             modesMenu.add(toggleRageModeItem);
             modesMenu.add(toggleLoyalModeItem);
@@ -50,7 +49,6 @@ public class SystemTrayManager {
                 stopRequested = true;
                 ConsoleLogger.consoleLog();
                 System.exit(0);
-
             });
 
             Image rageIconEnabled = iconLoader.loadRageIcon();
@@ -64,70 +62,15 @@ public class SystemTrayManager {
             }
             showEditor.addActionListener(e -> {
                 if (editor == null) {
-                    editor = new Editor();
+                    editor = new Editor(trayIcon);
                 } else {
                     editor.setVisible(true);
                 }
             });
 
-
-            toggleRageModeItem.addItemListener(e -> {
-                boolean newState = toggleRageModeItem.getState();
-
-                if (rageModeEnabled && !newState) {
-                    WindowsNotification.removeTrayIcon();
-                    trayIcon.setImage(loyalModeDisabled);
-                }
-
-                rageModeEnabled = newState;
-                loyalModeEnabled = false;
-                toggleLoyalModeItem.setState(false);
-                toggleLoyalModeItem.setEnabled(false);
-                if (rageModeEnabled) {
-                    WindowsNotification.initTrayIcon();
-                    trayIcon.setImage(rageIconEnabled);
-                } else {
-                    toggleLoyalModeItem.setEnabled(true);
-                    trayIcon.setImage(loyalModeDisabled);
-                }
-
-                Filtering.toggleRageMode();
-                MessageProcessor.toggleRageMode();
-
-            });
-
-            toggleLoyalModeItem.addItemListener(e -> {
-                boolean newState = toggleLoyalModeItem.getState();
-                boolean rageMode = Filtering.isRage();
-
-                if (loyalModeEnabled && !newState) {
-                    WindowsNotification.removeTrayIcon();
-                    if (rageMode) {
-                        trayIcon.setImage(rageIconEnabled);
-                    } else
-                        trayIcon.setImage(loyalModeDisabled);
-                }
-
-                loyalModeEnabled = newState;
-                if (loyalModeEnabled) {
-                    WindowsNotification.initTrayIcon();
-                    trayIcon.setImage(rageIconDisabled);
-
-                    rageModeEnabled = false;
-                    toggleRageModeItem.setState(false);
-                    toggleRageModeItem.setEnabled(false);
-                    if (rageModeEnabled) {
-                        rageModeEnabled = false;
-                    }
-                } else {
-                    // Вернуть доступность toggleRageModeItem
-                    toggleRageModeItem.setEnabled(true);
-                    trayIcon.setImage(loyalModeDisabled);
-                }
-
-                Filtering.toggleLoyalMode();
-                MessageProcessor.togglLoyalMode();
-            });
+            // Create a TrayIconManager instance and set up icon listeners
+            TrayIconManager iconManager = new TrayIconManager(trayIcon, rageIconEnabled, rageIconDisabled, loyalModeDisabled);
+            iconManager.setupIconListeners(toggleRageModeItem, toggleLoyalModeItem);
         }
         iconLoader.imageAutoSize(true);
     }

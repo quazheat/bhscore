@@ -45,7 +45,7 @@ public class Filters {
             for (String w : words) {
                 if (word.equals(w)) {
                     count++;
-                    if (count >= 5) return true;
+                        if (count >= 5) return true;
                 }
             }
         }

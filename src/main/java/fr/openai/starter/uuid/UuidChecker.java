@@ -6,10 +6,11 @@ import java.io.IOException;
 import java.util.List;
 
 public class UuidChecker {
+    private final UuidProvider uuidProvider = new UuidProvider();
     private final CheckProvider providerIsOk = new CheckProvider();
 
     public boolean isAllowed() {
-        String hwid = HwidManager.getHwid();
+        String hwid = HwidManager.getHwid(uuidProvider);
         return hwid != null && isAllowed(hwid);
     }
 

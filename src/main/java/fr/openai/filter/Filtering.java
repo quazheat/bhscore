@@ -1,36 +1,38 @@
 package fr.openai.filter;
 
 import fr.openai.exec.Messages;
-import fr.openai.filter.fixer.SbFix;
 import fr.openai.exec.ClipboardUtil;
 import fr.openai.notify.NotificationSystem;
 import fr.openai.notify.WindowsNotification;
 
 import static java.awt.TrayIcon.MessageType.ERROR;
 import static java.awt.TrayIcon.MessageType.INFO;
+import fr.openai.filter.fixer.Names; // Import the PlayerNameFormatter class
+
 
 public class Filtering {
     private final NotificationSystem notificationSystem;
     private final Filters filters;
-    private static boolean rageModeEnabled;
-    private static boolean loyalModeEnabled;
 
     public Filtering(NotificationSystem notificationSystem) {
         this.notificationSystem = notificationSystem;
         this.filters = new Filters();
-        rageModeEnabled = false;
     }
 
     public void onFilter(String name, String line) {
-        if ("Unknown".equalsIgnoreCase(name)) {
-            return;
-        }
 
         String message = Messages.getMessage(line);
-        String playerName = NameFix.sbFix(name);
+        String playerName = Names.formatPlayerName(name); //
 
+        if ("Unknown".equalsIgnoreCase(name)) {
+            System.out.println("VIOLATION: unknown name: " + line);
+            return;
+        }
         if (message != null) {
-            message = SbFix.fixMessage(message);
+            if ("Unknown".equalsIgnoreCase(name)) {
+                System.out.println("VIOLATION: unknown name: " + line);
+                return;
+            }
 
             if (filters.hasSwearing(message)) {
                 handleViolation(playerName, message, "Не матерись", message, "2.");
@@ -43,11 +45,11 @@ public class Filtering {
     }
 
     private void handleViolation(String playerName, String message, String loyalAction, String loyalMessage, String rageAction) {
-        if (loyalModeEnabled) {
+        if (FilteringModeManager.isLoyalModeEnabled()) {
             WindowsNotification.showWindowsNotification(getActionName(), loyalMessage, INFO);
             String textToCopy = "/warn " + playerName + " " + loyalAction;
             ClipboardUtil.copyToClipboard(textToCopy);
-        } else if (!rageModeEnabled) {
+        } else if (!FilteringModeManager.isRageModeEnabled()) {
             notificationSystem.showNotification(playerName, loyalMessage);
         } else {
             WindowsNotification.showWindowsNotification(getActionName(), message, ERROR);
@@ -57,18 +59,6 @@ public class Filtering {
     }
 
     private String getActionName() {
-        return loyalModeEnabled ? "LOYAL" : (rageModeEnabled ? "RAGE" : "");
-    }
-
-    public static void toggleRageMode() {
-        rageModeEnabled = !rageModeEnabled;
-    }
-
-    public static boolean isRage() {
-        return rageModeEnabled;
-    }
-
-    public static void toggleLoyalMode() {
-        loyalModeEnabled = !loyalModeEnabled;
+        return FilteringModeManager.isLoyalModeEnabled() ? "LOYAL" : (FilteringModeManager.isRageModeEnabled() ? "RAGE" : "");
     }
 }

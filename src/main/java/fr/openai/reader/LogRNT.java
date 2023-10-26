@@ -40,14 +40,10 @@ public class LogRNT {
     }
 
     private void run() {
-
-
-
         long previousSize = getFileSize();
         long currentTime = System.currentTimeMillis();
 
-        boolean stopRequested = false;
-        while (!stopRequested) {
+        while (true) {
             long currentSize = getFileSize();
             long elapsedTime = System.currentTimeMillis() - currentTime;
             int upFQ = configManager.getUpFQ();

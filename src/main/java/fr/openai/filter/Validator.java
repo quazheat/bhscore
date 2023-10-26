@@ -24,8 +24,13 @@ public class Validator {
                 line.contains("INFO]: [CHAT] Sr.M |") ||
                 line.contains("INFO]: [CHAT] Own |") ||
                 line.contains("INFO]: [CHAT] Owner |") ||
+                line.contains("INFO]: [CHAT] Урон") ||
+                line.contains("INFO]: [CHAT] Ставки") ||
+                line.contains("INFO]: [CHAT]    ") ||
                 line.contains("INFO]: [CHAT] ADM |") ||
                 line.contains(": [CHAT] Предмет") ||
+                line.contains(": [CHAT] Теперь") ||
+                line.contains(": [CHAT] Баланс") ||
                 line.contains(": [CHAT] VK") ||
                 line.contains(": [CHAT] [I]") ||
                 line.contains("размутил игрока");

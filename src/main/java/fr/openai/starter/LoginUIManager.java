@@ -12,7 +12,8 @@ import java.util.UUID;
 public class LoginUIManager {
     public static void loginPopup() {
 
-        UUID systemUUID = UUIDManager.getSystemUUID();
+        UUIDManager uuidManager = new UUIDManager();
+        UUID systemUUID = uuidManager.getSystemUUID();
         String sysIdStr = systemUUID != null ? systemUUID.toString() : "UUID not found";
 
         JTextField uuid = new JTextField(sysIdStr);

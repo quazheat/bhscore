@@ -1,6 +1,7 @@
 package fr.openai.exec;
 
 import fr.openai.filter.Validator;
+import java.util.Scanner;
 
 public class Messages {
     public static String getMessage(String line) {
@@ -15,10 +16,11 @@ public class Messages {
     private static String extract(String line) {
         int chatIndex = line.indexOf(": [CHAT]");
         if (chatIndex == -1) {
+            // The entire line is considered the message if ": [CHAT]" is not found
             return line;
         }
 
-        int start = -1;
+        int start = chatIndex + ": [CHAT]".length(); // Start after the ": [CHAT]"
         int end = line.indexOf("»", chatIndex);
 
         if (end != -1) {
@@ -30,6 +32,22 @@ public class Messages {
             }
         }
 
-        return (start != -1) ? line.substring(start).trim() : line;
+
+        return line.substring(start).trim();
+    }
+
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter a raw string: ");
+        String rawString = scanner.nextLine();
+
+        String message = getMessage(rawString);
+        if (message != null) {
+            System.out.println("Extracted Message: " + message);
+        } else {
+            System.out.println("No valid message found in the input string.");
+        }
     }
 }

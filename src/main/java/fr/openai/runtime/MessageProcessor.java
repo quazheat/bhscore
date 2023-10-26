@@ -1,6 +1,7 @@
 package fr.openai.runtime;
 
 import fr.openai.exec.ClipboardUtil;
+import fr.openai.filter.FilteringModeManager;
 import fr.openai.notify.NotificationSystem;
 import fr.openai.notify.WindowsNotification;
 
@@ -12,10 +13,6 @@ import static java.awt.TrayIcon.MessageType.INFO;
 
 public class MessageProcessor {
     private final NotificationSystem notificationSystem;
-
-
-    static boolean isRage;
-    static boolean isLoyal;
     private List<MessageRecord> messageRecords;
 
     public MessageProcessor(NotificationSystem notificationSystem) {
@@ -25,14 +22,13 @@ public class MessageProcessor {
 
     public void processMessage(String playerName, String message) {
         long currentTime = System.currentTimeMillis() / 1000;
-
         // Удаляем записи старше 60 секунд
-        messageRecords.removeIf(record -> currentTime - record.getTimestamp() >= 60);
+        messageRecords.removeIf(record -> currentTime - record.timestamp() >= 60);
 
         // Проверяем наличие одинаковых сообщений от игрока в течение минуты
         int duplicateCount = 0;
         for (MessageRecord record : messageRecords) {
-            if (record.getPlayerName().equals(playerName) && record.getMessage().equals(message)) {
+            if (record.playerName().equals(playerName) && record.message().equals(message)) {
                 duplicateCount++;
             }
         }
@@ -42,49 +38,21 @@ public class MessageProcessor {
         messageRecords.add(newRecord);
 
         if (duplicateCount >= 2) {
-            if (isLoyal){
+            if ("Unknown".equalsIgnoreCase(playerName)) {
+                System.out.println("VIOLATION: unknown name: " + message);
+                return;
+            }
+            if (FilteringModeManager.isLoyalModeEnabled()) {
                 WindowsNotification.showWindowsNotification("LOYAL", "2.10", INFO);
                 String textToCopyF = "/warn " + playerName + " Не флуди";
                 ClipboardUtil.copyToClipboard(textToCopyF);
-            } else if (!isRage) {
+            } else if (!FilteringModeManager.isRageModeEnabled()) {
                 notificationSystem.showNotification(playerName, message);
             } else {
                 WindowsNotification.showWindowsNotification("RAGE", "2.10", ERROR);
-
                 String textToCopy = "/mute " + playerName + " 2.10+";
                 ClipboardUtil.copyToClipboard(textToCopy);
             }
         }
-    }
-
-    public static class MessageRecord {
-        private String playerName;
-        private long timestamp;
-        private String message;
-
-        public MessageRecord(String playerName, long timestamp, String message) {
-            this.playerName = playerName;
-            this.timestamp = timestamp;
-            this.message = message;
-        }
-
-        public String getPlayerName() {
-            return playerName;
-        }
-
-        public long getTimestamp() {
-            return timestamp;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-    }
-
-    public static void toggleRageMode () {
-        isRage = !isRage;
-    }
-    public static void togglLoyalMode () {
-        isLoyal = !isLoyal;
     }
 }
