@@ -24,7 +24,7 @@ public class LogRNT {
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 
-    public LogRNT(NotificationSystem notificationSystem) throws InterruptedException {
+    public LogRNT(NotificationSystem notificationSystem) {
         this.notificationSystem = notificationSystem;
         this.configManager = new ConfigManager();
         this.executor = new Executor(notificationSystem); // Передайте liveChat в Executor
@@ -50,7 +50,7 @@ public class LogRNT {
 
             if (currentSize > previousSize && elapsedTime >= upFQ) {
                 String logRntPath = configManager.getLogRntPath();
-                readNewLines(previousSize, currentSize, logRntPath);
+                readNewLines(previousSize, logRntPath);
                 previousSize = currentSize;
                 currentTime = System.currentTimeMillis();
             }
@@ -74,7 +74,7 @@ public class LogRNT {
         }
     }
 
-    private void readNewLines(long start, long end, String logRntPath) {
+    private void readNewLines(long start, String logRntPath) {
         JsonArray jsonArray = new JsonArray();
 
         try (RandomAccessFile raf = new RandomAccessFile(logRntPath, "r")) {
@@ -102,7 +102,7 @@ public class LogRNT {
                 }  // Действия по обработке не-JSON строки
 
             } catch (JsonParseException e) {
-                // Обработка ошибок разбора JSON
+                // Обработка ошибок
             }
         }
     }

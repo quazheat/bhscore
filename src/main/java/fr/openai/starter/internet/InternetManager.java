@@ -1,6 +1,5 @@
 package fr.openai.starter.internet;
 
-import fr.openai.database.customui.VersionGUI;
 import fr.openai.starter.LoginManager;
 
 public class InternetManager {

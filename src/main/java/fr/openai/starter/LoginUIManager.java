@@ -5,8 +5,6 @@ import fr.openai.starter.uuid.UUIDManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.UUID;
 
 public class LoginUIManager {
@@ -45,17 +43,14 @@ public class LoginUIManager {
         Object[] message = {panel};
 
         JButton okButton = new JButton("OK");
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ClipboardUtil.copyToClipboard(sysIdStr);
-                System.exit(1);
-            }
+        okButton.addActionListener(e -> {
+            ClipboardUtil.copyToClipboard(sysIdStr);
+            System.exit(1);
         });
 
         Object[] options = {okButton};
 
-        int result = JOptionPane.showOptionDialog(null, message, "Login Failed",
+        JOptionPane.showOptionDialog(null, message, "Login Failed",
                 JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
     }
 }

@@ -14,10 +14,9 @@ public class Editor {
 
     private final JFrame frame;
     private final JLabel outputLabel;
-    private TrayIcon trayIcon; // Add this member variable
 
     public Editor(TrayIcon trayIcon) { // Pass the trayIcon to the constructor
-        this.trayIcon = trayIcon;
+        // Add this member variable
 
         frame = new JFrame("Word Editor");
         frame.setIconImage(trayIcon.getImage()); // Use the trayIcon's image

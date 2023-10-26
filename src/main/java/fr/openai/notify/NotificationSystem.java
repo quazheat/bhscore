@@ -4,14 +4,11 @@ import fr.openai.database.customui.CustomClose;
 import fr.openai.database.customui.CustomDialog;
 import fr.openai.database.customui.CustomField;
 import fr.openai.filter.NameFix;
-import fr.openai.filter.fixer.Names;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
@@ -59,13 +56,10 @@ public class NotificationSystem {
         CustomField violationField = new CustomField(notification.violation());
         CustomClose closeButton = new CustomClose("x", notificationDialog, this, heightManager);
 
-        closeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                notificationDialog.dispose();
-                // Remove the notification from the list of active notifications
-                activeNotifications.remove(notificationDialog);
-            }
+        closeButton.addActionListener(e -> {
+            notificationDialog.dispose();
+            // Remove the notification from the list of active notifications
+            activeNotifications.remove(notificationDialog);
         });
 
         JButton muteButton = new JButton("Mute");
@@ -78,30 +72,24 @@ public class NotificationSystem {
         warnButton.setForeground(Color.WHITE);
         warnButton.setFocusPainted(false);
 
-        muteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String playerName = NameFix.sbFix(playerNameLabel.getText());
-                String command = "/mute " + playerName + "  ";
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(new StringSelection(command), null);
-                heightManager.updateCurrentY(-20);
-                activeNotifications.remove(notificationDialog);
-                notificationDialog.dispose();
-            }
+        muteButton.addActionListener(e -> {
+            String playerName = NameFix.sbFix(playerNameLabel.getText());
+            String command = "/mute " + playerName + "  ";
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(new StringSelection(command), null);
+            heightManager.updateCurrentY(-20);
+            activeNotifications.remove(notificationDialog);
+            notificationDialog.dispose();
         });
 
-        warnButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String playerName = NameFix.sbFix(playerNameLabel.getText());
-                String command = "/warn " + playerName + "  ";
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(new StringSelection(command), null);
-                heightManager.updateCurrentY(-20);
-                activeNotifications.remove(notificationDialog);
-                notificationDialog.dispose();
-            }
+        warnButton.addActionListener(e -> {
+            String playerName = NameFix.sbFix(playerNameLabel.getText());
+            String command = "/warn " + playerName + "  ";
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(new StringSelection(command), null);
+            heightManager.updateCurrentY(-20);
+            activeNotifications.remove(notificationDialog);
+            notificationDialog.dispose();
         });
 
         JPanel buttonPanel = new JPanel(new BorderLayout());

@@ -3,6 +3,7 @@ package fr.openai.starter.uuid;
 import fr.openai.starter.logs.UuidLog;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 public class UuidChecker {
@@ -30,6 +31,8 @@ public class UuidChecker {
         } catch (IOException e) {
             e.printStackTrace();
             return false;
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
         }
     }
 }

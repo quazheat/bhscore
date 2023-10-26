@@ -5,6 +5,9 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,12 +41,23 @@ public class TrayIconLoader {
 
     private Image loadImageFromURL(String url, String iconName) {
         try {
-            URL iconURL = new URL(url);
-            InputStream iconIn = iconURL.openStream();
-            Path iconPath = Path.of(iconName);
-            Files.copy(iconIn, iconPath, StandardCopyOption.REPLACE_EXISTING);
-            return Toolkit.getDefaultToolkit().getImage(iconPath.toString());
-        } catch (IOException e) {
+            URI iconURI = new URI(url);
+            URL iconURL = iconURI.toURL();
+
+            HttpURLConnection connection = (HttpURLConnection) iconURL.openConnection();
+
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                try (InputStream iconIn = connection.getInputStream()) {
+                    Path iconPath = Path.of(iconName);
+                    Files.copy(iconIn, iconPath, StandardCopyOption.REPLACE_EXISTING);
+                    return Toolkit.getDefaultToolkit().getImage(iconPath.toString());
+                }
+            } else {
+                System.err.println("Failed to fetch image: HTTP error code " + responseCode);
+                return null;
+            }
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
             return null;
         }

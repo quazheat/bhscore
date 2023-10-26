@@ -23,15 +23,6 @@ public class Names {
         return playerName;
     }
 
-    public String fixMessage(String message) {
-        if (message.contains("[CHAT] ")) {
-            int colonIndex = message.indexOf(':');
-            if (colonIndex != -1) {
-                return message.substring(colonIndex + 1).trim();
-            }
-        }
-        return message;
-    }
 
     public String getFinalName(String line) {
         if (line.contains("»")) {

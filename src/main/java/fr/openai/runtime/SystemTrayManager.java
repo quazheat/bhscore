@@ -2,17 +2,12 @@ package fr.openai.runtime;
 
 import fr.openai.database.files.TrayIconLoader;
 import fr.openai.database.editor.Editor;
-import fr.openai.filter.FilteringModeManager;
-import fr.openai.notify.WindowsNotification;
 import fr.openai.starter.logs.ConsoleLogger;
 
 import java.awt.*;
 
 public class SystemTrayManager {
-    private volatile boolean stopRequested = false;
     private Editor editor;
-    private boolean rageModeEnabled = false;
-    private boolean loyalModeEnabled = false;
 
     public void setupSystemTray() {
         TrayIconLoader iconLoader = new TrayIconLoader();
@@ -46,7 +41,6 @@ public class SystemTrayManager {
             SystemTray tray = SystemTray.getSystemTray();
 
             exitItem.addActionListener(e -> {
-                stopRequested = true;
                 ConsoleLogger.consoleLog();
                 System.exit(0);
             });

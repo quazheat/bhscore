@@ -36,26 +36,26 @@ public class ConfigManager {
         }
     }
 
-    private String getPropertyOrDefault(String key, String defaultValue) {
-        String value = properties.getProperty(key);
-        return (value != null) ? value : defaultValue;
+    private String getPropertyOrDefault() {
+        String value = properties.getProperty(ConfigManager.LOG_RNT_PATH_KEY);
+        return (value != null) ? value : ConfigManager.DEFAULT_LOG_RNT_PATH;
     }
 
-    private int getIntPropertyOrDefault(String key, int defaultValue) {
-        String value = properties.getProperty(key);
+    private int getIntPropertyOrDefault() {
+        String value = properties.getProperty(ConfigManager.UPFQ_KEY);
         try {
-            return (value != null) ? Integer.parseInt(value) : defaultValue;
+            return (value != null) ? Integer.parseInt(value) : ConfigManager.DEFAULT_UPFQ;
         } catch (NumberFormatException e) {
-            return defaultValue;
+            return ConfigManager.DEFAULT_UPFQ;
         }
     }
 
     public String getLogRntPath() {
-        return getPropertyOrDefault(LOG_RNT_PATH_KEY, DEFAULT_LOG_RNT_PATH);
+        return getPropertyOrDefault();
     }
 
     public int getUpFQ() {
-        return getIntPropertyOrDefault(UPFQ_KEY, DEFAULT_UPFQ);
+        return getIntPropertyOrDefault();
     }
 
     public void setLogRntPath(String path) {

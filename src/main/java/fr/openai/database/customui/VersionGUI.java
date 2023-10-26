@@ -44,22 +44,14 @@ public class VersionGUI extends JDialog {
 
         JButton okButton = new JButton("Скачать");
         CustomButtonUI.setCustomStyle(okButton);
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openBrowserToUpdate();
-                dispose();
-            }
+        okButton.addActionListener(e -> {
+            openBrowserToUpdate();
+            dispose();
         });
 
         JButton laterButton = new JButton("Позже");
         CustomButtonUI.setCustomStyle(laterButton);
-        laterButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+        laterButton.addActionListener(e -> dispose());
 
 
         Dimension buttonSize = new Dimension(100, 40); // Размер кнопок

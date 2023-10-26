@@ -13,7 +13,7 @@ import static java.awt.TrayIcon.MessageType.INFO;
 
 public class MessageProcessor {
     private final NotificationSystem notificationSystem;
-    private List<MessageRecord> messageRecords;
+    private final List<MessageRecord> messageRecords;
 
     public MessageProcessor(NotificationSystem notificationSystem) {
         this.messageRecords = new ArrayList<>();
