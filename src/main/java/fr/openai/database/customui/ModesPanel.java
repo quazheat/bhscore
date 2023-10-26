@@ -1,54 +1,39 @@
 package fr.openai.database.customui;
 
-import fr.openai.database.files.TrayIconLoader;
-import fr.openai.filter.FilteringModeManager;
+import fr.openai.database.ConfigManager;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class ModesPanel extends JPanel {
-    TrayIconLoader iconLoader = new TrayIconLoader();
-    private final TrayIcon trayIcon;
 
-    public ModesPanel(TrayIcon trayIcon) {
-        this.trayIcon = trayIcon;
-
+    public ModesPanel() {
         setLayout(new BorderLayout());
 
-        JRadioButton rageRadioButton = new JRadioButton("Rage Mode");
-        JRadioButton loyalRadioButton = new JRadioButton("Loyal Mode");
+        // Create an instance of ConfigManager
+        ConfigManager configManager = new ConfigManager();
 
-        // Create a button group to ensure only one can be selected
-        ButtonGroup radioButtonGroup = new ButtonGroup();
-        radioButtonGroup.add(rageRadioButton);
-        radioButtonGroup.add(loyalRadioButton);
+        JSlider upFQSlider = new JSlider(JSlider.HORIZONTAL, 10, 500, configManager.getUpFQ());
+        upFQSlider.setMajorTickSpacing(500);
+        upFQSlider.setMinorTickSpacing(10);
+        upFQSlider.setPaintTicks(true);
+        upFQSlider.setPaintLabels(true);
 
-        rageRadioButton.addActionListener(e -> {
-            FilteringModeManager.setRageModeEnabled(true);
-            FilteringModeManager.setLoyalModeEnabled(false);
-            updateTrayIcon();
+        // Create a label to display the current upFQ value
+        JLabel upFQLabel = new JLabel("upFQ: " + configManager.getUpFQ());
+
+        upFQSlider.addChangeListener(e -> {
+            int value = upFQSlider.getValue();
+            configManager.setUpFQ(value); // Use the instance to call non-static method
+            upFQLabel.setText("upFQ: " + value); // Update the label with the new value
         });
 
-        loyalRadioButton.addActionListener(e -> {
-            FilteringModeManager.setLoyalModeEnabled(true);
-            FilteringModeManager.setRageModeEnabled(false);
-            updateTrayIcon();
-        });
+        JPanel sliderPanel = new JPanel(new BorderLayout());
+        sliderPanel.add(upFQSlider, BorderLayout.NORTH);
+        sliderPanel.add(upFQLabel, BorderLayout.SOUTH);
 
         JPanel radioButtonPanel = new JPanel(new GridLayout(2, 1));
-        radioButtonPanel.add(rageRadioButton);
-        radioButtonPanel.add(loyalRadioButton);
         add(radioButtonPanel, BorderLayout.NORTH);
-    }
-
-    private void updateTrayIcon() {
-        if (FilteringModeManager.isRageModeEnabled()) {
-            trayIcon.setImage(iconLoader.loadRageIcon());
-        } else if (FilteringModeManager.isLoyalModeEnabled()) {
-            trayIcon.setImage(iconLoader.loadRageIconDisabled());
-        } else {
-            // Load the default icon
-            trayIcon.setImage(iconLoader.loadIcon());
-        }
+        add(sliderPanel, BorderLayout.CENTER);
     }
 }

@@ -7,8 +7,6 @@ import fr.openai.database.customui.WhitelistPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 public class Editor {
 
@@ -33,9 +31,9 @@ public class Editor {
         RemoveWhitelistWord removeWhitelistWord = new RemoveWhitelistWord(this);
         WhitelistPanel whitelistPanel = new WhitelistPanel(addNewWhitelistWord, removeWhitelistWord);
         ReportsPanel reportsPanel = new ReportsPanel(frame);
-        // ModesPanel modesPanel = new ModesPanel(trayIcon);
+        ModesPanel modesPanel = new ModesPanel();
 
-        //tabbedPane.addTab("Режимы", modesPanel); // Add the "Режимы" tab
+        tabbedPane.addTab("Режимы", modesPanel); // Add the "Режимы" tab
         tabbedPane.addTab("Ругательства", forbiddenWordsPanel);
         tabbedPane.addTab("Белый список", whitelistPanel);
         tabbedPane.addTab("Отчеты", reportsPanel);
@@ -45,13 +43,6 @@ public class Editor {
         outputLabel.setHorizontalAlignment(JLabel.CENTER);
         outputLabel.setForeground(Color.BLACK);
         frame.add(outputLabel, BorderLayout.SOUTH);
-
-        frame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                trayIcon.setImage(null); // Remove the tray icon when the editor is closed
-            }
-        });
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (screenSize.width - frame.getWidth()) / 2;
