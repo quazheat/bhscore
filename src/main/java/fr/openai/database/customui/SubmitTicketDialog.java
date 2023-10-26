@@ -4,20 +4,16 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class SubmitTicketDialog {
     private final JFrame parentFrame;
     private boolean canceled = false;
-
     public SubmitTicketDialog(JFrame parentFrame) {
         this.parentFrame = parentFrame;
     }
-
     public void showDialog() {
         Timer timer = new Timer(500, new ActionListener() {
             int numDots = 2;
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 int option = JOptionPane.showOptionDialog(parentFrame, "Пытаемся отправить тикет" + ".".repeat(Math.max(0, numDots)),
@@ -32,7 +28,6 @@ public class SubmitTicketDialog {
 
         timer.start();
     }
-
     public boolean isCanceled() {
         return canceled;
     }

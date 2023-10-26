@@ -14,52 +14,43 @@ import fr.openai.database.ConfigManager;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class LogRNT {
-
     private final ConfigManager configManager;
     private final Executor executor;
     private final Names names;
-    private final NotificationSystem notificationSystem;
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
+    private long previousSize;
 
     public LogRNT(NotificationSystem notificationSystem) {
-        this.notificationSystem = notificationSystem;
         this.configManager = new ConfigManager();
-        this.executor = new Executor(notificationSystem); // Передайте liveChat в Executor
+        this.executor = new Executor(notificationSystem);
         this.names = new Names();
     }
 
-    public void starter() throws InterruptedException {
-        LogRNT logReader = new LogRNT(notificationSystem);
+    public void starter() {
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
         SystemTrayManager trayManager = new SystemTrayManager();
-        trayManager.setupSystemTray(); // Настройка системного трея
-        logReader.run();
+        trayManager.setupSystemTray();
+        Runnable task = this::checkLogChanges;
+        int initialDelay = 0; // Start immediately
+        int period = configManager.getUpFQ(); // Set the period to the desired frequency
+        previousSize = getFileSize();
+
+        executorService.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.MILLISECONDS);
     }
 
-    private void run() {
-        long previousSize = getFileSize();
-        long currentTime = System.currentTimeMillis();
+    private void checkLogChanges() {
+        String logRntPath = configManager.getLogRntPath();
+        long currentSize = getFileSize();
 
-        while (true) {
-            long currentSize = getFileSize();
-            long elapsedTime = System.currentTimeMillis() - currentTime;
-            int upFQ = configManager.getUpFQ();
-
-            if (currentSize > previousSize && elapsedTime >= upFQ) {
-                String logRntPath = configManager.getLogRntPath();
-                readNewLines(previousSize, logRntPath);
-                previousSize = currentSize;
-                currentTime = System.currentTimeMillis();
-            }
-
-            try {
-                Thread.sleep(upFQ);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        if (currentSize > previousSize) {
+            readNewLines(previousSize, logRntPath);
+            previousSize = currentSize;
         }
     }
 
@@ -99,10 +90,9 @@ public class LogRNT {
 
                 if (parsedObject instanceof JsonObject) {
                     jsonArray.add((JsonObject) parsedObject);
-                }  // Действия по обработке не-JSON строки
-
+                }
             } catch (JsonParseException e) {
-                // Обработка ошибок
+                // Handle errors
             }
         }
     }

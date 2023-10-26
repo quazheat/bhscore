@@ -38,7 +38,6 @@ public class Executor {
         });
     }
 
-
     public void executedLog(String line) {
         System.out.println(line);
     }

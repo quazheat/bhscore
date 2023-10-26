@@ -1,7 +1,7 @@
 package fr.openai.database.editor;
 
-import fr.openai.database.customui.ForbiddenWordsPanel;
 import fr.openai.database.customui.ModesPanel;
+import fr.openai.database.customui.ForbiddenWordsPanel;
 import fr.openai.database.customui.ReportsPanel;
 import fr.openai.database.customui.WhitelistPanel;
 
@@ -33,8 +33,7 @@ public class Editor {
         RemoveWhitelistWord removeWhitelistWord = new RemoveWhitelistWord(this);
         WhitelistPanel whitelistPanel = new WhitelistPanel(addNewWhitelistWord, removeWhitelistWord);
         ReportsPanel reportsPanel = new ReportsPanel(frame);
-
-        ModesPanel modesPanel = new ModesPanel(trayIcon); // Pass the trayIcon
+        // ModesPanel modesPanel = new ModesPanel(trayIcon);
 
         //tabbedPane.addTab("Режимы", modesPanel); // Add the "Режимы" tab
         tabbedPane.addTab("Ругательства", forbiddenWordsPanel);
@@ -42,7 +41,6 @@ public class Editor {
         tabbedPane.addTab("Отчеты", reportsPanel);
 
         frame.getContentPane().add(tabbedPane);
-
         outputLabel = new JLabel();
         outputLabel.setHorizontalAlignment(JLabel.CENTER);
         outputLabel.setForeground(Color.BLACK);
@@ -70,4 +68,5 @@ public class Editor {
     public void setOutputText(String message) {
         outputLabel.setText(message);
     }
+
 }
