@@ -1,38 +1,19 @@
 package fr.openai.filter;
 
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 public class Validator {
-    public static boolean notValid(String line) {
-        return line.contains("по причине:") ||
-                line.contains("разбанил игрока") ||
-                line.contains("кикнул игрока") ||
-                line.contains(". Причина: ") ||
-                line.contains("получил награду с лутбокса") ||
-                line.contains("\\n") ||
-                line.contains("[CHAT] (FAWE)") ||
-                line.contains("проводит ивент:") ||
-                line.contains(": [CHAT] [SC]") ||
-                line.contains("㰳") || /*Это анмут!!!*/
-                line.contains("㨏") ||
-                line.contains("㰳 ") || /*Это чужой;мут*/
-                line.contains("㐎") || /*Это ;жалоба*/
-                line.contains("㥐") || /*Это выдача варна*/
-                line.contains(": [CHAT] Очистка ┃ ") ||
-                line.contains(": [CHAT] [Уборщик] ") ||
-                line.contains(": [CHAT] i ") ||
-                line.contains("INFO]: [CHAT] H |") ||
-                line.contains("INFO]: [CHAT] M |") ||
-                line.contains("INFO]: [CHAT] Sr.M |") ||
-                line.contains("INFO]: [CHAT] Own |") ||
-                line.contains("INFO]: [CHAT] Owner |") ||
-                line.contains("INFO]: [CHAT] Урон") ||
-                line.contains("INFO]: [CHAT] Ставки") ||
-                line.contains("INFO]: [CHAT]    ") ||
-                line.contains("INFO]: [CHAT] ADM |") ||
-                line.contains(": [CHAT] Предмет") ||
-                line.contains(": [CHAT] Теперь") ||
-                line.contains(": [CHAT] Баланс") ||
-                line.contains(": [CHAT] VK") ||
-                line.contains(": [CHAT] [I]") ||
-                line.contains("размутил игрока");
+    public static boolean isNotValid(String line) {
+        String regex = " по причине:|разбанил игрока|кикнул игрока|\\. Причина:|получил награду с лутбокса" +
+                "|\\n|\\[CHAT] \\(FAWE\\)|проводит ивент:|: \\[CHAT] \\[SC]|㰳|㨏|㰳 |㐎|㥐|: \\[CHAT] Очистка ┃" +
+                "|: \\[CHAT] \\[Уборщик]|: \\[CHAT] i|INFO]: \\[CHAT] (H|M|Sr\\.M|Own|Owner|Урон|Ставки|ADM) " +
+                "|: \\[CHAT] Предмет|: \\[CHAT] Теперь|: \\[CHAT] Баланс|: \\[CHAT] VK|: \\[CHAT] \\[I]" +
+                "|размутил игрока|\\[CHAT] \\n|\\[CHAT] Всё|\\[CHAT] -----------|" +
+                "[CHAT] \uE310 ЗБТ|ЗБТ чатов! Доступ только для персонала!";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(line);
+
+        return matcher.find();
     }
 }

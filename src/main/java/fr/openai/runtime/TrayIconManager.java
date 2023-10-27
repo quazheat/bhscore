@@ -27,11 +27,13 @@ public class TrayIconManager {
                 WindowsNotification.initTrayIcon();
                 trayIcon.setImage(rageIconEnabled);
                 toggleLoyalModeItem.setEnabled(false);
-            } else {
-                WindowsNotification.removeTrayIcon();
-                trayIcon.setImage(loyalModeDisabled);
-                toggleLoyalModeItem.setEnabled(true);
+
+                return;
             }
+            WindowsNotification.removeTrayIcon();
+            trayIcon.setImage(loyalModeDisabled);
+            toggleLoyalModeItem.setEnabled(true);
+
         });
 
         toggleLoyalModeItem.addItemListener(e -> {
@@ -42,15 +44,17 @@ public class TrayIconManager {
                 WindowsNotification.initTrayIcon();
                 trayIcon.setImage(rageIconDisabled);
                 toggleRageModeItem.setEnabled(false);
-            } else {
-                WindowsNotification.removeTrayIcon();
-                if (FilteringModeManager.isRageModeEnabled()) {
-                    trayIcon.setImage(rageIconEnabled);
-                } else {
-                    trayIcon.setImage(loyalModeDisabled);
-                    toggleRageModeItem.setEnabled(true);
-                }
+
+                return;
             }
+            WindowsNotification.removeTrayIcon();
+            if (FilteringModeManager.isRageModeEnabled()) {
+                trayIcon.setImage(rageIconEnabled);
+
+                return;
+            }
+            trayIcon.setImage(loyalModeDisabled);
+            toggleRageModeItem.setEnabled(true);
         });
     }
 }

@@ -29,9 +29,11 @@ public class NotificationHeightManager {
         if (index >= 0 && index < MAX_NOTIFICATIONS) {
             if (index >= notificationHeights.size()) {
                 notificationHeights.add(height);
-            } else {
-                notificationHeights.set(index, height);
+
+                return;
             }
+
+            notificationHeights.set(index, height);
         }
     }
 

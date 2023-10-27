@@ -13,9 +13,10 @@ import java.util.*;
 import java.util.List;
 
 public class NotificationSystem {
+    NameFix nameFixer = new NameFix();
 
     private final Queue<Notification> notifications = new ArrayDeque<>();
-    private final List<CustomDialog> activeNotifications = new ArrayList<>(); // Create a list to track active notifications
+    private final List<CustomDialog> activeNotifications = new ArrayList<>();
 
     private static final int MAX_NOTIFICATIONS = 5;
     private final NotificationHeightManager heightManager = new NotificationHeightManager();
@@ -25,9 +26,9 @@ public class NotificationSystem {
         notifications.offer(notification);
 
         if (notifications.size() > MAX_NOTIFICATIONS) {
-            notifications.clear(); // Clear all notifications when the limit is reached
-            heightManager.setCurrentY(50); // Reset the height to the base (50)
-            closeAllNotifications(); // Close all active notifications
+            notifications.clear();
+            heightManager.setCurrentY(50);
+            closeAllNotifications();
             System.out.println("closeAllNotifications");
         }
 
@@ -58,7 +59,6 @@ public class NotificationSystem {
 
         closeButton.addActionListener(e -> {
             notificationDialog.dispose();
-            // Remove the notification from the list of active notifications
             activeNotifications.remove(notificationDialog);
         });
 
@@ -73,7 +73,7 @@ public class NotificationSystem {
         warnButton.setFocusPainted(false);
 
         muteButton.addActionListener(e -> {
-            String playerName = NameFix.sbFix(playerNameLabel.getText());
+            String playerName = nameFixer.cscFix(playerNameLabel.getText());
             String command = "/mute " + playerName + "  ";
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(new StringSelection(command), null);
@@ -83,7 +83,7 @@ public class NotificationSystem {
         });
 
         warnButton.addActionListener(e -> {
-            String playerName = NameFix.sbFix(playerNameLabel.getText());
+            String playerName = nameFixer.cscFix(playerNameLabel.getText());
             String command = "/warn " + playerName + "  ";
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(new StringSelection(command), null);
@@ -91,6 +91,7 @@ public class NotificationSystem {
             activeNotifications.remove(notificationDialog);
             notificationDialog.dispose();
         });
+
 
         JPanel buttonPanel = new JPanel(new BorderLayout());
         muteButton.setPreferredSize(new Dimension((int) (0.43 * notificationDialog.getWidth()), 18));
@@ -106,10 +107,8 @@ public class NotificationSystem {
         notificationDialog.add(notificationPanel);
         notificationDialog.setVisible(true);
 
-        // Add the displayed notification to the list of active notifications
         activeNotifications.add(notificationDialog);
 
-        // Check if the number of active notifications exceeds the maximum, close the first one
         if (activeNotifications.size() > MAX_NOTIFICATIONS) {
             CustomDialog firstNotification = activeNotifications.get(0);
             firstNotification.dispose();
@@ -119,7 +118,6 @@ public class NotificationSystem {
         heightManager.updateCurrentY(20);
     }
 
-    // Method to close all active notifications
     private void closeAllNotifications() {
         for (CustomDialog notificationDialog : activeNotifications) {
             notificationDialog.dispose();

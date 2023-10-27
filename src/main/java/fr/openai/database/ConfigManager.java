@@ -2,6 +2,7 @@ package fr.openai.database;
 
 import java.io.*;
 import java.util.Properties;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ConfigManager {
     private static final String CONFIG_FILE_PATH = "config.properties";
@@ -12,6 +13,8 @@ public class ConfigManager {
     private static final int DEFAULT_UPFQ = 100;
 
     private final Properties properties;
+    private int upFQ; // Track upFQ value
+    private final CopyOnWriteArrayList<UpFQChangeListener> upFQChangeListeners = new CopyOnWriteArrayList<>(); // Listeners
 
     public ConfigManager() {
         this.properties = new Properties();
@@ -21,9 +24,11 @@ public class ConfigManager {
     private void loadConfig() {
         try (InputStream input = new FileInputStream(CONFIG_FILE_PATH)) {
             properties.load(input);
+            upFQ = getIntPropertyOrDefault(); // Initialize upFQ
         } catch (IOException e) {
             properties.setProperty(LOG_RNT_PATH_KEY, DEFAULT_LOG_RNT_PATH);
             properties.setProperty(UPFQ_KEY, String.valueOf(DEFAULT_UPFQ));
+            upFQ = DEFAULT_UPFQ; // Set default upFQ
             saveConfig();
         }
     }
@@ -37,16 +42,16 @@ public class ConfigManager {
     }
 
     private String getPropertyOrDefault() {
-        String value = properties.getProperty(ConfigManager.LOG_RNT_PATH_KEY);
-        return (value != null) ? value : ConfigManager.DEFAULT_LOG_RNT_PATH;
+        String value = properties.getProperty(LOG_RNT_PATH_KEY);
+        return (value != null) ? value : DEFAULT_LOG_RNT_PATH;
     }
 
     private int getIntPropertyOrDefault() {
-        String value = properties.getProperty(ConfigManager.UPFQ_KEY);
+        String value = properties.getProperty(UPFQ_KEY);
         try {
-            return (value != null) ? Integer.parseInt(value) : ConfigManager.DEFAULT_UPFQ;
+            return (value != null) ? Integer.parseInt(value) : DEFAULT_UPFQ;
         } catch (NumberFormatException e) {
-            return ConfigManager.DEFAULT_UPFQ;
+            return DEFAULT_UPFQ;
         }
     }
 
@@ -55,16 +60,25 @@ public class ConfigManager {
     }
 
     public int getUpFQ() {
-        return getIntPropertyOrDefault();
-    }
-
-    public void setLogRntPath(String path) {
-        properties.setProperty(LOG_RNT_PATH_KEY, path);
-        saveConfig();
+        return upFQ;
     }
 
     public void setUpFQ(int upFQ) {
+        this.upFQ = upFQ; // Update upFQ
         properties.setProperty(UPFQ_KEY, String.valueOf(upFQ));
         saveConfig();
+
+        for (UpFQChangeListener listener : upFQChangeListeners) {
+            listener.upFQChanged(upFQ); // Notify listeners that upFQ has changed
+        }
+    }
+
+    public interface UpFQChangeListener { // Define an interface for listeners
+        void upFQChanged(int newUpFQ);
+    }
+
+    // method to register listeners
+    public void addUpFQChangeListener(UpFQChangeListener listener) {
+        upFQChangeListeners.add(listener);
     }
 }

@@ -16,7 +16,7 @@ public class Editor {
     public Editor(TrayIcon trayIcon) { // Pass the trayIcon to the constructor
         // Add this member variable
 
-        frame = new JFrame("Word Editor");
+        frame = new JFrame("BHScore");
         frame.setIconImage(trayIcon.getImage()); // Use the trayIcon's image
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -33,7 +33,7 @@ public class Editor {
         ReportsPanel reportsPanel = new ReportsPanel(frame);
         ModesPanel modesPanel = new ModesPanel();
 
-        tabbedPane.addTab("Режимы", modesPanel); // Add the "Режимы" tab
+        tabbedPane.addTab("Скорость", modesPanel); // Add the "Режимы" tab
         tabbedPane.addTab("Ругательства", forbiddenWordsPanel);
         tabbedPane.addTab("Белый список", whitelistPanel);
         tabbedPane.addTab("Отчеты", reportsPanel);
@@ -43,6 +43,12 @@ public class Editor {
         outputLabel.setHorizontalAlignment(JLabel.CENTER);
         outputLabel.setForeground(Color.BLACK);
         frame.add(outputLabel, BorderLayout.SOUTH);
+        tabbedPane.addChangeListener(e -> {
+            int selectedIndex = tabbedPane.getSelectedIndex();
+            if (selectedIndex == 0 || selectedIndex == 3) {
+                clearOutputText();
+            }
+        });
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (screenSize.width - frame.getWidth()) / 2;
@@ -50,6 +56,7 @@ public class Editor {
         frame.setLocation(x, y);
 
         frame.setVisible(true);
+
     }
 
     public void setVisible(boolean visible) {
@@ -58,6 +65,10 @@ public class Editor {
 
     public void setOutputText(String message) {
         outputLabel.setText(message);
+    }
+
+    public void clearOutputText() {
+        outputLabel.setText("");
     }
 
 }

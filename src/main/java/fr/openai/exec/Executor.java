@@ -1,5 +1,6 @@
 package fr.openai.exec;
 
+import fr.openai.database.files.ConnectDb;
 import fr.openai.filter.fixer.Names;
 import fr.openai.filter.Filtering;
 import fr.openai.runtime.MessageProcessor;
@@ -23,7 +24,7 @@ public class Executor {
     }
 
     public void execute(String line, Names names) {
-        if (Validator.notValid(line)) {
+        if (Validator.isNotValid(line)) {
             return;
         }
 

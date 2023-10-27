@@ -1,18 +1,15 @@
 package fr.openai.filter;
 
 public class NameFix {
-    public static String sbFix(String playerName) {
+    public String cscFix(String playerName) {
         String[] words = playerName.split(" ");
+
         if (words.length >= 2) {
-            if (words.length >= 3) {
-                words[1] = words[2]; // Заменяем второе слово на третье
-            } else {
-                words[1] = ""; // Устанавливаем второе слово как пустую строку
-            }
-            playerName = String.join(" ", words).trim(); // Объединяем слова в одну строку
+            words[1] = (words.length >= 3) ? words[2] : ""; // Replacing the second word with the third or setting it to an empty string
+            playerName = String.join(" ", words).trim(); // Concatenating the words into a single string
         }
+
         return playerName;
     }
 
 }
-

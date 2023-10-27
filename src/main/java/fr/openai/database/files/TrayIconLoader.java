@@ -45,18 +45,21 @@ public class TrayIconLoader {
             URL iconURL = iconURI.toURL();
 
             HttpURLConnection connection = (HttpURLConnection) iconURL.openConnection();
-
             int responseCode = connection.getResponseCode();
+
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 try (InputStream iconIn = connection.getInputStream()) {
                     Path iconPath = Path.of(iconName);
                     Files.copy(iconIn, iconPath, StandardCopyOption.REPLACE_EXISTING);
                     return Toolkit.getDefaultToolkit().getImage(iconPath.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
                 }
-            } else {
-                System.err.println("Failed to fetch image: HTTP error code " + responseCode);
-                return null;
             }
+            System.err.println("Failed to fetch image: HTTP error code " + responseCode);
+            return null;
+
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
             return null;
@@ -72,7 +75,7 @@ public class TrayIconLoader {
         }
     }
 
-    public void imageAutoSize(boolean imageAutoSize) {
+    public void setImageAutoSize(boolean imageAutoSize) {
         TrayIcon trayIcon = SystemTray.getSystemTray().getTrayIcons()[0];
         trayIcon.setImageAutoSize(imageAutoSize);
     }

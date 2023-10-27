@@ -1,4 +1,4 @@
-package fr.openai.starter;
+package fr.openai.database.customui;
 
 import fr.openai.exec.ClipboardUtil;
 import fr.openai.starter.uuid.UUIDManager;

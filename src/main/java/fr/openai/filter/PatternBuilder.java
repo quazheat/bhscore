@@ -30,11 +30,11 @@ public class PatternBuilder {
 
             patternBuilder.append(")\\b");
 
-            // флаг UNICODE_CHARACTER_CLASS для корректной работы с кириллицей
+            // Using UNICODE_CHARACTER_CLASS flag for correct processing of non-Latin characters
             return Pattern.compile(patternBuilder.toString(), Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS);
         } catch (IOException | PatternSyntaxException e) {
             e.printStackTrace();
-            throw new RuntimeException("Error reading JSON file: " + "words.json");
+            throw new RuntimeException("Error reading JSON file: words.json");
         }
     }
 }

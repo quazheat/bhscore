@@ -8,26 +8,21 @@ import java.util.List;
 
 public class UuidChecker {
     private final UuidProvider uuidProvider = new UuidProvider();
-    private final CheckProvider providerIsOk = new CheckProvider();
+    private final CheckProvider checkProvider = new CheckProvider();
 
     public boolean isAllowed() {
         String hwid = HwidManager.getHwid(uuidProvider);
-        return hwid != null && isAllowed(hwid);
+        return hwid != null && isUuidAllowed(hwid);
     }
 
-    private boolean isAllowed(String uuid) {
+    private boolean isUuidAllowed(String uuid) {
         try {
-            List<String> allowedUuids = providerIsOk.getUuuidList();
+            List<String> allowedUuids = checkProvider.getUuuidList();
 
-            for (String singleUuid : allowedUuids) {
-                if (uuid.equals(singleUuid)) {
-                    UuidLog.logUuid(true);
-                    return true;
-                }
-            }
+            boolean isAllowed = allowedUuids.contains(uuid);
+            UuidLog.logUuid(isAllowed);
 
-            UuidLog.logUuid(false);
-            return false;
+            return isAllowed;
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -35,4 +30,5 @@ public class UuidChecker {
             throw new RuntimeException(e);
         }
     }
+
 }

@@ -57,15 +57,16 @@ public class SystemTrayManager {
             showEditor.addActionListener(e -> {
                 if (editor == null) {
                     editor = new Editor(trayIcon);
-                } else {
-                    editor.setVisible(true);
+                    return;
                 }
+
+                editor.setVisible(true);
             });
 
             // Create a TrayIconManager instance and set up icon listeners
             TrayIconManager iconManager = new TrayIconManager(trayIcon, rageIconEnabled, rageIconDisabled, loyalModeDisabled);
             iconManager.setupIconListeners(toggleRageModeItem, toggleLoyalModeItem);
         }
-        iconLoader.imageAutoSize(true);
+        iconLoader.setImageAutoSize(true);
     }
 }

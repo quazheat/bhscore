@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Messages {
     public static String getMessage(String line) {
-        if (Validator.notValid(line)) {
+        if (Validator.isNotValid(line)) {
             return null;
         }
 
@@ -32,7 +32,6 @@ public class Messages {
             }
         }
 
-
         return line.substring(start).trim();
     }
 
@@ -46,8 +45,9 @@ public class Messages {
         String message = getMessage(rawString);
         if (message != null) {
             System.out.println("Extracted Message: " + message);
-        } else {
-            System.out.println("No valid message found in the input string.");
+            return;
         }
+
+        System.out.println("No valid message found in the input string.");
     }
 }

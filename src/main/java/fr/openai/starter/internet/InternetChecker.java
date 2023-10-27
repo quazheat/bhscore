@@ -2,19 +2,20 @@ package fr.openai.starter.internet;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class InternetChecker {
     public static boolean isReachable(String url) {
         HttpURLConnection connection = null;
         try {
-            URL siteURL = new URL(url);
-            connection = (HttpURLConnection) siteURL.openConnection();
+            URI siteURI = new URI(url);
+            connection = (HttpURLConnection) siteURI.toURL().openConnection();
             connection.setRequestMethod("HEAD");
-            connection.setConnectTimeout(5000); // Установите таймаут соединения по вашему усмотрению
+            connection.setConnectTimeout(5000); // Set the connection timeout
             int responseCode = connection.getResponseCode();
             return responseCode == HttpURLConnection.HTTP_OK;
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             return false;
         } finally {
             if (connection != null) {

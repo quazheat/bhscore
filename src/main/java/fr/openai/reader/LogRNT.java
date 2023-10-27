@@ -1,10 +1,6 @@
 package fr.openai.reader;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import fr.openai.database.files.ConnectDb;
 import fr.openai.exec.Executor;
 import fr.openai.filter.fixer.Names;
 import fr.openai.notify.NotificationSystem;
@@ -22,7 +18,6 @@ public class LogRNT {
     private final ConfigManager configManager;
     private final Executor executor;
     private final Names names;
-    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private long previousSize;
 
     public LogRNT(NotificationSystem notificationSystem) {
@@ -32,6 +27,7 @@ public class LogRNT {
     }
 
     public void starter() {
+        ConnectDb.getWordsDB();
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
         SystemTrayManager trayManager = new SystemTrayManager();
@@ -66,34 +62,24 @@ public class LogRNT {
     }
 
     private void readNewLines(long start, String logRntPath) {
-        JsonArray jsonArray = new JsonArray();
 
         try (RandomAccessFile raf = new RandomAccessFile(logRntPath, "r")) {
             raf.seek(start);
             String line;
             while ((line = raf.readLine()) != null) {
-                processLogLine(line, jsonArray);
+                processLogLine(line);
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void processLogLine(String line, JsonArray jsonArray) throws IOException {
+    private void processLogLine(String line) throws IOException {
         line = new String(line.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
 
         if (Readable.check(line)) {
             executor.execute(line, names);
-
-            try {
-                Object parsedObject = gson.fromJson(line, Object.class);
-
-                if (parsedObject instanceof JsonObject) {
-                    jsonArray.add((JsonObject) parsedObject);
-                }
-            } catch (JsonParseException e) {
-                // Handle errors
-            }
         }
     }
 }

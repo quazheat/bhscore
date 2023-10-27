@@ -22,37 +22,58 @@ public class MessageProcessor {
 
     public void processMessage(String playerName, String message) {
         long currentTime = System.currentTimeMillis() / 1000;
-        // Удаляем записи старше 60 секунд
-        messageRecords.removeIf(record -> currentTime - record.timestamp() >= 60);
+        removeOldRecords(currentTime);
 
-        // Проверяем наличие одинаковых сообщений от игрока в течение минуты
+        int duplicateCount = countDuplicates(playerName, message);
+        addNewRecord(playerName, currentTime, message);
+
+        if (duplicateCount >= 2) {
+            handleDuplicateMessages(playerName, message);
+        }
+    }
+
+    private void removeOldRecords(long currentTime) {
+        // Remove records older than 60 seconds
+        messageRecords.removeIf(record -> currentTime - record.timestamp() >= 60);
+    }
+
+    private int countDuplicates(String playerName, String message) {
+        // Check for duplicate messages from the same player within a minute
         int duplicateCount = 0;
         for (MessageRecord record : messageRecords) {
             if (record.playerName().equals(playerName) && record.message().equals(message)) {
                 duplicateCount++;
             }
         }
+        return duplicateCount;
+    }
 
-        // Добавляем новую запись
+    private void addNewRecord(String playerName, long currentTime, String message) {
+        // Add a new message record
         MessageRecord newRecord = new MessageRecord(playerName, currentTime, message);
         messageRecords.add(newRecord);
+    }
 
-        if (duplicateCount >= 2) {
-            if ("Unknown".equalsIgnoreCase(playerName)) {
-                System.out.println("VIOLATION: unknown name: " + message);
-                return;
-            }
-            if (FilteringModeManager.isLoyalModeEnabled()) {
-                WindowsNotification.showWindowsNotification("LOYAL", "2.10", INFO);
-                String textToCopyF = "/warn " + playerName + " Не флуди";
-                ClipboardUtil.copyToClipboard(textToCopyF);
-            } else if (!FilteringModeManager.isRageModeEnabled()) {
-                notificationSystem.showNotification(playerName, message);
-            } else {
-                WindowsNotification.showWindowsNotification("RAGE", "2.10", ERROR);
-                String textToCopy = "/mute " + playerName + " 2.10+";
-                ClipboardUtil.copyToClipboard(textToCopy);
-            }
+    private void handleDuplicateMessages(String playerName, String message) {
+        if ("Unknown".equalsIgnoreCase(playerName)) {
+            System.out.println("VIOLATION: unknown name: " + message);
+            return;
         }
+
+        if (FilteringModeManager.isLoyalModeEnabled()) {
+            WindowsNotification.showWindowsNotification("LOYAL", "2.10", INFO);
+            String textToCopyF = "/warn " + playerName + " Не флуди";
+            ClipboardUtil.copyToClipboard(textToCopyF);
+            return;
+        }
+
+        if (!FilteringModeManager.isRageModeEnabled()) {
+            notificationSystem.showNotification(playerName, "[3 msg] " + message);
+            return;
+        }
+
+        WindowsNotification.showWindowsNotification("RAGE", "2.10", ERROR);
+        String textToCopy = "/mute " + playerName + " 2.10+";
+        ClipboardUtil.copyToClipboard(textToCopy);
     }
 }
