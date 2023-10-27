@@ -63,7 +63,7 @@ public class Names {
         return finalName;
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Names formatter = new Names();
 
@@ -72,5 +72,5 @@ public class Names {
 
         String playerName = formatter.getFinalName(rawString);
         System.out.println("Formatted Player Name: " + playerName);
-    }
+    }*/
 }

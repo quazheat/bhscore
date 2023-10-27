@@ -36,7 +36,7 @@ public class Messages {
     }
 
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Enter a raw string: ");
@@ -49,5 +49,5 @@ public class Messages {
         }
 
         System.out.println("No valid message found in the input string.");
-    }
+    }*/
 }

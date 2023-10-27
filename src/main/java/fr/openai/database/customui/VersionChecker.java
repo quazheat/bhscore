@@ -8,7 +8,7 @@ import org.bson.Document;
 public class VersionChecker {
 
     public static void checkVersion() {
-        String currentVersion = "6.2"; // Текущая версия программы
+        String currentVersion = "6.3"; // Текущая версия программы
 
         // Устанавливаем соединение с базой данных
         MongoCollection<Document> versionCollection = ConnectDb.getMongoCollection("version");
