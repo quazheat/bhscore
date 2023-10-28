@@ -45,15 +45,9 @@ public class AddNewWhitelistWord {
 
 
     private void sendTicket(String ticketText) {
-        // Create a TicketDocument for the ticket
         TicketDocument ticketDocument = new TicketDocument(new Date(), ticketText, "UNKNOWN", IpAddressUtil.getUserPublicIpAddress());
-
-        // Get the MongoDB collection for tickets
         MongoCollection<Document> ticketCollection = ConnectDb.getMongoCollection("tickets");
-
-        // Insert the ticket document into the database
         ticketCollection.insertOne(ticketDocument.toDocument());
 
-        // Optionally, you can log the successful ticket creation or perform any additional actions here.
     }
 }

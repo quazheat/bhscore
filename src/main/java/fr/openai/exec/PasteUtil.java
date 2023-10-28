@@ -17,7 +17,6 @@ public class PasteUtil {
 
         try {
             Robot robot = new Robot();
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 
             // Simulate pressing the "T" key
             robot.keyPress(KeyEvent.VK_T);
