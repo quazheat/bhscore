@@ -10,6 +10,7 @@ public class ModesPanel extends JPanel {
     public ModesPanel() {
         setLayout(new BorderLayout());
 
+
         // Create an instance of ConfigManager
         ConfigManager configManager = new ConfigManager();
 
@@ -48,20 +49,58 @@ public class ModesPanel extends JPanel {
             }
         });
 
-        // Disclaimer about changes requiring a reset
-        JLabel disclaimerLabel = new JLabel("Слова добавляются моментально, для скорости только ребут");
 
+        CustomHelp helpButton = new CustomHelp(
+                """
+                        Скорость в этой вкладке влияет на две вещи:
+                        1) Скоротсть авто-наказаний — меняется СРАЗУ ЖЕ после изменений.
+                        2) Скорость работы программы — меняется ТОЛЬКО
+                        после перезапуска программы.
+                                                                                                
+                                                                                                xxx
+                                                                                                
+                        Вы можете менять моды работы программы, их всего три:
+                        1) Обычный мод, включен по стандарту. Вы выбираете наказание сами;
+                        2) RAGE. Автоматически вставит в чат команду на мут с причиной;
+                        3) LOYAL. Автоматически вставит в чат команду на варн с причиной;
+                                                                                                
+                                                                                                xxx
+                                                                                                
+                        Слова во вкладке "Ругательства" работают по прицнипу однокоренных слов,
+                        обтекаемых текстом. Если вы добавите "ебу", то будет реагировать
+                        на все слова, имеющие такой корень. То есть даже на "чебурек".
+                                                                                                
+                                                                                                xxx
+                                                                                                
+                        Слова во вкладке "Белый список" реагируют
+                        на исключительно то слово, которое было добавлено.
+                        То есть можно сразу добавить "чебурек" в исключения.
+                        Исключения можно добавлять через запятую, за раз хоть 100 штук.
+                                                                                                
+                                                                                                xxx
+                                                                                                
+                        Вкладка "Отчеты" создана для отправки репорта или предложения
+                        по работе этой программы, можно кидать что-то ссылкой и всё такое.
+                                                                                                
+                                                                                                xxx
+                                                                                                
+                        Когда вы отправляете репорт или редактируете онлайн-словари,
+                        собирается информация:
+                        1) Ваш ключ доступа к програме;
+                        2) Ваш IP адрес.
+                        
+                        Эта информация нужна для того, чтобы быстро забрать доступ.
+                        Используя вкладки словарей и отчетов,
+                        Вы соглашаетесь на сбор информации для этой цели.
+                        """);
         JPanel sliderPanel = new JPanel(new BorderLayout());
         sliderPanel.add(upFQSlider, BorderLayout.NORTH);
         sliderPanel.add(upFQLabel, BorderLayout.SOUTH);
 
-        JPanel textFieldPanel = new JPanel(new BorderLayout());
-        textFieldPanel.add(upFQTextField, BorderLayout.NORTH);
 
-        JPanel radioButtonPanel = new JPanel(new GridLayout(2, 1));
+        JPanel radioButtonPanel = new JPanel(new GridLayout(1, 1));
         add(radioButtonPanel, BorderLayout.NORTH);
         add(sliderPanel, BorderLayout.CENTER);
-        add(textFieldPanel, BorderLayout.SOUTH);
-        add(disclaimerLabel, BorderLayout.SOUTH);
+        add(helpButton, BorderLayout.WEST);
     }
 }

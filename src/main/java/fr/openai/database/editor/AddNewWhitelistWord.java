@@ -33,17 +33,16 @@ public class AddNewWhitelistWord {
 
                     // Send a ticket with the added word
                     sendTicket("added whitelist word: " + word);
-
-                    return;
+                } else {
+                    outputText.append(word).append(" уже есть. ").append("\n");
                 }
-
-                outputText.append(word).append(" уже есть. ").append("\n");
             }
         }
 
         editor.setOutputText(outputText.toString());
         ConnectDb.getWordsDB();
     }
+
 
     private void sendTicket(String ticketText) {
         // Create a TicketDocument for the ticket

@@ -10,7 +10,7 @@ public class ConfigManager {
     private static final String UPFQ_KEY = "upFQ";
     private static final String DEFAULT_LOG_RNT_PATH = System.getProperty("user.home") + File.separator + ".cristalix" +
             File.separator + "updates" + File.separator + "Minigames" + File.separator + "logs" + File.separator + "latest.log";
-    private static final int DEFAULT_UPFQ = 100;
+    private static final int DEFAULT_UPFQ = 40;
 
     private final Properties properties;
     private int upFQ; // Track upFQ value

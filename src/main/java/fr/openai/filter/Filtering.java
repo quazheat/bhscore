@@ -2,6 +2,7 @@ package fr.openai.filter;
 
 import fr.openai.exec.Messages;
 import fr.openai.exec.ClipboardUtil;
+import fr.openai.exec.PasteUtil;
 import fr.openai.notify.NotificationSystem;
 import fr.openai.notify.WindowsNotification;
 
@@ -53,6 +54,7 @@ public class Filtering {
         if (FilteringModeManager.isLoyalModeEnabled()) {
             showLoyalNotification(loyalMessage);
             copyToClipboard("/warn " + playerName + " " + loyalAction);
+            PasteUtil.pasteFromClipboard(); // Paste the text from the clipboard
             return;
         }
 
@@ -62,6 +64,7 @@ public class Filtering {
         }
         showRageNotification(message);
         copyToClipboard("/mute " + playerName + " " + rageAction);
+        PasteUtil.pasteFromClipboard(); // Paste the text from the clipboard
     }
 
 
