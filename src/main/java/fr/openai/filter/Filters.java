@@ -5,8 +5,10 @@ import com.google.gson.JsonObject;
 import fr.openai.database.JsonFileReader;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
+
+import static fr.openai.filter.SimilarityCalculator.calculateSimilarity;
 
 public class Filters {
     public boolean hasManySymbols(String message) {
@@ -57,7 +59,6 @@ public class Filters {
         return false;
     }
 
-
     public boolean hasCaps(String message) {
         int upperCaseCount = 0;
         String cleanedMessage = removeSpecialCharacters(message);
@@ -71,34 +72,59 @@ public class Filters {
         return upperCaseCount > 5 && (double) upperCaseCount / cleanedMessage.length() > 0.55;
     }
 
-    public boolean hasSwearing(String message) {
+    public boolean hasSwearing(String message, double similarityThreshold, List<String> whitelistWords) {
         JsonObject json = JsonFileReader.readJsonFile("words.json");
-        JsonArray whitelistArray = json.getAsJsonArray("whitelist");
-        Pattern pattern = PatternBuilder.buildPatternFromFile();
+        JsonArray forbiddenWordsArray = json.getAsJsonArray("forbidden_words");
 
         String[] words = message.split("\\s+");
 
-        for (String word : words) {
-            if (!isWordWhitelisted(word, whitelistArray) && pattern.matcher(word).find()) {
-                return true;
+        boolean skipNextWord = false; // To keep track of whether we should skip the next word
+
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+
+            if (skipNextWord) {
+                skipNextWord = false;
+                continue;
+            }
+
+            if (isWordForbidden(word, forbiddenWordsArray)) {
+                if (!isWordSimilarToWhitelisted(word, similarityThreshold, whitelistWords)) {
+                    return true;
+                } else {
+                    // If the word is similar to a whitelisted word, move to the next word
+                    if (i < words.length - 1) {
+                        skipNextWord = true;
+                    }
+                }
             }
         }
 
         return false;
     }
 
+
+
+    private boolean isWordSimilarToWhitelisted(String word, double similarityThreshold, List<String> whitelistWords) {
+        for (String whitelistWord : whitelistWords) {
+            if (calculateSimilarity(word, whitelistWord) >= similarityThreshold) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isWordForbidden(String word, JsonArray forbiddenWordsArray) {
+        for (int i = 0; i < forbiddenWordsArray.size(); i++) {
+            String forbiddenWord = forbiddenWordsArray.get(i).getAsString();
+            if (word.equals(forbiddenWord)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private String removeSpecialCharacters(String input) {
         return input.replaceAll("[^a-zA-Zа-яА-Я]", "");
-    }
-
-    private boolean isWordWhitelisted(String word, JsonArray whitelistArray) {
-        for (int i = 0; i < whitelistArray.size(); i++) {
-            String whitelistWord = whitelistArray.get(i).getAsString();
-            if (word.equals(whitelistWord)) {
-                return true;
-            }
-        }
-        return false;
     }
 }
