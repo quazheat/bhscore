@@ -1,14 +1,16 @@
 package fr.openai.filter;
 
-import fr.openai.exec.Messages;
 import fr.openai.exec.ClipboardUtil;
+import fr.openai.exec.Messages;
 import fr.openai.exec.PasteUtil;
+import fr.openai.filter.fixer.Names;
 import fr.openai.notify.NotificationSystem;
 import fr.openai.notify.WindowsNotification;
 
+import java.util.List;
+
 import static java.awt.TrayIcon.MessageType.ERROR;
 import static java.awt.TrayIcon.MessageType.INFO;
-import fr.openai.filter.fixer.Names;
 
 public class Filtering {
     private final NotificationSystem notificationSystem;
@@ -18,7 +20,8 @@ public class Filtering {
         this.notificationSystem = notificationSystem;
         this.filters = new Filters();
     }
-    public void onFilter(String name, String line) {
+
+    public void onFilter(String name, String line, double similarityThreshold, List<String> whitelistWords) {
         String message = Messages.getMessage(line);
         String playerName = Names.formatPlayerName(name);
 
@@ -31,7 +34,7 @@ public class Filtering {
             return;
         }
 
-        if (filters.hasSwearing(message)) {
+        if (filters.hasSwearing(message, similarityThreshold, whitelistWords)) {
             handleViolation(playerName, message, "Не матерись", message, "2.");
             return;
         }

@@ -7,6 +7,7 @@ import fr.openai.runtime.MessageProcessor;
 import fr.openai.filter.Validator;
 import fr.openai.notify.NotificationSystem;
 
+import java.util.List;
 import java.util.concurrent.*;
 
 public class Executor {
@@ -19,11 +20,11 @@ public class Executor {
     public Executor(NotificationSystem notificationSystem) {
         this.filtering = new Filtering(notificationSystem);
         this.messageProcessor = new MessageProcessor(notificationSystem);
-        // Создаем пул потоков с помощью Executors
-        this.executorService = Executors.newScheduledThreadPool(10); //
+        // Create a thread pool using Executors
+        this.executorService = Executors.newScheduledThreadPool(10);
     }
 
-    public void execute(String line, Names names) {
+    public void execute(String line, Names names, double similarityThreshold, List<String> whitelistWords) {
         if (Validator.isNotValid(line)) {
             return;
         }
@@ -32,9 +33,9 @@ public class Executor {
 
         String message = Messages.getMessage(line);
 
-        // Используем executorService для выполнения задач в пуле потоков
+        // Use executorService for executing tasks in the thread pool
         executorService.submit(() -> {
-            filtering.onFilter(playerName, message);
+            filtering.onFilter(playerName, message, similarityThreshold, whitelistWords);
             messageProcessor.processMessage(playerName, message);
         });
     }
