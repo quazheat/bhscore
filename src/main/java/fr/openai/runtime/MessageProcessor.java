@@ -1,5 +1,6 @@
 package fr.openai.runtime;
 
+import fr.openai.database.customui.DiscordRPC;
 import fr.openai.exec.ClipboardUtil;
 import fr.openai.filter.FilteringModeManager;
 import fr.openai.notify.NotificationSystem;
@@ -59,6 +60,8 @@ public class MessageProcessor {
             System.out.println("VIOLATION: unknown name: " + message);
             return;
         }
+        DiscordRPC.updateRPCState("Наблюдаем за  " + playerName);
+        DiscordRPC.updateRPC(); // Update the presence after setting the state
 
         if (FilteringModeManager.isLoyalModeEnabled()) {
             WindowsNotification.showWindowsNotification("LOYAL", "2.10", INFO);

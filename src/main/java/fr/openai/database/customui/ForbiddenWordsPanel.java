@@ -16,13 +16,19 @@ public class ForbiddenWordsPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(Color.lightGray);
 
+        // Create the output label at the top
+        outputLabel = new JLabel();
+        outputLabel.setHorizontalAlignment(JLabel.CENTER);
+        outputLabel.setForeground(Color.BLACK);
+        add(outputLabel, BorderLayout.NORTH);
+
         JPanel inputButtonPanel = new JPanel();
         inputButtonPanel.setLayout(new BorderLayout());
 
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         JLabel inputLabel = new JLabel("Введите слово:");
-        inputLabel.setForeground(Color.black);
+        inputLabel.setForeground(Color.BLACK);
         inputPanel.setBackground(Color.LIGHT_GRAY);
 
         inputTextField = new JTextField(20);
@@ -45,7 +51,7 @@ public class ForbiddenWordsPanel extends JPanel {
         inputButtonPanel.add(inputPanel, BorderLayout.CENTER);
         inputButtonPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        add(inputButtonPanel, BorderLayout.NORTH);
+        add(inputButtonPanel, BorderLayout.CENTER);
 
         addButton.addActionListener(e -> {
             String newWord = inputTextField.getText();
@@ -65,14 +71,9 @@ public class ForbiddenWordsPanel extends JPanel {
 
         InputValidator.setupInputValidation(inputTextField, addButton, removeButton);
 
-        outputLabel = new JLabel();
-        outputLabel.setHorizontalAlignment(JLabel.CENTER);
-        outputLabel.setForeground(Color.BLACK);
-        add(outputLabel, BorderLayout.SOUTH);
-
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setUI(new CustomTab());
-        add(tabbedPane, BorderLayout.CENTER);
+        add(tabbedPane, BorderLayout.SOUTH);
     }
 
     public void setOutputText(String message) {

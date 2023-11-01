@@ -7,26 +7,31 @@ import fr.openai.database.files.ConnectDb;
 import org.bson.Document;
 
 public class VersionChecker {
+    public static String getCurrentVersion() {
+        // Текущая версия программы
+        return "6.5";
+    }
 
-    public static void checkVersion() {
-        String currentVersion = "6.4"; // Текущая версия программы
-
-        // Устанавливаем соединение с базой данных
+    public static String getDbVersion() {
         MongoCollection<Document> versionCollection = ConnectDb.getMongoCollection("version");
 
-        // Получаем версию из базы данных (предположим, что она хранится в поле "version")
         MongoCursor<Document> cursor = versionCollection.find().iterator();
 
         if (cursor.hasNext()) {
-            String dbVersion = cursor.next().getString("version");
-
-            // Сравниваем версии
-            if (!dbVersion.equals(currentVersion)) {
-                VersionGUI versionGUI = new VersionGUI();
-                versionGUI.setVisible(true);
-            }
+            return cursor.next().getString("version");
+        } else {
+            return "0";
         }
+    }
 
-        // Версии совпадают или версия не найдена, ничего не делаем
+    public static void checkVersion() {
+        String currentVersion = getCurrentVersion();
+        String dbVersion = getDbVersion();
+
+        // Сравниваем версии
+        if (dbVersion != null && !dbVersion.equals(currentVersion)) {
+            VersionGUI versionGUI = new VersionGUI();
+            versionGUI.setVisible(true);
+        }
     }
 }

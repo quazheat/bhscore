@@ -1,5 +1,6 @@
 package fr.openai.exec;
 
+import fr.openai.database.customui.DiscordRPC;
 import fr.openai.filter.fixer.Names;
 import fr.openai.filter.Filtering;
 import fr.openai.runtime.MessageProcessor;
@@ -19,6 +20,7 @@ public class Executor {
         this.filtering = new Filtering(notificationSystem);
         this.messageProcessor = new MessageProcessor(notificationSystem);
         this.executorService = Executors.newScheduledThreadPool(10);
+
     }
 
     public void execute(String line, Names names) {
@@ -34,6 +36,7 @@ public class Executor {
         executorService.submit(() -> {
             filtering.onFilter(playerName, message);
             messageProcessor.processMessage(playerName, message);
+            executorService.scheduleAtFixedRate(DiscordRPC::updateRPC, 0, 1, TimeUnit.SECONDS);
         });
     }
 

@@ -4,6 +4,7 @@ import fr.openai.database.customui.ModesPanel;
 import fr.openai.database.customui.ForbiddenWordsPanel;
 import fr.openai.database.customui.ReportsPanel;
 import fr.openai.database.customui.WhitelistPanel;
+import fr.openai.starter.VersionChecker;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,9 +15,10 @@ public class Editor {
     private final JLabel outputLabel;
 
     public Editor(TrayIcon trayIcon) { // Pass the trayIcon to the constructor
+        String version = VersionChecker.getCurrentVersion();
         // Add this member variable
 
-        frame = new JFrame("BHScore");
+        frame = new JFrame("BHScore " + version);
         frame.setIconImage(trayIcon.getImage()); // Use the trayIcon's image
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

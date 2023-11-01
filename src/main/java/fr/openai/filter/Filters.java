@@ -78,6 +78,7 @@ public class Filters {
 
         LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
 
+        message = message.toLowerCase();
         String[] tokens = message.split("[\\s,.;!?]+"); // Разделение на токены
 
         for (String token : tokens) {
@@ -93,14 +94,13 @@ public class Filters {
             if (shouldRemove) {
                 message = message.replace(token, "");
             }
-        }
-
-        for (String word : tokens) {
-            for (int i = 0; i < forbiddenWordsArray.size(); i++) {
-                String forbiddenWord = forbiddenWordsArray.get(i).getAsString();
-                double similarity = levenshteinDistance.apply(word, forbiddenWord);
-                if (similarity >= 0.7) {
-                    return true;
+            for (String word : tokens) {
+                for (int i = 0; i < forbiddenWordsArray.size(); i++) {
+                    String forbiddenWord = forbiddenWordsArray.get(i).getAsString();
+                    double similarity = levenshteinDistance.apply(word, forbiddenWord);
+                    if (similarity >= 0.8) {
+                        return true;
+                    }
                 }
             }
         }

@@ -14,6 +14,10 @@ import org.bson.Document;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -34,10 +38,19 @@ public class ReportsPanel extends JPanel {
         add(new JScrollPane(textArea), BorderLayout.CENTER);
 
         sendButton = new JButton("Отправить");
+        sendButton.setEnabled(false); // Initially, disable the button
         add(sendButton, BorderLayout.SOUTH);
 
         // Применение стиля CustomButton
         CustomButtonUI.setCustomStyle(sendButton);
+
+        // Add a KeyListener to the text area for input validation
+        textArea.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                validateInput();
+            }
+        });
 
         sendButton.addActionListener(e -> {
             // Логика отправки тикета
@@ -47,6 +60,13 @@ public class ReportsPanel extends JPanel {
                 throw new RuntimeException(ex);
             }
         });
+    }
+
+    private void validateInput() {
+        String problemText = textArea.getText().trim();
+        boolean isInputValid = problemText.length() >= 1; // Input should contain at least 1 symbol
+
+        sendButton.setEnabled(isInputValid);
     }
 
     private void sendTicket() throws IOException {
@@ -83,14 +103,12 @@ public class ReportsPanel extends JPanel {
 
                     TicketDocument ticketDocument = new TicketDocument(timestamp, problemText, HwidManager.getHwid(uuidProvider), ipAddress);
 
-
                     collection.insertOne(ticketDocument.toDocument());
 
                     SwingUtilities.invokeLater(() -> {
                         JOptionPane.showMessageDialog(frame, "Тикет успешно создан.");
                         frame.dispose();
                         textArea.setText(""); // Clear the text area
-
                     });
                     isSubmitting.set(true);
                 } catch (Exception ex) {

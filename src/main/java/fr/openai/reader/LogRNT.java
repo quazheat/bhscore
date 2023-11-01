@@ -1,5 +1,6 @@
 package fr.openai.reader;
 
+import fr.openai.database.customui.DiscordRPCApp;
 import fr.openai.database.files.ConnectDb;
 import fr.openai.exec.Executor;
 import fr.openai.filter.fixer.Names;
@@ -30,6 +31,8 @@ public class LogRNT {
     }
 
     public void starter() {
+        //DiscordRPCApp discordRPCApp = new DiscordRPCApp();
+        //discordRPCApp.setVisible(true);
         ConnectDb.getWordsDB();
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 

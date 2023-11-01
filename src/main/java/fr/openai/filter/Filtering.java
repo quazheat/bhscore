@@ -1,5 +1,7 @@
 package fr.openai.filter;
 
+import fr.openai.database.customui.DiscordRPC;
+import fr.openai.database.customui.DiscordRPCApp;
 import fr.openai.exec.Messages;
 import fr.openai.exec.ClipboardUtil;
 import fr.openai.exec.PasteUtil;
@@ -21,7 +23,6 @@ public class Filtering {
     public void onFilter(String name, String line) {
         String message = Messages.getMessage(line);
         String playerName = Names.formatPlayerName(name);
-        boolean F = false;
 
         if (message == null) {
             return;
@@ -32,25 +33,47 @@ public class Filtering {
             return;
         }
 
-        if (filters.hasManySymbols(message) || filters.hasLaugh(message) || filters.hasWFlood(message)) {
-            F = true;
+        boolean F = filters.hasManySymbols(message) || filters.hasLaugh(message) || filters.hasWFlood(message);
+        boolean C = filters.hasCaps(message);
+        boolean S = filters.hasSwearing(message);
+        if (F && !S && !C) {
             handleViolation(playerName, message, "Не флуди", message, "2.10+");
             return;
         }
 
-        if (filters.hasCaps(message)) {
-            handleViolation(playerName, message, "Не капси", message, "2.12+");
+        if (!F && !S && C) {
+           handleViolation(playerName, message, "Не капси", message, "2.12+");
             return;
         }
 
-        if (filters.hasSwearing(message)) {
+        if (!F && S && !C) {
             handleViolation(playerName, message, "Не матерись", message, "2.");
+            return;
+        }
+        if (F && !S) {
+            handleViolation(playerName, message, "2 нарушения", message, "2.10+2.12+");
+            return;
+        }
 
+        if (F && !C) {
+            handleViolation(playerName, message, "2 нарушения", message, "2.10+2.");
+            return;
+        }
+
+        if (!F && S) {
+            handleViolation(playerName, message, "2 нарушения", message, "2.12+2.");
+            return;
+        }
+        if (F) {
+            handleViolation(playerName, message, "3 нарушения", message, "2.12+2.10+2.");
         }
     }
 
 
     private void handleViolation(String playerName, String message, String loyalAction, String loyalMessage, String rageAction) {
+        DiscordRPC.updateRPCState("Наблюдаем за  " + playerName);
+        DiscordRPC.updateRPC(); // Update the presence after setting the state
+
         if (FilteringModeManager.isLoyalModeEnabled()) {
             showLoyalNotification(loyalMessage);
             copyToClipboard("/warn " + playerName + " " + loyalAction);
@@ -62,10 +85,12 @@ public class Filtering {
             notificationSystem.showNotification(playerName, loyalMessage);
             return;
         }
+
         showRageNotification(message);
         copyToClipboard("/mute " + playerName + " " + rageAction);
         PasteUtil.pasteFromClipboard(); // Paste the text from the clipboard
     }
+
 
 
     private void handleUnknownNameViolation(String line) {

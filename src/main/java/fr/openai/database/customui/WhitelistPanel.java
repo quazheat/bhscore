@@ -5,6 +5,7 @@ import fr.openai.database.editor.RemoveWhitelistWord;
 
 import javax.swing.*;
 import java.awt.*;
+
 public class WhitelistPanel extends JPanel {
     private final JTextField inputTextField;
     private final JLabel outputLabel;
@@ -12,6 +13,12 @@ public class WhitelistPanel extends JPanel {
     public WhitelistPanel(AddNewWhitelistWord addNewWhitelistWord, RemoveWhitelistWord removeWhitelistWord) {
         setLayout(new BorderLayout());
         setBackground(Color.lightGray);
+
+        // Create the output label at the top
+        outputLabel = new JLabel();
+        outputLabel.setHorizontalAlignment(JLabel.CENTER);
+        outputLabel.setForeground(Color.BLACK);
+        add(outputLabel, BorderLayout.NORTH);
 
         JPanel inputButtonPanel = new JPanel();
         inputButtonPanel.setLayout(new BorderLayout());
@@ -42,7 +49,7 @@ public class WhitelistPanel extends JPanel {
         inputButtonPanel.add(inputPanel, BorderLayout.CENTER);
         inputButtonPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        add(inputButtonPanel, BorderLayout.NORTH);
+        add(inputButtonPanel, BorderLayout.CENTER);
 
         addButton.addActionListener(e -> {
             String newWord = inputTextField.getText();
@@ -62,14 +69,9 @@ public class WhitelistPanel extends JPanel {
 
         InputValidator.setupInputValidation(inputTextField, addButton, removeButton);
 
-        outputLabel = new JLabel();
-        outputLabel.setHorizontalAlignment(JLabel.CENTER);
-        outputLabel.setForeground(Color.BLACK);
-        add(outputLabel, BorderLayout.SOUTH);
-
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setUI(new CustomTab());
-        add(tabbedPane, BorderLayout.CENTER);
+        add(tabbedPane, BorderLayout.SOUTH);
     }
 
     public void setOutputText(String message) {

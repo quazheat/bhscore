@@ -7,12 +7,18 @@ import java.awt.*;
 
 public class ModesPanel extends JPanel {
 
+    private final JCheckBox rpcCheckBox;
+
     public ModesPanel() {
         setLayout(new BorderLayout());
 
-
-        // Create an instance of ConfigManager
         ConfigManager configManager = new ConfigManager();
+        rpcCheckBox = new JCheckBox("Активность в Discord", true); // Initially enabled
+        rpcCheckBox.setFocusPainted(false);
+        rpcCheckBox.addActionListener(e -> {
+            boolean isEnabled = rpcCheckBox.isSelected();
+            DiscordRPC.setRPCEnabled(isEnabled); // Update the RPC state based on the checkbox
+        });
 
         JSlider upFQSlider = new JSlider(JSlider.HORIZONTAL, 10, 510, configManager.getUpFQ());
         upFQSlider.setMajorTickSpacing(100); // Adjusted major tick spacing
@@ -21,8 +27,6 @@ public class ModesPanel extends JPanel {
         upFQSlider.setPaintLabels(true);
         upFQSlider.setSnapToTicks(true); // Snap to the nearest tick
 
-
-        // Create a label to display the current upFQ value
         JLabel upFQLabel = new JLabel("Скорость обработки: " + configManager.getUpFQ() + " ms");
 
         upFQSlider.addChangeListener(e -> {
@@ -48,6 +52,7 @@ public class ModesPanel extends JPanel {
                 upFQTextField.setText(Integer.toString(upFQSlider.getValue()));
             }
         });
+
 
 
         CustomHelp helpButton = new CustomHelp(
@@ -98,8 +103,13 @@ public class ModesPanel extends JPanel {
         sliderPanel.add(upFQSlider, BorderLayout.NORTH);
         sliderPanel.add(upFQLabel, BorderLayout.SOUTH);
 
+        JPanel rightPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.EAST;
+        rightPanel.add(rpcCheckBox, gbc);
 
         JPanel radioButtonPanel = new JPanel(new GridLayout(1, 1));
+        radioButtonPanel.add(rightPanel); // Add the RPC toggle checkbox to the right corner
         add(radioButtonPanel, BorderLayout.NORTH);
         add(sliderPanel, BorderLayout.CENTER);
         add(helpButton, BorderLayout.WEST);

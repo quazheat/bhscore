@@ -1,5 +1,7 @@
 package fr.openai.database.customui;
 
+import fr.openai.starter.VersionChecker;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -9,7 +11,9 @@ import java.net.URISyntaxException;
 public class VersionGUI extends JDialog {
 
     public VersionGUI() {
-        setTitle("BHScore version");
+        String version = VersionChecker.getCurrentVersion();
+        String dbVersion = VersionChecker.getDbVersion();
+        setTitle("BHScore  " + version);
         setSize(300, 150);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -22,8 +26,8 @@ public class VersionGUI extends JDialog {
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        JLabel messageLabel1 = new JLabel("Доступна новая версия программы.");
-        JLabel messageLabel2 = new JLabel("Желаете обновить?");
+        JLabel messageLabel1 = new JLabel("Ваша версия " + version + " устарела.");
+        JLabel messageLabel2 = new JLabel("Желаете обновить до " + dbVersion + "?");
         messageLabel1.setHorizontalAlignment(JLabel.CENTER);
         messageLabel2.setHorizontalAlignment(JLabel.CENTER);
 
