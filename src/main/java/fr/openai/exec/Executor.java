@@ -1,13 +1,11 @@
 package fr.openai.exec;
 
-import fr.openai.database.files.ConnectDb;
 import fr.openai.filter.fixer.Names;
 import fr.openai.filter.Filtering;
 import fr.openai.runtime.MessageProcessor;
 import fr.openai.filter.Validator;
 import fr.openai.notify.NotificationSystem;
 
-import java.util.List;
 import java.util.concurrent.*;
 
 public class Executor {
@@ -20,11 +18,10 @@ public class Executor {
     public Executor(NotificationSystem notificationSystem) {
         this.filtering = new Filtering(notificationSystem);
         this.messageProcessor = new MessageProcessor(notificationSystem);
-        // Create a thread pool using Executors
         this.executorService = Executors.newScheduledThreadPool(10);
     }
 
-    public void execute(String line, Names names, double similarityThreshold, List<String> whitelistWords) {
+    public void execute(String line, Names names) {
         if (Validator.isNotValid(line)) {
             return;
         }
@@ -33,9 +30,9 @@ public class Executor {
 
         String message = Messages.getMessage(line);
 
-        // Use executorService for executing tasks in the thread pool
+        // Используем executorService для выполнения задач в пуле потоков
         executorService.submit(() -> {
-            filtering.onFilter(playerName, message, similarityThreshold, whitelistWords);
+            filtering.onFilter(playerName, message);
             messageProcessor.processMessage(playerName, message);
         });
     }

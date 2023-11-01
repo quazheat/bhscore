@@ -18,6 +18,9 @@ public class AddNewWord {
     public void addNewWord(String newWord) {
         // Normalize the new word to lowercase and remove special characters
         newWord = newWord.toLowerCase().replaceAll("[^a-zа-яё]", "");
+        if (newWord.length() <= 1) {
+            return;
+        }
 
         // Get the MongoDB collection
         MongoCollection<Document> collection = ConnectDb.getMongoCollection("words");
@@ -50,6 +53,5 @@ public class AddNewWord {
         // Insert the ticket document into the database
         ticketCollection.insertOne(ticketDocument.toDocument());
 
-        // Optionally, you can log the successful ticket creation or perform any additional actions here.
     }
 }

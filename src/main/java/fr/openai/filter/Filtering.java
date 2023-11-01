@@ -1,16 +1,14 @@
 package fr.openai.filter;
 
-import fr.openai.exec.ClipboardUtil;
 import fr.openai.exec.Messages;
+import fr.openai.exec.ClipboardUtil;
 import fr.openai.exec.PasteUtil;
-import fr.openai.filter.fixer.Names;
 import fr.openai.notify.NotificationSystem;
 import fr.openai.notify.WindowsNotification;
 
-import java.util.List;
-
 import static java.awt.TrayIcon.MessageType.ERROR;
 import static java.awt.TrayIcon.MessageType.INFO;
+import fr.openai.filter.fixer.Names;
 
 public class Filtering {
     private final NotificationSystem notificationSystem;
@@ -20,10 +18,10 @@ public class Filtering {
         this.notificationSystem = notificationSystem;
         this.filters = new Filters();
     }
-
-    public void onFilter(String name, String line, double similarityThreshold, List<String> whitelistWords) {
+    public void onFilter(String name, String line) {
         String message = Messages.getMessage(line);
         String playerName = Names.formatPlayerName(name);
+        boolean F = false;
 
         if (message == null) {
             return;
@@ -34,24 +32,23 @@ public class Filtering {
             return;
         }
 
-        if (filters.hasSwearing(message, similarityThreshold, whitelistWords)) {
-            handleViolation(playerName, message, "Не матерись", message, "2.");
-            return;
-        }
-
         if (filters.hasManySymbols(message) || filters.hasLaugh(message) || filters.hasWFlood(message)) {
+            F = true;
             handleViolation(playerName, message, "Не флуди", message, "2.10+");
             return;
         }
 
         if (filters.hasCaps(message)) {
             handleViolation(playerName, message, "Не капси", message, "2.12+");
+            return;
+        }
+
+        if (filters.hasSwearing(message)) {
+            handleViolation(playerName, message, "Не матерись", message, "2.");
+
         }
     }
 
-    private void handleUnknownNameViolation(String line) {
-        System.out.println("VIOLATION: unknown name: " + line);
-    }
 
     private void handleViolation(String playerName, String message, String loyalAction, String loyalMessage, String rageAction) {
         if (FilteringModeManager.isLoyalModeEnabled()) {
@@ -71,6 +68,9 @@ public class Filtering {
     }
 
 
+    private void handleUnknownNameViolation(String line) {
+        System.out.println("VIOLATION: unknown name: " + line);
+    }
     private void showLoyalNotification(String message) {
         WindowsNotification.showWindowsNotification(getActionName(), message, INFO);
     }

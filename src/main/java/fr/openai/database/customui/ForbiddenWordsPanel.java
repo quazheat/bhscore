@@ -5,15 +5,14 @@ import fr.openai.database.editor.RemoveWord;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class ForbiddenWordsPanel extends JPanel {
     private final JTextField inputTextField;
     private final JLabel outputLabel;
 
     public ForbiddenWordsPanel(AddNewWord addNewWord, RemoveWord removeWord) {
-
         setLayout(new BorderLayout());
         setBackground(Color.lightGray);
 
@@ -30,14 +29,15 @@ public class ForbiddenWordsPanel extends JPanel {
         inputPanel.add(inputLabel);
         inputPanel.add(inputTextField);
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         JButton addButton = new JButton("Добавить");
         JButton removeButton = new JButton("Удалить");
-
         CustomButtonUI.setCustomStyle(addButton);
         CustomButtonUI.setCustomStyle(removeButton);
+        addButton.setEnabled(false);
+        removeButton.setEnabled(false);
 
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(addButton);
         buttonPanel.add(removeButton);
         buttonPanel.setBackground(Color.LIGHT_GRAY);
@@ -47,25 +47,23 @@ public class ForbiddenWordsPanel extends JPanel {
 
         add(inputButtonPanel, BorderLayout.NORTH);
 
-        addButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String newWord = inputTextField.getText();
-                if (!newWord.isEmpty()) {
-                    addNewWord.addNewWord(newWord);
-                }
-                inputTextField.setText("");
+        addButton.addActionListener(e -> {
+            String newWord = inputTextField.getText();
+            if (!newWord.isEmpty()) {
+                addNewWord.addNewWord(newWord);
             }
+            inputTextField.setText("");
         });
 
-        removeButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String wordToRemove = inputTextField.getText();
-                if (!wordToRemove.isEmpty()) {
-                    removeWord.removeWord(wordToRemove);
-                }
-                inputTextField.setText("");
+        removeButton.addActionListener(e -> {
+            String wordToRemove = inputTextField.getText();
+            if (!wordToRemove.isEmpty()) {
+                removeWord.removeWord(wordToRemove);
             }
+            inputTextField.setText("");
         });
+
+        InputValidator.setupInputValidation(inputTextField, addButton, removeButton);
 
         outputLabel = new JLabel();
         outputLabel.setHorizontalAlignment(JLabel.CENTER);

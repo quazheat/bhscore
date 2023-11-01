@@ -26,18 +26,17 @@ public class ConsoleLogger {
             PrintStream fileOutputStream = new PrintStream(new FileOutputStream(logFile));
             System.setOut(fileOutputStream);
 
-            // Пример использования: вывод текста в консоль и запись в файл
+            //вывод текста в консоль и запись в файл
             System.out.println("начало last.log.");
             System.out.println(currentTime);
             System.out.println(" ");
             System.out.println(" \\\\\\\\\\\\ ");
 
-            // Убедитесь, что данные записаны в файл и сброшены
+            // данные записаны в файл и сброшены
             fileOutputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // Добавьте эту строку, чтобы завершить выполнение программы после записи данных
     }
 }

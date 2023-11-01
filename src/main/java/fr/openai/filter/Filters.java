@@ -3,12 +3,10 @@ package fr.openai.filter;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import fr.openai.database.JsonFileReader;
+import fr.openai.exec.LevenshteinDistance;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import static fr.openai.filter.SimilarityCalculator.calculateSimilarity;
 
 public class Filters {
     public boolean hasManySymbols(String message) {
@@ -59,6 +57,7 @@ public class Filters {
         return false;
     }
 
+
     public boolean hasCaps(String message) {
         int upperCaseCount = 0;
         String cleanedMessage = removeSpecialCharacters(message);
@@ -72,30 +71,36 @@ public class Filters {
         return upperCaseCount > 5 && (double) upperCaseCount / cleanedMessage.length() > 0.55;
     }
 
-    public boolean hasSwearing(String message, double similarityThreshold, List<String> whitelistWords) {
+    public boolean hasSwearing(String message) {
         JsonObject json = JsonFileReader.readJsonFile("words.json");
+        JsonArray whitelistArray = json.getAsJsonArray("whitelist");
         JsonArray forbiddenWordsArray = json.getAsJsonArray("forbidden_words");
 
-        String[] words = message.split("\\s+");
+        LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
 
-        boolean skipNextWord = false; // To keep track of whether we should skip the next word
+        String[] tokens = message.split("[\\s,.;!?]+"); // Разделение на токены
 
-        for (int i = 0; i < words.length; i++) {
-            String word = words[i];
-
-            if (skipNextWord) {
-                skipNextWord = false;
-                continue;
+        for (String token : tokens) {
+            boolean shouldRemove = false;
+            for (int i = 0; i < whitelistArray.size(); i++) {
+                String word = whitelistArray.get(i).getAsString();
+                double similarity = levenshteinDistance.apply(token, word);
+                if (similarity >= 0.8) {
+                    shouldRemove = true;
+                    break;
+                }
             }
+            if (shouldRemove) {
+                message = message.replace(token, "");
+            }
+        }
 
-            if (isWordForbidden(word, forbiddenWordsArray)) {
-                if (!isWordSimilarToWhitelisted(word, similarityThreshold, whitelistWords)) {
+        for (String word : tokens) {
+            for (int i = 0; i < forbiddenWordsArray.size(); i++) {
+                String forbiddenWord = forbiddenWordsArray.get(i).getAsString();
+                double similarity = levenshteinDistance.apply(word, forbiddenWord);
+                if (similarity >= 0.7) {
                     return true;
-                } else {
-                    // If the word is similar to a whitelisted word, move to the next word
-                    if (i < words.length - 1) {
-                        skipNextWord = true;
-                    }
                 }
             }
         }
@@ -104,25 +109,6 @@ public class Filters {
     }
 
 
-
-    private boolean isWordSimilarToWhitelisted(String word, double similarityThreshold, List<String> whitelistWords) {
-        for (String whitelistWord : whitelistWords) {
-            if (calculateSimilarity(word, whitelistWord) >= similarityThreshold) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isWordForbidden(String word, JsonArray forbiddenWordsArray) {
-        for (int i = 0; i < forbiddenWordsArray.size(); i++) {
-            String forbiddenWord = forbiddenWordsArray.get(i).getAsString();
-            if (word.equals(forbiddenWord)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     private String removeSpecialCharacters(String input) {
         return input.replaceAll("[^a-zA-Zа-яА-Я]", "");

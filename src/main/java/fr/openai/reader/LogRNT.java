@@ -7,10 +7,12 @@ import fr.openai.notify.NotificationSystem;
 import fr.openai.runtime.SystemTrayManager;
 import fr.openai.database.ConfigManager;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -18,22 +20,22 @@ import java.util.concurrent.TimeUnit;
 public class LogRNT {
     private final ConfigManager configManager;
     private final Executor executor;
+    private final Names names;
     private long previousSize;
 
     public LogRNT(NotificationSystem notificationSystem) {
         this.configManager = new ConfigManager();
         this.executor = new Executor(notificationSystem);
+        this.names = new Names();
     }
 
-    public void starter(double similarityThreshold, List<String> whitelistWords, Names names) {
+    public void starter() {
         ConnectDb.getWordsDB();
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
         SystemTrayManager trayManager = new SystemTrayManager();
         trayManager.setupSystemTray();
-
-        Runnable task = () -> checkLogChanges(similarityThreshold, whitelistWords, names);
-
+        Runnable task = this::checkLogChanges;
         int initialDelay = 0; // Start immediately
         int period = configManager.getUpFQ(); // Set the period to the desired frequency
         previousSize = getFileSize();
@@ -41,17 +43,15 @@ public class LogRNT {
         executorService.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.MILLISECONDS);
     }
 
-
-    private void checkLogChanges(double similarityThreshold, List<String> whitelistWords, Names names) {
+    private void checkLogChanges() {
         String logRntPath = configManager.getLogRntPath();
         long currentSize = getFileSize();
 
         if (currentSize > previousSize) {
-            readNewLines(previousSize, logRntPath, similarityThreshold, whitelistWords, names);
+            readNewLines(previousSize, logRntPath);
             previousSize = currentSize;
         }
     }
-
 
     private long getFileSize() {
         try {
@@ -64,25 +64,25 @@ public class LogRNT {
         }
     }
 
-    private void readNewLines(long start, String logRntPath, double similarityThreshold, List<String> whitelistWords, Names names) {
+    private void readNewLines(long start, String logRntPath) {
+
         try (RandomAccessFile raf = new RandomAccessFile(logRntPath, "r")) {
             raf.seek(start);
             String line;
             while ((line = raf.readLine()) != null) {
-                processLogLine(line, similarityThreshold, whitelistWords, names);
+                processLogLine(line);
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-    private void processLogLine(String line, double similarityThreshold, List<String> whitelistWords, Names names) throws IOException {
+    private void processLogLine(String line) throws IOException {
         line = new String(line.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
 
         if (Readable.check(line)) {
-            executor.execute(line, names, similarityThreshold, whitelistWords);
+            executor.execute(line, names);
         }
     }
-
 }

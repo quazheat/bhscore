@@ -51,7 +51,7 @@ public class CustomHelp extends JPanel {
             customDialog.add(buttonPanel, BorderLayout.SOUTH);
 
             customDialog.setTitle("Инфо");
-            customDialog.setSize(500, 735);
+            customDialog.setSize(450, 735);
             customDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             customDialog.setLocationRelativeTo(null); // Center on the screen
             customDialog.setVisible(true);
