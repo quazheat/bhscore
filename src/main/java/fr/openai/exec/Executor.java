@@ -25,17 +25,18 @@ public class Executor {
         this.executorService = Executors.newScheduledThreadPool(10);
 
     }
-    public void executeCounter(String line){
+
+    public void executeCounter(String line) {
         String message = Messages.getMessage(line);
         executorService.submit(() -> {
             counter.counter(message);
         });
     }
+
     public void execute(String line, Names names) {
         if (Validator.isNotValid(line)) {
             return;
         }
-
 
 
         String playerName = names.getFinalName(line);

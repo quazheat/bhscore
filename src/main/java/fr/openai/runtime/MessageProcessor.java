@@ -1,6 +1,5 @@
 package fr.openai.runtime;
 
-import fr.openai.database.customui.DiscordRPC;
 import fr.openai.exec.ClipboardUtil;
 import fr.openai.filter.FilteringModeManager;
 import fr.openai.notify.NotificationSystem;

@@ -11,7 +11,6 @@ public class Messages {
     }
 
 
-
     private static String extract(String line) {
         int chatIndex = line.indexOf(": [CHAT]");
         if (chatIndex == -1) {
@@ -49,10 +48,4 @@ public class Messages {
 
         System.out.println("No valid message found in the input string.");
     }*/
-    public static String getVCounter (String line) {
-        if (!Validator.isNotValid(line)) {
-            return line;
-        }
-        return null;
-    }
 }

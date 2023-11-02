@@ -1,8 +1,8 @@
 package fr.openai.runtime;
 
+import fr.openai.database.files.ConnectDb;
 import fr.openai.database.files.TrayIconLoader;
 import fr.openai.database.editor.Editor;
-import fr.openai.starter.logs.ConsoleLogger;
 
 import java.awt.*;
 
@@ -42,6 +42,7 @@ public class SystemTrayManager {
 
             exitItem.addActionListener(e -> {
                 //ConsoleLogger.consoleLog();
+                ConnectDb.closeMongoClient();
                 System.exit(0);
             });
 

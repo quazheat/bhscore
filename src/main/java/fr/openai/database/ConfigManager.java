@@ -96,18 +96,6 @@ public class ConfigManager {
         }
     }
 
-    public void setWarnsCounter(int warnsCounter) {
-        this.warnsCounter = warnsCounter;
-        properties.setProperty(WARNS_COUNTER_KEY, String.valueOf(warnsCounter));
-        saveConfig();
-    }
-
-    public void setMutedCounter(int mutedCounter) {
-        this.mutedCounter = mutedCounter;
-        properties.setProperty(MUTED_COUNTER_KEY, String.valueOf(mutedCounter));
-        saveConfig();
-    }
-
     public interface UpFQChangeListener {
         void upFQChanged(int newUpFQ);
     }
