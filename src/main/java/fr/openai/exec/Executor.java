@@ -28,9 +28,7 @@ public class Executor {
 
     public void executeCounter(String line) {
         String message = Messages.getMessage(line);
-        executorService.submit(() -> {
-            counter.counter(message);
-        });
+        executorService.submit(() -> counter.counter(message));
     }
 
     public void execute(String line, Names names) {

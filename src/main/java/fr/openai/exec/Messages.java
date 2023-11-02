@@ -1,6 +1,5 @@
 package fr.openai.exec;
 
-import fr.openai.filter.Validator;
 
 public class Messages {
     public static String getMessage(String line) {
