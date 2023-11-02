@@ -74,6 +74,7 @@ public class LogRNT {
             String line;
             while ((line = raf.readLine()) != null) {
                 processLogLine(line);
+                processLogLineRPC(line);
             }
 
         } catch (IOException e) {
@@ -86,6 +87,12 @@ public class LogRNT {
 
         if (Readable.check(line)) {
             executor.execute(line, names);
+        }
+    }
+    private void processLogLineRPC(String line) throws IOException {
+        line = new String(line.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+
+        if (Readable.check(line)) {
             executor.executeCounter(line);
         }
     }

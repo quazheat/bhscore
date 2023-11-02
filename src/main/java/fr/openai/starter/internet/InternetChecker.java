@@ -12,7 +12,7 @@ public class InternetChecker {
             URI siteURI = new URI(url);
             connection = (HttpURLConnection) siteURI.toURL().openConnection();
             connection.setRequestMethod("HEAD");
-            connection.setConnectTimeout(5000); // Set the connection timeout
+            connection.setConnectTimeout(10000); // Set the connection timeout
             int responseCode = connection.getResponseCode();
             return responseCode == HttpURLConnection.HTTP_OK;
         } catch (IOException | URISyntaxException e) {

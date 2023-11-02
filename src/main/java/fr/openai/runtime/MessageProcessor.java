@@ -1,6 +1,7 @@
 package fr.openai.runtime;
 
 import fr.openai.exec.ClipboardUtil;
+import fr.openai.exec.PasteUtil;
 import fr.openai.filter.FilteringModeManager;
 import fr.openai.notify.NotificationSystem;
 import fr.openai.notify.WindowsNotification;
@@ -64,6 +65,7 @@ public class MessageProcessor {
             WindowsNotification.showWindowsNotification("LOYAL", "2.10", INFO);
             String textToCopyF = "/warn " + playerName + " Не флуди";
             ClipboardUtil.copyToClipboard(textToCopyF);
+            PasteUtil.pasteFromClipboard(); // Paste the text from the clipboard
             return;
         }
 
@@ -75,5 +77,6 @@ public class MessageProcessor {
         WindowsNotification.showWindowsNotification("RAGE", "2.10", ERROR);
         String textToCopy = "/mute " + playerName + " 2.10+";
         ClipboardUtil.copyToClipboard(textToCopy);
+        PasteUtil.pasteFromClipboard(); // Paste the text from the clipboard
     }
 }

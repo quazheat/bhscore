@@ -1,9 +1,18 @@
 package fr.openai.exec;
 
 
+import fr.openai.filter.Validator;
+
 public class Messages {
     public static String getMessage(String line) {
+        if (Validator.isNotValid(line)) {
+            return null;
+        }
 
+        String message = extract(line);
+        return !message.isEmpty() ? message : null;
+    }
+    public static String getMessageRPC(String line) {
 
         String message = extract(line);
         return !message.isEmpty() ? message : null;

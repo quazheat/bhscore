@@ -27,16 +27,12 @@ public class Executor {
     }
 
     public void executeCounter(String line) {
-        String message = Messages.getMessage(line);
-        executorService.submit(() -> counter.counter(message));
     }
 
     public void execute(String line, Names names) {
-        if (Validator.isNotValid(line)) {
-            return;
-        }
 
 
+        String messageCounter = Messages.getMessageRPC(line);
         String playerName = names.getFinalName(line);
         String message = Messages.getMessage(line);
 
@@ -44,6 +40,7 @@ public class Executor {
         executorService.submit(() -> {
             filtering.onFilter(playerName, message);
             messageProcessor.processMessage(playerName, message);
+            counter.counter(messageCounter);
             executorService.scheduleAtFixedRate(DiscordRPC::updateRPC, 0, 1, TimeUnit.SECONDS);
         });
     }
