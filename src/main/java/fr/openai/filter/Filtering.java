@@ -31,7 +31,6 @@ public class Filtering {
     }
 
     public void onFilter(String name, String line) {
-
         String message = Messages.getMessage(line);
         String playerName = Names.formatPlayerName(name);
 
@@ -45,11 +44,10 @@ public class Filtering {
 
         if (filters.hasWarnCounter(message)) {
             warns++; // Increment the warns counter
-
         }
 
         String newState = mutes + " mutes | " + warns + " warns performed."; //💢
-        if (mutes > 0 || warns > 0 ) {
+        if (mutes > 0 || warns > 0) {
             DiscordRPC.updateRPCState(newState);
             DiscordRPC.updateRPC();
         }
@@ -62,54 +60,65 @@ public class Filtering {
             return;
         }
 
-
         boolean F = filters.hasManySymbols(message) || filters.hasLaugh(message) || filters.hasWFlood(message);
         boolean C = filters.hasCaps(message);
         boolean S = filters.hasSwearing(message);
+
+
         if (F && !S && !C) {
-            handleViolation(playerName, message,
-                    "/warn " + playerName + " Не флуди", message, "2.10+");
+            handleViolation(playerName, message, "/warn " + playerName + " Не флуди", message, "2.10+");
+            F = false;
             return;
         }
 
         if (!F && !S && C) {
-            handleViolation(playerName, message,
-                    "/warn " + playerName + " Не капси", message, "2.12+");
+            handleViolation(playerName, message, "/warn " + playerName + " Не капси", message, "2.12+");
+            C = false;
             return;
         }
 
         if (!F && S && !C) {
-            handleViolation(playerName, message,
-                    "/warn " + playerName + " Не матерись", message, "2.7");
-            return;
-        }
-        if (F && !S) {
-            handleViolation(playerName, message,
-                    "/mute " + playerName + " 2.10+2.12+", message, "2.10+2.12+");
+            handleViolation(playerName, message, "/warn " + playerName + " Не матерись", message, "2.7");
+            S = false;
             return;
         }
 
-        if (F && !C) {
-            handleViolation(playerName, message,
-                    "/mute " + playerName + " 2.10+2.7", message, "2.10+2.7");
+        if (F && C && !S) {
+            handleViolation(playerName, message, "/mute " + playerName + " 2.10+2.12+", message, "2.10+2.12+");
+            F = false;
+            C = false;
             return;
         }
 
-        if (!F && S) {
-            handleViolation(playerName, message,
-                    "/mute " + playerName + " 2.12+2.7", message, "2.12+2.7");
+        if (F && S && !C) {
+            handleViolation(playerName, message, "/mute " + playerName + " 2.10+2.7", message, "2.10+2.7");
+            F = false;
+            S = false;
+
             return;
         }
-        if (F) {
-            handleViolation(playerName, message,
-                    "/mute " + playerName + " 2.12+2.10+2.7", message, "2.12+2.10+2.7");
+
+        if (!F && C && S) {
+            handleViolation(playerName, message, "/mute " + playerName + " 2.12+2.7", message, "2.12+2.7");
+            S = false;
+            C = false;
+            return;
+        }
+
+        if (F && C && S) {
+            handleViolation(playerName, message, "/mute " + playerName + " 2.12+2.10+2.7", message, "2.12+2.10+2.7");
+            F = false;
+            S = false;
+            C = false;
             discordDetails = new DiscordDetails();
             String newDetails = discordDetails.getRandomScaryPhrase();
             System.out.println("Scary Phrase: " + newDetails);
             DiscordRPC.updateRPCDetails(newDetails);
             DiscordRPC.updateRPC();
         }
-    }
+
+}
+
 
 
     private void handleViolation(String playerName, String message, String loyalAction, String loyalMessage, String rageAction) {
@@ -129,6 +138,7 @@ public class Filtering {
         showRageNotification(message);
         copyToClipboard("/mute " + playerName + " " + rageAction);
         PasteUtil.pasteFromClipboard(); // Paste the text from the clipboard
+
     }
 
     private void handleUnknownNameViolation(String line) {
