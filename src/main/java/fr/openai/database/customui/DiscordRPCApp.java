@@ -1,5 +1,7 @@
 package fr.openai.database.customui;
 
+import fr.openai.database.ConfigManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,6 +19,7 @@ public class DiscordRPCApp extends JDialog {
         setResizable(false);
         setLocationRelativeTo(null);
 
+        setAlwaysOnTop(true);
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -38,6 +41,11 @@ public class DiscordRPCApp extends JDialog {
         gbc.gridx = 0;
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Load the username from config.properties and set it in the text field
+        ConfigManager configManager = new ConfigManager();
+        usernameField.setText(configManager.getUsername());
+
         panel.add(usernameField, gbc);
 
         JPanel buttonPanel = new JPanel(new GridBagLayout());
@@ -46,9 +54,10 @@ public class DiscordRPCApp extends JDialog {
         gbc.insets = new Insets(10, 10, 10, 10);
         panel.add(buttonPanel, gbc);
 
-        JButton closeButton = new JButton("Закрыть");
+        JButton closeButton = new JButton("это я");
         closeButton.addActionListener(e -> {
             enteredUsername = usernameField.getText(); // Set the entered username
+            saveUsernameToConfig(enteredUsername); // Save the username to config.properties
             dispose();
         });
 
@@ -63,6 +72,11 @@ public class DiscordRPCApp extends JDialog {
         buttonPanel.add(closeButton, gbc);
 
         add(panel);
+    }
+
+    private void saveUsernameToConfig(String username) {
+        ConfigManager configManager = new ConfigManager();
+        configManager.setUsername(username);
     }
 
     public static String getUsername() {
