@@ -2,12 +2,12 @@ package fr.openai.runtime;
 
 import fr.openai.database.files.ConnectDb;
 import fr.openai.database.files.TrayIconLoader;
-import fr.openai.database.editor.Editor;
+import fr.openai.ui.panels.Menu;
 
 import java.awt.*;
 
 public class SystemTrayManager {
-    private Editor editor;
+    private Menu menu;
 
     public void setupSystemTray() {
         TrayIconLoader iconLoader = new TrayIconLoader();
@@ -18,7 +18,7 @@ public class SystemTrayManager {
             MenuItem exitItem = new MenuItem("exit program");
 
             // Создание подменю Modes
-            Menu modesMenu = new Menu("Modes");
+            java.awt.Menu modesMenu = new java.awt.Menu("Modes");
             CheckboxMenuItem toggleRageModeItem = new CheckboxMenuItem("Rage Mode");
             CheckboxMenuItem toggleLoyalModeItem = new CheckboxMenuItem("Loyal Mode");
             modesMenu.add(toggleRageModeItem);
@@ -56,12 +56,12 @@ public class SystemTrayManager {
                 e.printStackTrace();
             }
             showEditor.addActionListener(e -> {
-                if (editor == null) {
-                    editor = new Editor(trayIcon);
+                if (menu == null) {
+                    menu = new Menu(trayIcon);
                     return;
                 }
 
-                editor.setVisible(true);
+                menu.setVisible(true);
             });
 
             // Create a TrayIconManager instance and set up icon listeners

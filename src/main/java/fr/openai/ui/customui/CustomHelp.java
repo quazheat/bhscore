@@ -1,4 +1,4 @@
-package fr.openai.database.customui;
+package fr.openai.ui.customui;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,14 +1,15 @@
-package fr.openai.database.editor;
+package fr.openai.database.menu;
 
 import com.mongodb.client.MongoCollection;
+import fr.openai.ui.panels.Menu;
 import fr.openai.database.files.ConnectDb;
 import org.bson.Document;
 
 public class RemoveWhitelistWord {
-    private final Editor editor;
+    private final Menu menu;
 
-    public RemoveWhitelistWord(Editor editor) {
-        this.editor = editor;
+    public RemoveWhitelistWord(Menu menu) {
+        this.menu = menu;
     }
 
     public void removeWhitelistWord(String wordToRemove) {
@@ -21,11 +22,11 @@ public class RemoveWhitelistWord {
             Document updateDocument = new Document("$pull", new Document("whitelist", wordToRemove)); // Создаем документ для обновления
             collection.updateOne(new Document(), updateDocument); // Обновляем документ в коллекции
 
-            editor.setOutputText(wordToRemove + " удалено из whitelist.");
+            menu.setOutputText(wordToRemove + " удалено из whitelist.");
             ConnectDb.getWordsDB();
             return;
         }
 
-        editor.setOutputText(wordToRemove + " не найдено в whitelist.");
+        menu.setOutputText(wordToRemove + " не найдено в whitelist.");
     }
 }

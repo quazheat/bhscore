@@ -1,6 +1,7 @@
-package fr.openai.database.customui;
+package fr.openai.ui;
 
 import fr.openai.starter.VersionChecker;
+import fr.openai.ui.customui.CustomButtonUI;
 
 import javax.swing.*;
 import java.awt.*;

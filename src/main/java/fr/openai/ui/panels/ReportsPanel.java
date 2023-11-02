@@ -1,9 +1,11 @@
-package fr.openai.database.customui;
+package fr.openai.ui.panels;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import fr.openai.database.IpAddressUtil;
+import fr.openai.ui.customui.CustomButtonUI;
+import fr.openai.ui.SubmitTicketDialog;
 import fr.openai.database.files.ConnectDb;
 import fr.openai.database.files.TicketDocument;
 import fr.openai.starter.logs.UuidLog;
@@ -14,8 +16,6 @@ import org.bson.Document;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;

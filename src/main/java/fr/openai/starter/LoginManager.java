@@ -1,6 +1,6 @@
 package fr.openai.starter;
 
-import fr.openai.database.customui.LoginUIManager;
+import fr.openai.ui.LoginUIManager;
 import fr.openai.notify.NotificationSystem;
 import fr.openai.reader.LogRNT;
 import fr.openai.starter.uuid.UuidChecker;

@@ -1,20 +1,20 @@
-package fr.openai.database.editor;
+package fr.openai.ui.panels;
 
-import fr.openai.database.customui.ModesPanel;
-import fr.openai.database.customui.ForbiddenWordsPanel;
-import fr.openai.database.customui.ReportsPanel;
-import fr.openai.database.customui.WhitelistPanel;
+import fr.openai.database.menu.AddNewWhitelistWord;
+import fr.openai.database.menu.AddNewWord;
+import fr.openai.database.menu.RemoveWhitelistWord;
+import fr.openai.database.menu.RemoveWord;
 import fr.openai.starter.VersionChecker;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class Editor {
+public class Menu {
 
     private final JFrame frame;
     private final JLabel outputLabel;
 
-    public Editor(TrayIcon trayIcon) { // Pass the trayIcon to the constructor
+    public Menu(TrayIcon trayIcon) { // Pass the trayIcon to the constructor
         String version = VersionChecker.getCurrentVersion();
         // Add this member variable
 

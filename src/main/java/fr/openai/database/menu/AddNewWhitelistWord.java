@@ -1,7 +1,8 @@
-package fr.openai.database.editor;
+package fr.openai.database.menu;
 
 import com.mongodb.client.MongoCollection;
 import fr.openai.database.IpAddressUtil;
+import fr.openai.ui.panels.Menu;
 import fr.openai.database.files.ConnectDb;
 import fr.openai.database.files.TicketDocument;
 import org.bson.Document;
@@ -9,10 +10,10 @@ import org.bson.Document;
 import java.util.Date;
 
 public class AddNewWhitelistWord {
-    private final Editor editor;
+    private final Menu menu;
 
-    public AddNewWhitelistWord(Editor editor) {
-        this.editor = editor;
+    public AddNewWhitelistWord(Menu menu) {
+        this.menu = menu;
     }
 
     public void addNewWhitelistWord(String words) {
@@ -39,7 +40,7 @@ public class AddNewWhitelistWord {
             }
         }
 
-        editor.setOutputText(outputText.toString());
+        menu.setOutputText(outputText.toString());
         ConnectDb.getWordsDB();
     }
 

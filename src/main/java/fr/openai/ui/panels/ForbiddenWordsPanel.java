@@ -1,12 +1,13 @@
-package fr.openai.database.customui;
+package fr.openai.ui.panels;
 
-import fr.openai.database.editor.AddNewWord;
-import fr.openai.database.editor.RemoveWord;
+import fr.openai.ui.customui.CustomButtonUI;
+import fr.openai.ui.customui.CustomTab;
+import fr.openai.database.menu.InputValidator;
+import fr.openai.database.menu.AddNewWord;
+import fr.openai.database.menu.RemoveWord;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class ForbiddenWordsPanel extends JPanel {
     private final JTextField inputTextField;

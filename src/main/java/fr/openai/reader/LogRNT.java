@@ -1,6 +1,6 @@
 package fr.openai.reader;
 
-import fr.openai.database.customui.DiscordRPCApp;
+import fr.openai.discordfeatures.DiscordRPCApp;
 import fr.openai.database.files.ConnectDb;
 import fr.openai.exec.Executor;
 import fr.openai.filter.fixer.Names;
@@ -31,8 +31,8 @@ public class LogRNT {
     }
 
     public void starter() {
+        ConfigManager configManager = new ConfigManager();
         DiscordRPCApp discordRPCApp = new DiscordRPCApp();
-        discordRPCApp.setVisible(true);
         ConnectDb.getWordsDB();
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
@@ -44,6 +44,7 @@ public class LogRNT {
         previousSize = getFileSize();
 
         executorService.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.MILLISECONDS);
+        discordRPCApp.setVisible(true);
     }
 
     private void checkLogChanges() {
@@ -74,7 +75,6 @@ public class LogRNT {
             String line;
             while ((line = raf.readLine()) != null) {
                 processLogLine(line);
-                processLogLineRPC(line);
             }
 
         } catch (IOException e) {
@@ -87,13 +87,6 @@ public class LogRNT {
 
         if (Readable.check(line)) {
             executor.execute(line, names);
-        }
-    }
-    private void processLogLineRPC(String line) throws IOException {
-        line = new String(line.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
-
-        if (Readable.check(line)) {
-            executor.executeCounter(line);
         }
     }
 }

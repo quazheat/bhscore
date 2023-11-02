@@ -22,6 +22,14 @@ public class MessageProcessor {
     }
 
     public void processMessage(String playerName, String message) {
+        if (message.contains("㰳")
+                || message.contains("по причине:")
+                || message.contains(". Причина:")
+                || "Unknown".equalsIgnoreCase(playerName)
+        ){
+            System.out.println(message + " SKIPPED");
+            return;
+        }
         long currentTime = System.currentTimeMillis() / 1000;
         removeOldRecords(currentTime);
 
@@ -51,8 +59,10 @@ public class MessageProcessor {
 
     private void addNewRecord(String playerName, long currentTime, String message) {
         // Add a new message record
+
         MessageRecord newRecord = new MessageRecord(playerName, currentTime, message);
         messageRecords.add(newRecord);
+        System.out.println(newRecord + " FLLODDD RECORDED");
     }
 
     private void handleDuplicateMessages(String playerName, String message) {
@@ -66,6 +76,7 @@ public class MessageProcessor {
             String textToCopyF = "/warn " + playerName + " Не флуди";
             ClipboardUtil.copyToClipboard(textToCopyF);
             PasteUtil.pasteFromClipboard(); // Paste the text from the clipboard
+            System.out.println(textToCopyF);
             return;
         }
 
@@ -78,5 +89,6 @@ public class MessageProcessor {
         String textToCopy = "/mute " + playerName + " 2.10+";
         ClipboardUtil.copyToClipboard(textToCopy);
         PasteUtil.pasteFromClipboard(); // Paste the text from the clipboard
+        System.out.println(textToCopy);
     }
 }

@@ -6,13 +6,10 @@ import fr.openai.filter.Validator;
 public class Messages {
     public static String getMessage(String line) {
         if (Validator.isNotValid(line)) {
+
+            System.out.println(line + " INVALID");
             return null;
         }
-
-        String message = extract(line);
-        return !message.isEmpty() ? message : null;
-    }
-    public static String getMessageRPC(String line) {
 
         String message = extract(line);
         return !message.isEmpty() ? message : null;
@@ -37,7 +34,7 @@ public class Messages {
                 start = colonIndex + 1;
             }
         }
-
+        System.out.println(line.substring(start).trim() + " TRIMMED");
         return line.substring(start).trim();
     }
 

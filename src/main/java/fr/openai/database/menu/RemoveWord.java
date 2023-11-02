@@ -1,14 +1,15 @@
-package fr.openai.database.editor;
+package fr.openai.database.menu;
 
 import com.mongodb.client.MongoCollection;
+import fr.openai.ui.panels.Menu;
 import fr.openai.database.files.ConnectDb;
 import org.bson.Document;
 
 public class RemoveWord {
-    private final Editor editor;
+    private final Menu menu;
 
-    public RemoveWord(Editor editor) {
-        this.editor = editor;
+    public RemoveWord(Menu menu) {
+        this.menu = menu;
     }
 
     public void removeWord(String wordToRemove) {
@@ -22,11 +23,11 @@ public class RemoveWord {
             Document updateDocument = new Document("$pull", new Document("forbidden_words", wordToRemove));
             // Удаляем слово из массива forbidden_words
             collection.updateOne(new Document(), updateDocument);
-            editor.setOutputText("Слово " + wordToRemove + " удалено из списка.");
+            menu.setOutputText("Слово " + wordToRemove + " удалено из списка.");
             ConnectDb.getWordsDB();
             return;
         }
 
-        editor.setOutputText("Слово " + wordToRemove + " не найдено.");
+        menu.setOutputText("Слово " + wordToRemove + " не найдено.");
     }
 }

@@ -1,4 +1,4 @@
-package fr.openai.database.customui;
+package fr.openai.discordfeatures;
 
 import club.minnced.discord.rpc.DiscordEventHandlers;
 import club.minnced.discord.rpc.DiscordRichPresence;

@@ -1,6 +1,6 @@
 package fr.openai.filter;
 
-import fr.openai.database.customui.DiscordRPC;
+import fr.openai.discordfeatures.DiscordRPC;
 import fr.openai.exec.Messages;
 
 public class Counter {

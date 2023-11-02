@@ -1,25 +1,23 @@
 package fr.openai.exec;
 
-import fr.openai.database.customui.DiscordRPC;
-import fr.openai.filter.Counter;
+import fr.openai.discordfeatures.DiscordRPC;
 import fr.openai.filter.fixer.Names;
 import fr.openai.filter.Filtering;
 import fr.openai.runtime.MessageProcessor;
 import fr.openai.filter.Validator;
 import fr.openai.notify.NotificationSystem;
+import fr.openai.starter.logs.ConsoleLogger;
 
 import java.util.concurrent.*;
 
 public class Executor {
 
     private final Filtering filtering;
-    private final Counter counter;
     private final ScheduledExecutorService executorService;
 
     private final MessageProcessor messageProcessor;
 
     public Executor(NotificationSystem notificationSystem) {
-        this.counter = new Counter();
         this.filtering = new Filtering(notificationSystem);
         this.messageProcessor = new MessageProcessor(notificationSystem);
         this.executorService = Executors.newScheduledThreadPool(10);
@@ -30,17 +28,20 @@ public class Executor {
     }
 
     public void execute(String line, Names names) {
+        if (Validator.isNotValid(line)) {
+            return;
+        }
 
-
-        String messageCounter = Messages.getMessageRPC(line);
         String playerName = names.getFinalName(line);
         String message = Messages.getMessage(line);
-
+        if (message == null) {
+            return;
+        }
         // Используем executorService для выполнения задач в пуле потоков
         executorService.submit(() -> {
+            ConsoleLogger.consoleLog();
             filtering.onFilter(playerName, message);
             messageProcessor.processMessage(playerName, message);
-            counter.counter(messageCounter);
             executorService.scheduleAtFixedRate(DiscordRPC::updateRPC, 0, 1, TimeUnit.SECONDS);
         });
     }

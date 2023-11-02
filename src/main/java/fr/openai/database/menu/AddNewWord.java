@@ -1,7 +1,8 @@
-package fr.openai.database.editor;
+package fr.openai.database.menu;
 
 import com.mongodb.client.MongoCollection;
 import fr.openai.database.IpAddressUtil;
+import fr.openai.ui.panels.Menu;
 import fr.openai.database.files.ConnectDb;
 import fr.openai.database.files.TicketDocument;
 import org.bson.Document;
@@ -9,10 +10,10 @@ import org.bson.Document;
 import java.util.Date;
 
 public class AddNewWord {
-    private final Editor editor;
+    private final Menu menu;
 
-    public AddNewWord(Editor editor) {
-        this.editor = editor;
+    public AddNewWord(Menu menu) {
+        this.menu = menu;
     }
 
     public void addNewWord(String newWord) {
@@ -36,10 +37,10 @@ public class AddNewWord {
             // Send a ticket with the added word
             sendTicket("added word: " + newWord);
 
-            editor.setOutputText(newWord + " добавлено.");
+            menu.setOutputText(newWord + " добавлено.");
             ConnectDb.getWordsDB();
         } else {
-            editor.setOutputText(newWord + " уже в списке.");
+            menu.setOutputText(newWord + " уже в списке.");
         }
     }
 

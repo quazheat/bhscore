@@ -2,14 +2,14 @@ package fr.openai.starter;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import fr.openai.database.customui.VersionGUI;
+import fr.openai.ui.VersionGUI;
 import fr.openai.database.files.ConnectDb;
 import org.bson.Document;
 
 public class VersionChecker {
     public static String getCurrentVersion() {
         // Текущая версия программы
-        return "6.5.5";
+        return "6.5.6";
     }
 
     public static String getDbVersion() {

@@ -1,6 +1,8 @@
-package fr.openai.database.customui;
+package fr.openai.ui.panels;
 
 import fr.openai.database.ConfigManager;
+import fr.openai.ui.customui.CustomHelp;
+import fr.openai.discordfeatures.DiscordRPC;
 
 import javax.swing.*;
 import java.awt.*;

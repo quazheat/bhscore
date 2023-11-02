@@ -1,7 +1,10 @@
-package fr.openai.database.customui;
+package fr.openai.ui.panels;
 
-import fr.openai.database.editor.AddNewWhitelistWord;
-import fr.openai.database.editor.RemoveWhitelistWord;
+import fr.openai.ui.customui.CustomButtonUI;
+import fr.openai.ui.customui.CustomTab;
+import fr.openai.database.menu.InputValidator;
+import fr.openai.database.menu.AddNewWhitelistWord;
+import fr.openai.database.menu.RemoveWhitelistWord;
 
 import javax.swing.*;
 import java.awt.*;

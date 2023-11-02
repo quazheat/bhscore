@@ -1,8 +1,8 @@
 package fr.openai.notify;
 
-import fr.openai.database.customui.CustomClose;
-import fr.openai.database.customui.CustomDialog;
-import fr.openai.database.customui.CustomField;
+import fr.openai.ui.customui.CustomClose;
+import fr.openai.ui.customui.CustomDialog;
+import fr.openai.ui.customui.CustomField;
 import fr.openai.filter.NameFix;
 
 import javax.swing.*;

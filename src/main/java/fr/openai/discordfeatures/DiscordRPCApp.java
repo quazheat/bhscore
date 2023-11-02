@@ -1,11 +1,10 @@
-package fr.openai.database.customui;
+package fr.openai.discordfeatures;
 
 import fr.openai.database.ConfigManager;
+import fr.openai.ui.customui.CustomButtonUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class DiscordRPCApp extends JDialog {
 
@@ -27,26 +26,26 @@ public class DiscordRPCApp extends JDialog {
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        JLabel messageLabel1 = new JLabel("Введите свой ник:");
-        messageLabel1.setHorizontalAlignment(JLabel.CENTER);
+        JLabel usernameField = new JLabel("Введите свой ник:");
+        usernameField.setHorizontalAlignment(JLabel.CENTER);
 
         gbc.insets = new Insets(10, 10, 0, 10);
-        panel.add(messageLabel1, gbc);
+        panel.add(usernameField, gbc);
 
         gbc.gridy = 1;
         gbc.insets = new Insets(0, 10, 10, 10);
 
         // Create a text field for the user to enter their username
-        usernameField = new JTextField(20);
+        this.usernameField = new JTextField(20);
         gbc.gridx = 0;
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Load the username from config.properties and set it in the text field
         ConfigManager configManager = new ConfigManager();
-        usernameField.setText(configManager.getUsername());
+        this.usernameField.setText(configManager.getUsername());
 
-        panel.add(usernameField, gbc);
+        panel.add(this.usernameField, gbc);
 
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         gbc.gridy = 2;
@@ -56,7 +55,7 @@ public class DiscordRPCApp extends JDialog {
 
         JButton closeButton = new JButton("это я");
         closeButton.addActionListener(e -> {
-            enteredUsername = usernameField.getText(); // Set the entered username
+            enteredUsername = this.usernameField.getText(); // Set the entered username
             saveUsernameToConfig(enteredUsername); // Save the username to config.properties
             dispose();
         });
