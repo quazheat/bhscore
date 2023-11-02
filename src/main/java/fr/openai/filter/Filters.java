@@ -3,6 +3,8 @@ package fr.openai.filter;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import fr.openai.database.JsonFileReader;
+import fr.openai.database.customui.DiscordRPC;
+import fr.openai.database.customui.DiscordRPCApp;
 import fr.openai.exec.LevenshteinDistance;
 
 import java.util.HashMap;
@@ -107,8 +109,14 @@ public class Filters {
 
         return false;
     }
-
-
+    public boolean hasMuteCounter (String muteCounter) {
+        String username = DiscordRPCApp.getUsername();
+        return muteCounter.contains(username + " замутил");
+    }
+    public boolean hasWarnCounter(String warnCounter) {
+        String username = DiscordRPCApp.getUsername();
+        return warnCounter.contains(username + " предупредил");
+    }
 
     private String removeSpecialCharacters(String input) {
         return input.replaceAll("[^a-zA-Zа-яА-Я]", "");

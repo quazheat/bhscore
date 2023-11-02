@@ -96,14 +96,6 @@ public class ConfigManager {
         }
     }
 
-    public int getWarnsCounter() {
-        return warnsCounter;
-    }
-
-    public int getMutedCounter() {
-        return mutedCounter;
-    }
-
     public void setWarnsCounter(int warnsCounter) {
         this.warnsCounter = warnsCounter;
         properties.setProperty(WARNS_COUNTER_KEY, String.valueOf(warnsCounter));

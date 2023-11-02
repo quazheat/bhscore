@@ -31,8 +31,8 @@ public class LogRNT {
     }
 
     public void starter() {
-        //DiscordRPCApp discordRPCApp = new DiscordRPCApp();
-        //discordRPCApp.setVisible(true);
+        DiscordRPCApp discordRPCApp = new DiscordRPCApp();
+        discordRPCApp.setVisible(true);
         ConnectDb.getWordsDB();
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
@@ -86,6 +86,7 @@ public class LogRNT {
 
         if (Readable.check(line)) {
             executor.execute(line, names);
+            executor.executeCounter(line);
         }
     }
 }

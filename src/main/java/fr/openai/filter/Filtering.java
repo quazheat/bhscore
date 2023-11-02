@@ -1,7 +1,5 @@
 package fr.openai.filter;
 
-import fr.openai.database.customui.DiscordRPC;
-import fr.openai.database.customui.DiscordRPCApp;
 import fr.openai.exec.Messages;
 import fr.openai.exec.ClipboardUtil;
 import fr.openai.exec.PasteUtil;
@@ -10,9 +8,11 @@ import fr.openai.notify.WindowsNotification;
 
 import static java.awt.TrayIcon.MessageType.ERROR;
 import static java.awt.TrayIcon.MessageType.INFO;
+
 import fr.openai.filter.fixer.Names;
 
 public class Filtering {
+
     private final NotificationSystem notificationSystem;
     private final Filters filters;
 
@@ -20,9 +20,12 @@ public class Filtering {
         this.notificationSystem = notificationSystem;
         this.filters = new Filters();
     }
+
     public void onFilter(String name, String line) {
+
         String message = Messages.getMessage(line);
         String playerName = Names.formatPlayerName(name);
+
 
         if (message == null) {
             return;
@@ -33,6 +36,7 @@ public class Filtering {
             return;
         }
 
+
         boolean F = filters.hasManySymbols(message) || filters.hasLaugh(message) || filters.hasWFlood(message);
         boolean C = filters.hasCaps(message);
         boolean S = filters.hasSwearing(message);
@@ -42,7 +46,7 @@ public class Filtering {
         }
 
         if (!F && !S && C) {
-           handleViolation(playerName, message, "Не капси", message, "2.12+");
+            handleViolation(playerName, message, "Не капси", message, "2.12+");
             return;
         }
 
@@ -71,8 +75,6 @@ public class Filtering {
 
 
     private void handleViolation(String playerName, String message, String loyalAction, String loyalMessage, String rageAction) {
-        DiscordRPC.updateRPCState("Наблюдаем за  " + playerName);
-        DiscordRPC.updateRPC(); // Update the presence after setting the state
 
         if (FilteringModeManager.isLoyalModeEnabled()) {
             showLoyalNotification(loyalMessage);
@@ -91,11 +93,10 @@ public class Filtering {
         PasteUtil.pasteFromClipboard(); // Paste the text from the clipboard
     }
 
-
-
     private void handleUnknownNameViolation(String line) {
         System.out.println("VIOLATION: unknown name: " + line);
     }
+
     private void showLoyalNotification(String message) {
         WindowsNotification.showWindowsNotification(getActionName(), message, INFO);
     }

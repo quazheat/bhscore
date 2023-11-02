@@ -17,25 +17,18 @@ public static void updateRPC() {
     }
 
     final String username = DiscordRPCApp.getUsername();
-    Instant currentTime = Instant.ofEpochSecond(System.currentTimeMillis() / 1000);
-    Instant startTimeInstant = Instant.ofEpochSecond(startTime);
-    Duration duration = Duration.between(startTimeInstant, currentTime);
-    String elapsedTime = formatDuration(duration);
 
     club.minnced.discord.rpc.DiscordRPC lib = club.minnced.discord.rpc.DiscordRPC.INSTANCE;
     DiscordEventHandlers handlers = new DiscordEventHandlers();
     lib.Discord_Initialize("1058737271341338655", handlers, true, null);
 
     presence.details = "Big brother watching you"; // The main text field
-
-    // Append "Big brother watching you" as an additional line in the state
     presence.state = state;
     presence.startTimestamp = startTime;
     presence.largeImageKey = "https://media.tenor.com/22oV0lhc-H8AAAAd/anime-girl-crazy-physco-black-and-white.gif";
     presence.largeImageText = "BHScore";
     presence.smallImageKey = "minigames";
     presence.smallImageText = username;
-
     presence.partySize = 0; // Number of players in the party
     presence.partyMax = 0; // Maximum size of the party
     presence.matchSecret = "match-secret";
@@ -56,15 +49,5 @@ public static void setRPCEnabled(boolean enabled) {
     isRPCEnabled = enabled;
 }
 
-private static String formatDuration(Duration duration) {
-    long hours = duration.toHours();
-    long minutes = duration.minusHours(hours).toMinutes();
-    long seconds = duration.minusHours(hours).minusMinutes(minutes).getSeconds();
 
-    if (hours > 0) {
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
-    } else {
-        return String.format("%02d:%02d", minutes, seconds);
-    }
-}
 }

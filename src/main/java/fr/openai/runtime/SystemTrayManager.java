@@ -41,7 +41,7 @@ public class SystemTrayManager {
             SystemTray tray = SystemTray.getSystemTray();
 
             exitItem.addActionListener(e -> {
-                ConsoleLogger.consoleLog();
+                //ConsoleLogger.consoleLog();
                 System.exit(0);
             });
 

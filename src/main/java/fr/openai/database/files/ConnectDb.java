@@ -30,17 +30,20 @@ public class ConnectDb {
 
         mongoClient = MongoClients.create(settings);
     }
+
     public static MongoCollection<Document> getMongoCollection(String collectionName) {
         MongoClient mongoClient = getMongoClient();
         MongoDatabase database = mongoClient.getDatabase("BHScore");
 
         return database.getCollection(collectionName);
     }
+
     public static void closeMongoClient() {
         if (mongoClient != null) {
             mongoClient.close();
         }
     }
+
     public static void getWordsDB() {
         // Получить коллекцию из MongoDB
         MongoCollection<Document> collection = ConnectDb.getMongoCollection("words");
