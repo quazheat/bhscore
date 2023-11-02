@@ -9,7 +9,7 @@ import fr.openai.ui.SubmitTicketDialog;
 import fr.openai.database.files.ConnectDb;
 import fr.openai.database.files.TicketDocument;
 import fr.openai.starter.logs.UuidLog;
-import fr.openai.starter.uuid.HwidManager;
+import fr.openai.starter.uuid.manager.HwidManager;
 import fr.openai.starter.uuid.UuidChecker;
 import fr.openai.starter.uuid.UuidProvider;
 import org.bson.Document;

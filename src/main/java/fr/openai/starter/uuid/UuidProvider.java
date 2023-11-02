@@ -23,7 +23,6 @@ public class UuidProvider {
             return UUID.fromString(rawUuid);
         }
 
-        // Если не удалось получить UUID из реестра, возвращаем null
         return null;
     }
 }

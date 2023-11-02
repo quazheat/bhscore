@@ -1,5 +1,6 @@
-package fr.openai.starter;
+package fr.openai.starter.uuid.manager;
 
+import fr.openai.starter.VersionChecker;
 import fr.openai.ui.LoginUIManager;
 import fr.openai.notify.NotificationSystem;
 import fr.openai.reader.LogRNT;

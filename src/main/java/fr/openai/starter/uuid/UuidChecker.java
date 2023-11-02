@@ -1,6 +1,7 @@
 package fr.openai.starter.uuid;
 
 import fr.openai.starter.logs.UuidLog;
+import fr.openai.starter.uuid.manager.HwidManager;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -8,7 +9,7 @@ import java.util.List;
 
 public class UuidChecker {
     private final UuidProvider uuidProvider = new UuidProvider();
-    private final CheckProvider checkProvider = new CheckProvider();
+    private final ProviderCheck providerCheck = new ProviderCheck();
 
     public boolean isAllowed() {
         String hwid = HwidManager.getHwid(uuidProvider);
@@ -17,7 +18,7 @@ public class UuidChecker {
 
     private boolean isUuidAllowed(String uuid) {
         try {
-            List<String> allowedUuids = checkProvider.getUuuidList();
+            List<String> allowedUuids = providerCheck.getUuuidList();
 
             boolean isAllowed = allowedUuids.contains(uuid);
             UuidLog.logUuid(isAllowed);

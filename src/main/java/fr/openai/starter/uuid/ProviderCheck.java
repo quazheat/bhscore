@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class CheckProvider {
+public class ProviderCheck {
     private final UuidProvider uuidProvider = new UuidProvider();
     private static final String PASTE_URL = "https://pastebin.com/raw/SnZw6TtD";
 
@@ -36,8 +36,8 @@ public class CheckProvider {
         } finally {
             assert connection != null;
             connection.disconnect();
-            }
         }
+    }
 
     private void printSystemUUID() {
         UUID systemUUID = uuidProvider.getUUID();

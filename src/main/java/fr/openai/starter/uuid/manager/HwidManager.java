@@ -1,4 +1,6 @@
-package fr.openai.starter.uuid;
+package fr.openai.starter.uuid.manager;
+
+import fr.openai.starter.uuid.UuidProvider;
 
 import java.util.UUID;
 

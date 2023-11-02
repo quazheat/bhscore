@@ -7,6 +7,7 @@ public class UuidLog {
         if (isAllowed) {
             System.out.println("Is UUID Allowed: true");
         } else {
+            System.exit(1);
             System.out.println("Is UUID Allowed: false");
         }
     }

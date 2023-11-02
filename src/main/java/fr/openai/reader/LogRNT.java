@@ -32,7 +32,9 @@ public class LogRNT {
 
     public void starter() {
         ConfigManager configManager = new ConfigManager();
-        DiscordRPCApp discordRPCApp = new DiscordRPCApp();
+
+        // Create the DiscordRPCApp dialog
+
         ConnectDb.getWordsDB();
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
@@ -44,8 +46,8 @@ public class LogRNT {
         previousSize = getFileSize();
 
         executorService.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.MILLISECONDS);
-        discordRPCApp.setVisible(true);
     }
+
 
     private void checkLogChanges() {
         String logRntPath = configManager.getLogRntPath();

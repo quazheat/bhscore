@@ -10,10 +10,6 @@ private static final Color SELECTED_TEXT_COLOR = Color.BLACK;
 private static final Color UNSELECTED_TAB_COLOR = Color.DARK_GRAY;
 private static final Color UNSELECTED_TEXT_COLOR = Color.WHITE;
 
-public CustomTab() {
-    super();
-}
-
 @Override
 protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
     Color tabColor = isSelected ? SELECTED_TAB_COLOR : UNSELECTED_TAB_COLOR;
