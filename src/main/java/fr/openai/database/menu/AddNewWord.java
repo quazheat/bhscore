@@ -9,7 +9,7 @@ import org.bson.Document;
 
 import java.util.Date;
 
-public class AddNewWord {
+public class AddNewWord extends SendTicket {
     private final Menu menu;
 
     public AddNewWord(Menu menu) {
@@ -44,15 +44,5 @@ public class AddNewWord {
         }
     }
 
-    private void sendTicket(String ticketText) {
-        // Create a TicketDocument for the ticket
-        TicketDocument ticketDocument = new TicketDocument(new Date(), ticketText, "UNKNOWN", IpAddressUtil.getUserPublicIpAddress());
 
-        // Get the MongoDB collection for tickets
-        MongoCollection<Document> ticketCollection = ConnectDb.getMongoCollection("tickets");
-
-        // Insert the ticket document into the database
-        ticketCollection.insertOne(ticketDocument.toDocument());
-
-    }
 }

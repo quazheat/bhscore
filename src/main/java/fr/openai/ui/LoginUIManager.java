@@ -51,6 +51,6 @@ public class LoginUIManager {
         Object[] options = {okButton};
 
         JOptionPane.showOptionDialog(null, message, "Login Failed",
-                JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+        JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
     }
 }

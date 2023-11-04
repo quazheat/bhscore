@@ -1,0 +1,61 @@
+package fr.openai.filter;
+
+import fr.openai.exec.ClipboardUtil;
+import fr.openai.exec.PasteUtil;
+import fr.openai.notify.NotificationSystem;
+import fr.openai.notify.WindowsNotification;
+
+import static java.awt.TrayIcon.MessageType.ERROR;
+import static java.awt.TrayIcon.MessageType.INFO;
+
+public abstract class ViolationHandler {
+
+    protected final NotificationSystem notificationSystem;
+
+    public ViolationHandler(NotificationSystem notificationSystem) {
+        this.notificationSystem = notificationSystem;
+    }
+
+    void handleViolation(String playerName, String message, String loyalAction, String loyalMessage, String rageAction) {
+
+        if (FilteringModeManager.isLoyalModeEnabled()) {
+            showLoyalNotification(loyalMessage);
+            copyToClipboard(loyalAction);
+            PasteUtil.pasteFromClipboard();
+            return;
+        }
+
+        if (!FilteringModeManager.isRageModeEnabled()) {
+            notificationSystem.showNotification(playerName, loyalMessage);
+            return;
+        }
+
+        showRageNotification(message);
+        copyToClipboard("/mute " + playerName + " " + rageAction);
+        PasteUtil.pasteFromClipboard();
+    }
+
+    private void showLoyalNotification(String message) {
+        WindowsNotification.showWindowsNotification(getActionName(), message, INFO);
+    }
+
+    private void showRageNotification(String message) {
+        WindowsNotification.showWindowsNotification(getActionName(), message, ERROR);
+    }
+
+    private void copyToClipboard(String text) {
+        ClipboardUtil.copyToClipboard(text);
+    }
+
+    private String getActionName() {
+        if (FilteringModeManager.isLoyalModeEnabled()) {
+            return "LOYAL";
+        } else if (FilteringModeManager.isRageModeEnabled()) {
+            return "RAGE";
+        } else {
+            return "";
+        }
+    }
+}
+
+

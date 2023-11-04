@@ -14,25 +14,17 @@ import java.util.List;
 
 public class NotificationSystem {
     NameFix nameFixer = new NameFix();
-
-    private final Queue<Notification> notifications = new ArrayDeque<>();
-    private final List<CustomDialog> activeNotifications = new ArrayList<>();
-
-    private static final int MAX_NOTIFICATIONS = 5;
+    private final List<Notification> notifications = new ArrayList<>();
+    static final int MAX_NOTIFICATIONS = 10;
     private final NotificationHeightManager heightManager = new NotificationHeightManager();
 
     public void showNotification(String playerName, String violation) {
-        Notification notification = new Notification(playerName, violation);
-        notifications.offer(notification);
-
-        if (notifications.size() > MAX_NOTIFICATIONS) {
-            notifications.clear();
-            heightManager.setCurrentY(50);
-            closeAllNotifications();
-            System.out.println("closeAllNotifications");
+        if (notifications.size() < MAX_NOTIFICATIONS) {
+            Notification notification = new Notification(playerName, violation);
+            notifications.add(notification);
+            System.out.println("Trying to showNotification");
+            SwingUtilities.invokeLater(() -> displayNotification(notification));
         }
-
-        SwingUtilities.invokeLater(() -> displayNotification(notification));
     }
 
     private void displayNotification(Notification notification) {
@@ -59,7 +51,7 @@ public class NotificationSystem {
 
         closeButton.addActionListener(e -> {
             notificationDialog.dispose();
-            activeNotifications.remove(notificationDialog);
+            notifications.remove(notification);
         });
 
         JButton muteButton = new JButton("Mute");
@@ -75,21 +67,21 @@ public class NotificationSystem {
         muteButton.addActionListener(e -> {
             String playerName = nameFixer.cscFix(playerNameLabel.getText());
             String command = "/mute " + playerName + "  ";
+            heightManager.updateCurrentY(-20);
+            notificationDialog.dispose();
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(new StringSelection(command), null);
-            heightManager.updateCurrentY(-20);
-            activeNotifications.remove(notificationDialog);
-            notificationDialog.dispose();
+            notifications.remove(notification);
         });
 
         warnButton.addActionListener(e -> {
             String playerName = nameFixer.cscFix(playerNameLabel.getText());
             String command = "/warn " + playerName + "  ";
+            heightManager.updateCurrentY(-20);
+            notificationDialog.dispose();
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(new StringSelection(command), null);
-            heightManager.updateCurrentY(-20);
-            activeNotifications.remove(notificationDialog);
-            notificationDialog.dispose();
+            notifications.remove(notification);
         });
 
 
@@ -107,21 +99,6 @@ public class NotificationSystem {
         notificationDialog.add(notificationPanel);
         notificationDialog.setVisible(true);
 
-        activeNotifications.add(notificationDialog);
-
-        if (activeNotifications.size() > MAX_NOTIFICATIONS) {
-            CustomDialog firstNotification = activeNotifications.get(0);
-            firstNotification.dispose();
-            activeNotifications.remove(firstNotification);
-        }
-
         heightManager.updateCurrentY(20);
-    }
-
-    private void closeAllNotifications() {
-        for (CustomDialog notificationDialog : activeNotifications) {
-            notificationDialog.dispose();
-        }
-        activeNotifications.clear();
     }
 }

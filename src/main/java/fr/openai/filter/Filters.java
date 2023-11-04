@@ -111,6 +111,7 @@ public class Filters {
 
     public boolean hasMuteCounter(String message) {
         String username = DiscordRPCApp.getUsername();
+        System.out.println(message);
         return message.contains(username + " замутил");
     }
 

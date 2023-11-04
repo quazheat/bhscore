@@ -3,8 +3,9 @@ package fr.openai.notify;
 import java.util.ArrayList;
 import java.util.List;
 
+import static fr.openai.notify.NotificationSystem.MAX_NOTIFICATIONS;
+
 public class NotificationHeightManager {
-    private static final int MAX_NOTIFICATIONS = 12;
     private int currentY = 50;
     private final List<Integer> notificationHeights = new ArrayList<>(MAX_NOTIFICATIONS);
 

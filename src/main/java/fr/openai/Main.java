@@ -4,6 +4,7 @@ import fr.openai.starter.internet.InternetManager;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-        InternetManager.check();
+        InternetManager internetManager = new InternetManager();
+        internetManager.check();
     }
 }

@@ -1,5 +1,6 @@
 package fr.openai.starter.uuid;
 
+import fr.openai.database.menu.SendTicket;
 import fr.openai.starter.logs.UuidLog;
 import fr.openai.starter.uuid.manager.HwidManager;
 

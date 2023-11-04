@@ -1,5 +1,7 @@
 package fr.openai.starter.logs;
 
+import fr.openai.ui.LoginUIManager;
+
 import java.io.IOException;
 
 public class UuidLog {
@@ -7,7 +9,6 @@ public class UuidLog {
         if (isAllowed) {
             System.out.println("Is UUID Allowed: true");
         } else {
-            System.exit(1);
             System.out.println("Is UUID Allowed: false");
         }
     }

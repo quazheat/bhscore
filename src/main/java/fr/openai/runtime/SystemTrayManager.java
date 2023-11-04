@@ -41,8 +41,6 @@ public class SystemTrayManager {
             SystemTray tray = SystemTray.getSystemTray();
 
             exitItem.addActionListener(e -> {
-                //ConsoleLogger.consoleLog();
-                ConnectDb.closeMongoClient();
                 System.exit(0);
             });
 

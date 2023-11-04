@@ -10,16 +10,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Menu {
-
     private final JFrame frame;
     private final JLabel outputLabel;
 
-    public Menu(TrayIcon trayIcon) { // Pass the trayIcon to the constructor
-        String version = VersionChecker.getCurrentVersion();
-        // Add this member variable
+    public Menu(TrayIcon trayIcon) {
+        VersionChecker versionChecker = new VersionChecker();
+        String version = versionChecker.getCurrentVersion();
 
         frame = new JFrame("BHScore " + version);
-        frame.setIconImage(trayIcon.getImage()); // Use the trayIcon's image
+        frame.setIconImage(trayIcon.getImage());
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(400, 160);
@@ -35,7 +34,7 @@ public class Menu {
         ReportsPanel reportsPanel = new ReportsPanel(frame);
         ModesPanel modesPanel = new ModesPanel();
 
-        tabbedPane.addTab("Скорость", modesPanel); // Add the "Режимы" tab
+        tabbedPane.addTab("Скорость", modesPanel);
         tabbedPane.addTab("Ругательства", forbiddenWordsPanel);
         tabbedPane.addTab("Белый список", whitelistPanel);
         tabbedPane.addTab("Отчеты", reportsPanel);

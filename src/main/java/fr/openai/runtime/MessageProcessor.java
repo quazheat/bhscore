@@ -3,6 +3,7 @@ package fr.openai.runtime;
 import fr.openai.exec.ClipboardUtil;
 import fr.openai.exec.PasteUtil;
 import fr.openai.filter.FilteringModeManager;
+import fr.openai.filter.ViolationHandler;
 import fr.openai.notify.NotificationSystem;
 import fr.openai.notify.WindowsNotification;
 
@@ -12,13 +13,12 @@ import java.util.List;
 import static java.awt.TrayIcon.MessageType.ERROR;
 import static java.awt.TrayIcon.MessageType.INFO;
 
-public class MessageProcessor {
-    private final NotificationSystem notificationSystem;
+public class MessageProcessor extends ViolationHandler {
     private final List<MessageRecord> messageRecords;
 
     public MessageProcessor(NotificationSystem notificationSystem) {
+        super(notificationSystem);
         this.messageRecords = new ArrayList<>();
-        this.notificationSystem = notificationSystem;
     }
 
     public void processMessage(String playerName, String message) {

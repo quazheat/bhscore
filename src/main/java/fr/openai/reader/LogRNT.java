@@ -1,5 +1,6 @@
 package fr.openai.reader;
 
+import fr.openai.discordfeatures.DiscordRPC;
 import fr.openai.discordfeatures.DiscordRPCApp;
 import fr.openai.database.files.ConnectDb;
 import fr.openai.exec.Executor;
@@ -32,8 +33,11 @@ public class LogRNT {
 
     public void starter() {
         ConfigManager configManager = new ConfigManager();
+        DiscordRPCApp discordRPCApp = new DiscordRPCApp();
 
-        // Create the DiscordRPCApp dialog
+        discordRPCApp.setModal(true); // MODAL DIALOG
+        discordRPCApp.setVisible(true);
+        DiscordRPC.updateRPC();
 
         ConnectDb.getWordsDB();
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();

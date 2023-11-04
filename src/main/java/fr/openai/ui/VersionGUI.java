@@ -12,8 +12,9 @@ import java.net.URISyntaxException;
 public class VersionGUI extends JDialog {
 
     public VersionGUI() {
-        String version = VersionChecker.getCurrentVersion();
-        String dbVersion = VersionChecker.getDbVersion();
+        VersionChecker versionChecker = new VersionChecker();
+        String version = versionChecker.getCurrentVersion();
+        String dbVersion = versionChecker.getDbVersion();
         setTitle("BHScore  " + version);
         setSize(300, 150);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);

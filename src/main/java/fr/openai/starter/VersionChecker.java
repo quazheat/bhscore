@@ -7,12 +7,12 @@ import fr.openai.database.files.ConnectDb;
 import org.bson.Document;
 
 public class VersionChecker {
-    public static String getCurrentVersion() {
+    public String getCurrentVersion() {
         // Текущая версия программы
         return "6.5.7";
     }
 
-    public static String getDbVersion() {
+    public String getDbVersion() {
         MongoCollection<Document> versionCollection = ConnectDb.getMongoCollection("version");
 
         MongoCursor<Document> cursor = versionCollection.find().iterator();
@@ -24,9 +24,10 @@ public class VersionChecker {
         }
     }
 
-    public static void checkVersion() {
+    public void checkVersion() {
+        VersionChecker versionChecker = new VersionChecker();
         String currentVersion = getCurrentVersion();
-        String dbVersion = getDbVersion();
+        String dbVersion = versionChecker.getDbVersion();
 
         // Сравниваем версии
         if (dbVersion != null && !dbVersion.equals(currentVersion)) {

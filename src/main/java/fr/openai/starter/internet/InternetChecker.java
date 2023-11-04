@@ -6,13 +6,13 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class InternetChecker {
-    public static boolean isReachable(String url) {
+    public boolean isReachable(String url) {
         HttpURLConnection connection = null;
         try {
             URI siteURI = new URI(url);
             connection = (HttpURLConnection) siteURI.toURL().openConnection();
             connection.setRequestMethod("HEAD");
-            connection.setConnectTimeout(3000); // Set the connection timeout
+            connection.setConnectTimeout(5000);
             int responseCode = connection.getResponseCode();
             return responseCode == HttpURLConnection.HTTP_OK;
         } catch (IOException | URISyntaxException e) {
