@@ -2,14 +2,16 @@ package fr.openai.database.menu;
 
 import com.mongodb.client.MongoCollection;
 import fr.openai.database.IpAddressUtil;
+import fr.openai.database.files.GetWords;
 import fr.openai.ui.panels.Menu;
-import fr.openai.database.files.ConnectDb;
+import fr.openai.database.ConnectDb;
 import fr.openai.database.files.TicketDocument;
 import org.bson.Document;
 
 import java.util.Date;
 
 public class AddNewWhitelistWord {
+    private final GetWords getWords = new GetWords();
     private final Menu menu;
 
     public AddNewWhitelistWord(Menu menu) {
@@ -39,16 +41,13 @@ public class AddNewWhitelistWord {
                 }
             }
         }
-
         menu.setOutputText(outputText.toString());
-        ConnectDb.getWordsDB();
+        getWords.getWordsFile();
     }
-
 
     private void sendTicket(String ticketText) {
         TicketDocument ticketDocument = new TicketDocument(new Date(), ticketText, "UNKNOWN", IpAddressUtil.getUserPublicIpAddress());
         MongoCollection<Document> ticketCollection = ConnectDb.getMongoCollection("tickets");
         ticketCollection.insertOne(ticketDocument.toDocument());
-
     }
 }

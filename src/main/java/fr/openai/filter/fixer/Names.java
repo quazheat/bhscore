@@ -1,6 +1,5 @@
 package fr.openai.filter.fixer;
 
-import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Names {
@@ -10,7 +9,7 @@ public class Names {
     private final Pattern HASHTAG_PATTERN = Pattern.compile("#.*");
     private final Pattern PIPE_PATTERN = Pattern.compile(".+?┃");
 
-    public static String formatPlayerName(String playerName) {
+    public String formatPlayerName(String playerName) {
         String[] words = playerName.split(" ");
         if (words.length >= 2) {
             if (words.length >= 3) {

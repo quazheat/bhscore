@@ -47,7 +47,7 @@ public class NotificationSystem {
         playerNameLabel.setForeground(Color.BLACK);
 
         CustomField violationField = new CustomField(notification.violation());
-        CustomClose closeButton = new CustomClose("x", notificationDialog, this, heightManager);
+        CustomClose closeButton = new CustomClose("x", notificationDialog, heightManager);
 
         closeButton.addActionListener(e -> {
             notificationDialog.dispose();

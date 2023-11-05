@@ -1,7 +1,6 @@
 package fr.openai.runtime;
 
 import fr.openai.exec.ClipboardUtil;
-import fr.openai.exec.PasteUtil;
 import fr.openai.filter.FilteringModeManager;
 import fr.openai.filter.ViolationHandler;
 import fr.openai.notify.NotificationSystem;
@@ -36,7 +35,7 @@ public class MessageProcessor extends ViolationHandler {
         int duplicateCount = countDuplicates(playerName, message);
         addNewRecord(playerName, currentTime, message);
 
-        if (duplicateCount >= 2) {
+        if (duplicateCount == 2) {
             handleDuplicateMessages(playerName, message);
         }
     }
@@ -75,7 +74,7 @@ public class MessageProcessor extends ViolationHandler {
             WindowsNotification.showWindowsNotification("LOYAL", "2.10", INFO);
             String textToCopyF = "/warn " + playerName + " Не флуди";
             ClipboardUtil.copyToClipboard(textToCopyF);
-            PasteUtil.pasteFromClipboard(); // Paste the text from the clipboard
+            pasteUtil.pasteFromClipboard(); // Paste the text from the clipboard
             System.out.println(textToCopyF);
             return;
         }
@@ -88,7 +87,7 @@ public class MessageProcessor extends ViolationHandler {
         WindowsNotification.showWindowsNotification("RAGE", "2.10", ERROR);
         String textToCopy = "/mute " + playerName + " 2.10+";
         ClipboardUtil.copyToClipboard(textToCopy);
-        PasteUtil.pasteFromClipboard(); // Paste the text from the clipboard
+        pasteUtil.pasteFromClipboard(); // Paste the text from the clipboard
         System.out.println(textToCopy);
     }
 }

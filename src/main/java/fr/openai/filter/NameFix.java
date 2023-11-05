@@ -10,6 +10,6 @@ public class NameFix {
         }
 
         return playerName;
-    }
 
+    }
 }

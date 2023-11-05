@@ -1,6 +1,5 @@
 package fr.openai.runtime;
 
-import fr.openai.database.files.ConnectDb;
 import fr.openai.database.files.TrayIconLoader;
 import fr.openai.ui.panels.Menu;
 
@@ -40,9 +39,7 @@ public class SystemTrayManager {
             TrayIcon trayIcon = new TrayIcon(appIcon, "BHScore", popupMenu);
             SystemTray tray = SystemTray.getSystemTray();
 
-            exitItem.addActionListener(e -> {
-                System.exit(0);
-            });
+            exitItem.addActionListener(e -> System.exit(0));
 
             Image rageIconEnabled = iconLoader.loadRageIcon();
             Image rageIconDisabled = iconLoader.loadRageIconDisabled();

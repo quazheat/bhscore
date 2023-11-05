@@ -13,11 +13,10 @@ import java.util.stream.Collectors;
 
 public class ProviderCheck {
     private final UuidProvider uuidProvider = new UuidProvider();
-    private static final String PASTE_URL = "https://pastebin.com/raw/SnZw6TtD";
-
     public List<String> getUuuidList() throws IOException, URISyntaxException {
         HttpURLConnection connection = null;
         try {
+            String PASTE_URL = "https://pastebin.com/raw/SnZw6TtD";
             URI uri = new URI(PASTE_URL);
             URL url = uri.toURL();
             connection = (HttpURLConnection) url.openConnection();
@@ -34,12 +33,12 @@ public class ProviderCheck {
                 return allowedUuids;
             }
         } finally {
-            assert connection != null;
-            connection.disconnect();
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
     }
-
-    private void printSystemUUID() {    
+    private void printSystemUUID() {
         UUID systemUUID = uuidProvider.getUUID();
         System.out.println(systemUUID != null ? "System UUID: " + systemUUID : "System UUID not found.");
     }

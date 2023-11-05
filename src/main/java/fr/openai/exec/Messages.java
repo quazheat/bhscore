@@ -39,18 +39,18 @@ public class Messages {
     }
 
 
-    /*public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Enter a raw string: ");
-        String rawString = scanner.nextLine();
-
-        String message = getMessage(rawString);
-        if (message != null) {
-            System.out.println("Extracted Message: " + message);
-            return;
-        }
-
-        System.out.println("No valid message found in the input string.");
-    }*/
+//    public static void main(String[] args) {
+//        Scanner scanner = new Scanner(System.in);
+//
+//        System.out.print("Enter a raw string: ");
+//        String rawString = scanner.nextLine();
+//
+//        String message = getMessage(rawString);
+//        if (message != null) {
+//            System.out.println("Extracted Message: " + message);
+//            return;
+//        }
+//
+//        System.out.println("No valid message found in the input string.");
+//    }
 }

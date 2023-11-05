@@ -9,7 +9,12 @@ import static java.awt.TrayIcon.MessageType.ERROR;
 import static java.awt.TrayIcon.MessageType.INFO;
 
 public abstract class ViolationHandler {
-
+    protected final PasteUtil pasteUtil = new PasteUtil() {
+        @Override
+        public void pasteFromClipboard() {
+            super.pasteFromClipboard();
+        }
+    };
     protected final NotificationSystem notificationSystem;
 
     public ViolationHandler(NotificationSystem notificationSystem) {
@@ -21,7 +26,7 @@ public abstract class ViolationHandler {
         if (FilteringModeManager.isLoyalModeEnabled()) {
             showLoyalNotification(loyalMessage);
             copyToClipboard(loyalAction);
-            PasteUtil.pasteFromClipboard();
+            pasteUtil.pasteFromClipboard();
             return;
         }
 
@@ -32,7 +37,7 @@ public abstract class ViolationHandler {
 
         showRageNotification(message);
         copyToClipboard("/mute " + playerName + " " + rageAction);
-        PasteUtil.pasteFromClipboard();
+        pasteUtil.pasteFromClipboard();
     }
 
     private void showLoyalNotification(String message) {

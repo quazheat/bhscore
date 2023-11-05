@@ -3,7 +3,7 @@ package fr.openai.starter;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import fr.openai.ui.VersionGUI;
-import fr.openai.database.files.ConnectDb;
+import fr.openai.database.ConnectDb;
 import org.bson.Document;
 
 public class VersionChecker {

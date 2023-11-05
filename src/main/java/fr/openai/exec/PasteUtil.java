@@ -4,14 +4,10 @@ import fr.openai.database.ConfigManager;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
 
-public class PasteUtil {
+public abstract class PasteUtil {
 
-    public PasteUtil() {
-    }
-    public static void pasteFromClipboard() {
+    public void pasteFromClipboard() {
         final ConfigManager configManager = new ConfigManager();
         int period = configManager.getUpFQ(); // Set the period to the desired frequency
 

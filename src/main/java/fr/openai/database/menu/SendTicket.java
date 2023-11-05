@@ -2,7 +2,7 @@ package fr.openai.database.menu;
 
 import com.mongodb.client.MongoCollection;
 import fr.openai.database.IpAddressUtil;
-import fr.openai.database.files.ConnectDb;
+import fr.openai.database.ConnectDb;
 import fr.openai.database.files.TicketDocument;
 import org.bson.Document;
 import java.util.Date;  

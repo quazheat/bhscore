@@ -3,8 +3,8 @@ package fr.openai.filter;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import fr.openai.database.JsonFileReader;
-import fr.openai.discordfeatures.DiscordRPCApp;
-import fr.openai.exec.LevenshteinDistance;
+import fr.openai.discordfeatures.DiscordRPCDiag;
+import fr.openai.filter.fixer.LevenshteinDistance;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -110,13 +110,13 @@ public class Filters {
     }
 
     public boolean hasMuteCounter(String message) {
-        String username = DiscordRPCApp.getUsername();
+        String username = DiscordRPCDiag.getUsername();
         System.out.println(message);
         return message.contains(username + " замутил");
     }
 
     public boolean hasWarnCounter(String message) {
-        String username = DiscordRPCApp.getUsername();
+        String username = DiscordRPCDiag.getUsername();
         if (message.contains(username)) {
             System.out.println(message);
 

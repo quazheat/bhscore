@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 public class DiscordDetails {
+    Random random = new Random();
     protected String randomScaryPhrase;
 
     public DiscordDetails() {
@@ -22,20 +23,15 @@ public class DiscordDetails {
         scaryPhrases.add("Malevolence lurks around every corner.");
         scaryPhrases.add("Darkness is a veil for sinister intent.");
         scaryPhrases.add("Big brother watching you.");
-
         Collections.shuffle(scaryPhrases);
 
-        // Get and store a random scary phrase.
-        Random random = new Random();
         int index = random.nextInt(scaryPhrases.size());
         randomScaryPhrase = scaryPhrases.get(index);
         System.out.println("Scary Phrase: " + randomScaryPhrase);
     }
 
-    // Getter for the random scary phrase
     public String getRandomScaryPhrase() {
         System.out.println("Scary Phrase: " + randomScaryPhrase);
         return randomScaryPhrase;
     }
-
 }

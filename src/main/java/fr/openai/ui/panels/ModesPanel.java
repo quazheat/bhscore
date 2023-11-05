@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ModesPanel extends JPanel {
-
+    DiscordRPC discordRPC = new DiscordRPC();
     private final JCheckBox rpcCheckBox;
 
     public ModesPanel() {
@@ -19,7 +19,7 @@ public class ModesPanel extends JPanel {
         rpcCheckBox.setFocusPainted(false);
         rpcCheckBox.addActionListener(e -> {
             boolean isEnabled = rpcCheckBox.isSelected();
-            DiscordRPC.setRPCEnabled(isEnabled); // Update the RPC state based on the checkbox
+            discordRPC.setRPCEnabled(isEnabled); // Update the RPC state based on the checkbox
         });
 
         JSlider upFQSlider = new JSlider(JSlider.HORIZONTAL, 10, 510, configManager.getUpFQ());

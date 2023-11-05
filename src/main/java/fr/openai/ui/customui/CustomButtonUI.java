@@ -13,7 +13,6 @@ public class CustomButtonUI extends BasicButtonUI {
         super();
     }
 
-    @Override
     public void installUI(JComponent c) {
         super.installUI(c);
         AbstractButton button = (AbstractButton) c;
@@ -22,7 +21,6 @@ public class CustomButtonUI extends BasicButtonUI {
         button.setFocusPainted(false);
     }
 
-    @Override
     public void uninstallUI(JComponent c) {
         super.uninstallUI(c);
         AbstractButton button = (AbstractButton) c;

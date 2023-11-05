@@ -8,22 +8,23 @@ import fr.openai.filter.fixer.Names;
 import fr.openai.notify.NotificationSystem;
 
 public class Filtering extends ViolationHandler {
-
-
+    private final DiscordRPC discordRPC;
     private int mutes = 0;
     private int warns = 0;
 
     private final Filters filters;
-
+    private final Names names;
 
     public Filtering(NotificationSystem notificationSystem) {
         super(notificationSystem);
+        this.discordRPC = new DiscordRPC();
+        this.names = new Names();
         this.filters = new Filters();
     }
 
     public void onFilter(String name, String line) {
         String message = Messages.getMessage(line);
-        String playerName = Names.formatPlayerName(name);
+        String playerName = names.formatPlayerName(name);
 
         if (message == null) {
             return;
@@ -40,7 +41,7 @@ public class Filtering extends ViolationHandler {
         String newState = mutes + " mutes | " + warns + " warns performed."; //💢
         System.out.println(newState);
         DiscordRPC.updateRPCState(newState);
-        DiscordRPC.updateRPC();
+        discordRPC.updateRPC();
 
         if (message.contains("㰳")
                 || message.contains("по причине:")
@@ -49,31 +50,28 @@ public class Filtering extends ViolationHandler {
         ) {
             return;
         }
+        boolean flood = (filters.hasManySymbols(message) || filters.hasLaugh(message) || filters.hasWFlood(message));
 
-        if (filters.hasManySymbols(message) || filters.hasLaugh(message) || filters.hasWFlood(message)
-                && filters.hasCaps(message)
-                && filters.hasSwearing(message)
+        if (flood && filters.hasCaps(message) && filters.hasSwearing(message)
         ) {
             handleViolation(playerName, message, "/mute " + playerName + " 2.12+2.10+2.7", message, "2.12+2.10+2.7");
             DiscordDetails discordDetails = new DiscordDetails();
             String newDetails = discordDetails.getRandomScaryPhrase();
             System.out.println("Scary Phrase: " + newDetails);
             DiscordRPC.updateRPCDetails(newDetails);
-            DiscordRPC.updateRPC();
+            discordRPC.updateRPC();
             return; // ALL REASONS
         }
 
-        if (filters.hasManySymbols(message) || filters.hasLaugh(message) || filters.hasWFlood(message)
-                && filters.hasCaps(message)
+        if (flood && filters.hasCaps(message)
         ) {
             handleViolation(playerName, message, "/mute " + playerName + " 2.10+2.12+", message, "2.10+2.12+");
             return; // FLOOD + CAPS
         }
 
-        if (filters.hasManySymbols(message) || filters.hasLaugh(message) || filters.hasWFlood(message)
-                && filters.hasSwearing(message)
+        if (flood && filters.hasSwearing(message)
         ) {
-            handleViolation(playerName, message, "/mute " + playerName + " 2.10+2.7", message, "2.10+2.7");
+            handleViolation(playerName, message, "/mute " + playerName + " 2.10+2.12+", message, "2.10+2.12+");
             return; // FLOOD + SWEAR
         }
 

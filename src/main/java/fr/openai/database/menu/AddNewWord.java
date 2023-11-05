@@ -1,16 +1,15 @@
 package fr.openai.database.menu;
 
 import com.mongodb.client.MongoCollection;
-import fr.openai.database.IpAddressUtil;
+import fr.openai.database.files.GetWords;
 import fr.openai.ui.panels.Menu;
-import fr.openai.database.files.ConnectDb;
-import fr.openai.database.files.TicketDocument;
+import fr.openai.database.ConnectDb;
 import org.bson.Document;
-
-import java.util.Date;
 
 public class AddNewWord extends SendTicket {
     private final Menu menu;
+    private final GetWords getWords = new GetWords();
+
 
     public AddNewWord(Menu menu) {
         this.menu = menu;
@@ -38,11 +37,9 @@ public class AddNewWord extends SendTicket {
             sendTicket("added word: " + newWord);
 
             menu.setOutputText(newWord + " добавлено.");
-            ConnectDb.getWordsDB();
+            getWords.getWordsFile();
         } else {
             menu.setOutputText(newWord + " уже в списке.");
         }
     }
-
-
 }

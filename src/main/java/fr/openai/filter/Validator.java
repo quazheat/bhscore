@@ -15,5 +15,6 @@ public class Validator {
         Matcher matcher = pattern.matcher(line);
 
         return matcher.find();
+
     }
 }

@@ -1,12 +1,14 @@
 package fr.openai.database.menu;
 
 import com.mongodb.client.MongoCollection;
+import fr.openai.database.files.GetWords;
 import fr.openai.ui.panels.Menu;
-import fr.openai.database.files.ConnectDb;
+import fr.openai.database.ConnectDb;
 import org.bson.Document;
 
 public class RemoveWord {
     private final Menu menu;
+    private final GetWords getWords = new GetWords();
 
     public RemoveWord(Menu menu) {
         this.menu = menu;
@@ -24,7 +26,7 @@ public class RemoveWord {
             // Удаляем слово из массива forbidden_words
             collection.updateOne(new Document(), updateDocument);
             menu.setOutputText("Слово " + wordToRemove + " удалено из списка.");
-            ConnectDb.getWordsDB();
+            getWords.getWordsFile();
             return;
         }
 

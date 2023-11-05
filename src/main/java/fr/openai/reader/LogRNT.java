@@ -1,8 +1,8 @@
 package fr.openai.reader;
 
+import fr.openai.database.files.GetWords;
 import fr.openai.discordfeatures.DiscordRPC;
-import fr.openai.discordfeatures.DiscordRPCApp;
-import fr.openai.database.files.ConnectDb;
+import fr.openai.discordfeatures.DiscordRPCDiag;
 import fr.openai.exec.Executor;
 import fr.openai.filter.fixer.Names;
 import fr.openai.notify.NotificationSystem;
@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 public class LogRNT {
     private final ConfigManager configManager;
+    private final GetWords getWords = new GetWords();
     private final Executor executor;
     private final Names names;
     private long previousSize;
@@ -32,14 +33,15 @@ public class LogRNT {
     }
 
     public void starter() {
+        DiscordRPC discordRPC = new DiscordRPC();
         ConfigManager configManager = new ConfigManager();
-        DiscordRPCApp discordRPCApp = new DiscordRPCApp();
+        DiscordRPCDiag discordRPCDiag = new DiscordRPCDiag();
 
-        discordRPCApp.setModal(true); // MODAL DIALOG
-        discordRPCApp.setVisible(true);
-        DiscordRPC.updateRPC();
+        discordRPCDiag.setModal(true); // MODAL DIALOG
+        discordRPCDiag.setVisible(true);
+        discordRPC.updateRPC();
 
-        ConnectDb.getWordsDB();
+        getWords.getWordsFile();
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
         SystemTrayManager trayManager = new SystemTrayManager();

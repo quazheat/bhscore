@@ -20,7 +20,7 @@ public class InternetChecker {
         } finally {
             if (connection != null) {
                 connection.disconnect();
-            }
-        }
-    }
+            }}}
+
+
 }

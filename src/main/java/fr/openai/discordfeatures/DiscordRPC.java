@@ -9,14 +9,14 @@ public class DiscordRPC {
     private static String details = "Big brother watching you"; // The main text field
     private static String state = "Looking for something..."; // Initialize the state
     private static final long startTime = System.currentTimeMillis() / 1000; // Store the start time
-    private static boolean isRPCEnabled = true; // Flag to enable or disable the RPC
+    boolean isRPCEnabled = true; // Flag to enable or disable the RPC
 
-    public static void updateRPC() {
+    public void updateRPC() {
         if (!isRPCEnabled) {
             return; // Don't update the RPC if it's disabled
         }
 
-        final String username = DiscordRPCApp.getUsername();
+        final String username = DiscordRPCDiag.getUsername();
 
         club.minnced.discord.rpc.DiscordRPC lib = club.minnced.discord.rpc.DiscordRPC.INSTANCE;
         DiscordEventHandlers handlers = new DiscordEventHandlers();
@@ -44,12 +44,14 @@ public class DiscordRPC {
         club.minnced.discord.rpc.DiscordRPC lib = club.minnced.discord.rpc.DiscordRPC.INSTANCE;
         lib.Discord_UpdatePresence(presence);
     }
+
     public static void updateRPCDetails(String newDetails) {
         details = newDetails; // Update the class-level state variable
         club.minnced.discord.rpc.DiscordRPC lib = club.minnced.discord.rpc.DiscordRPC.INSTANCE;
         lib.Discord_UpdatePresence(presence);
     }
-    public static void setRPCEnabled(boolean enabled) {
+
+    public void setRPCEnabled(boolean enabled) {
         isRPCEnabled = enabled;
     }
 

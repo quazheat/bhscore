@@ -6,7 +6,7 @@ import com.mongodb.client.MongoDatabase;
 import fr.openai.database.IpAddressUtil;
 import fr.openai.ui.customui.CustomButtonUI;
 import fr.openai.ui.SubmitTicketDialog;
-import fr.openai.database.files.ConnectDb;
+import fr.openai.database.ConnectDb;
 import fr.openai.database.files.TicketDocument;
 import fr.openai.starter.logs.UuidLog;
 import fr.openai.starter.uuid.manager.HwidManager;
@@ -23,11 +23,11 @@ import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ReportsPanel extends JPanel {
-    private final JTextArea textArea;
     private final UuidProvider uuidProvider = new UuidProvider();
+    private MongoClient mongoClient;
+    private final JTextArea textArea;
     private final JButton sendButton;
     private final JFrame frame;
-    private MongoClient mongoClient;
 
     public ReportsPanel(JFrame parentFrame) {
         this.frame = parentFrame;
@@ -40,13 +40,8 @@ public class ReportsPanel extends JPanel {
         sendButton = new JButton("Отправить");
         sendButton.setEnabled(false); // Initially, disable the button
         add(sendButton, BorderLayout.SOUTH);
-
-        // Применение стиля CustomButton
         CustomButtonUI.setCustomStyle(sendButton);
-
-        // Add a KeyListener to the text area for input validation
         textArea.addKeyListener(new KeyAdapter() {
-            @Override
             public void keyReleased(KeyEvent e) {
                 validateInput();
             }
@@ -65,13 +60,13 @@ public class ReportsPanel extends JPanel {
     private void validateInput() {
         String problemText = textArea.getText().trim();
         boolean isInputValid = problemText.length() >= 1; // Input should contain at least 1 symbol
-
         sendButton.setEnabled(isInputValid);
     }
 
     private void sendTicket() throws IOException {
+        ConnectDb connectDb = new ConnectDb();
         if (mongoClient == null) {
-            mongoClient = (MongoClient) ConnectDb.getMongoClient();
+            mongoClient = connectDb.getMongoClient();
         }
 
         UuidChecker uuidChecker = new UuidChecker();

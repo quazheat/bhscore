@@ -17,7 +17,6 @@ public class SubmitTicketDialog {
         Timer timer = new Timer(500, new ActionListener() {
             int numDots = 2;
 
-            @Override
             public void actionPerformed(ActionEvent e) {
                 int option = JOptionPane.showOptionDialog(parentFrame, "Пытаемся отправить тикет" + ".".repeat(Math.max(0, numDots)),
                         "Ошибка", JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
