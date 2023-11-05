@@ -4,6 +4,8 @@ import fr.openai.database.files.TrayIconLoader;
 import fr.openai.ui.panels.Menu;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class SystemTrayManager {
     private Menu menu;
@@ -45,6 +47,7 @@ public class SystemTrayManager {
             Image rageIconDisabled = iconLoader.loadRageIconDisabled();
             Image loyalModeDisabled = iconLoader.loadIcon();
 
+
             try {
                 tray.add(trayIcon);
             } catch (AWTException e) {
@@ -57,6 +60,18 @@ public class SystemTrayManager {
                 }
 
                 menu.setVisible(true);
+            });
+
+            trayIcon.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 2) { // Проверка на двойной клик
+                        if (menu == null) {
+                            menu = new Menu(trayIcon);
+                        }
+                        menu.setVisible(true);
+                    }
+                }
             });
 
             // Create a TrayIconManager instance and set up icon listeners

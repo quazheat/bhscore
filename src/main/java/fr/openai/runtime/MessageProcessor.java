@@ -2,6 +2,7 @@ package fr.openai.runtime;
 
 import fr.openai.exec.ClipboardUtil;
 import fr.openai.filter.FilteringModeManager;
+import fr.openai.filter.JustAnotherFilter;
 import fr.openai.filter.ViolationHandler;
 import fr.openai.notify.NotificationSystem;
 import fr.openai.notify.WindowsNotification;
@@ -20,23 +21,19 @@ public class MessageProcessor extends ViolationHandler {
         this.messageRecords = new ArrayList<>();
     }
 
-    public void processMessage(String playerName, String message) {
-        if (message.contains("㰳")
-                || message.contains("по причине:")
-                || message.contains(". Причина:")
-                || "Unknown".equalsIgnoreCase(playerName)
-        ){
-            System.out.println(message + " SKIPPED");
+    public void processMessage(String name, String message) {
+        JustAnotherFilter justAnotherFilter = new JustAnotherFilter(name, message);
+        if (justAnotherFilter.shouldSkip()) {
             return;
         }
         long currentTime = System.currentTimeMillis() / 1000;
         removeOldRecords(currentTime);
 
-        int duplicateCount = countDuplicates(playerName, message);
-        addNewRecord(playerName, currentTime, message);
+        int duplicateCount = countDuplicates(name, message);
+        addNewRecord(name, currentTime, message);
 
         if (duplicateCount == 2) {
-            handleDuplicateMessages(playerName, message);
+            handleDuplicateMessages(name, message);
         }
     }
 

@@ -1,6 +1,8 @@
 package fr.openai.notify;
 
 import fr.openai.database.files.TrayIconLoader;
+import fr.openai.filter.FilteringModeManager;
+import fr.openai.filter.ViolationHandler;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -13,11 +15,15 @@ public class WindowsNotification {
             SystemTray tray = SystemTray.getSystemTray();
             TrayIconLoader iconLoader = new TrayIconLoader();
             Image icon = iconLoader.loadRageIcon();
-
-            trayIcon = new TrayIcon(icon, "DO NOT LOOK AT ME");
-
+            if (FilteringModeManager.isRageModeEnabled()) {
+                trayIcon = new TrayIcon(icon, "BHScore mode: RAGE");
+            }
+            if (FilteringModeManager.isLoyalModeEnabled()) {
+                trayIcon = new TrayIcon(icon, "BHScore mode: LOYAL");
+            }
             // Set an empty mouse event handler to prevent clicks
-            trayIcon.addMouseListener(new MouseAdapter() {});
+            trayIcon.addMouseListener(new MouseAdapter() {
+            });
 
             // Set an empty mouse event handler for the popup menu
             PopupMenu popupMenu = new PopupMenu();

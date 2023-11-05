@@ -1,6 +1,7 @@
 package fr.openai.ui.panels;
 
 import fr.openai.database.ConfigManager;
+import fr.openai.filter.FiltersManager;
 import fr.openai.ui.customui.CustomHelp;
 import fr.openai.discordfeatures.DiscordRPC;
 
@@ -10,16 +11,23 @@ import java.awt.*;
 public class ModesPanel extends JPanel {
     DiscordRPC discordRPC = new DiscordRPC();
     private final JCheckBox rpcCheckBox;
+    private final JCheckBox swearingFilterBox;
 
     public ModesPanel() {
         setLayout(new BorderLayout());
 
         ConfigManager configManager = new ConfigManager();
         rpcCheckBox = new JCheckBox("Активность в Discord", true); // Initially enabled
+        swearingFilterBox = new JCheckBox("Фильтр: Ругательства", true); // Initially enabled
         rpcCheckBox.setFocusPainted(false);
+        swearingFilterBox.setFocusPainted(false);
         rpcCheckBox.addActionListener(e -> {
             boolean isEnabled = rpcCheckBox.isSelected();
             discordRPC.setRPCEnabled(isEnabled); // Update the RPC state based on the checkbox
+        });
+        swearingFilterBox.addActionListener(e -> {
+            boolean isEnabled = swearingFilterBox.isSelected();
+            FiltersManager.setEnableSwearingFilter(isEnabled); // Update the RPC state based on the checkbox
         });
 
         JSlider upFQSlider = new JSlider(JSlider.HORIZONTAL, 10, 510, configManager.getUpFQ());
@@ -108,6 +116,7 @@ public class ModesPanel extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.EAST;
         rightPanel.add(rpcCheckBox, gbc);
+        rightPanel.add(swearingFilterBox, gbc);
 
         JPanel radioButtonPanel = new JPanel(new GridLayout(1, 1));
         radioButtonPanel.add(rightPanel); // Add the RPC toggle checkbox to the right corner
