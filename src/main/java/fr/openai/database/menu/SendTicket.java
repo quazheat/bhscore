@@ -8,7 +8,7 @@ import org.bson.Document;
 import java.util.Date;  
 
 public abstract class SendTicket {
-    protected static void sendTicket(String ticketText) {
+    protected void sendTicket(String ticketText) {
         TicketDocument ticketDocument = new TicketDocument(new Date(), ticketText, "UNKNOWN", IpAddressUtil.getUserPublicIpAddress());
         MongoCollection<Document> ticketCollection = ConnectDb.getMongoCollection("tickets");
         ticketCollection.insertOne(ticketDocument.toDocument());

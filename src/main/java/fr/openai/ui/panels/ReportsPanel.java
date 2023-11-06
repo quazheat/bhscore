@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ReportsPanel extends JPanel {
+    private final UuidLog uuidLog = new UuidLog();
     private final UuidProvider uuidProvider = new UuidProvider();
     private MongoClient mongoClient;
     private final JTextArea textArea;
@@ -72,7 +73,7 @@ public class ReportsPanel extends JPanel {
         UuidChecker uuidChecker = new UuidChecker();
         boolean isUuidAllowed = uuidChecker.isAllowed();
 
-        UuidLog.logUuid(isUuidAllowed); // Log whether UUID is allowed
+        uuidLog.logUuid(isUuidAllowed); // Log whether UUID is allowed
 
         if (!isUuidAllowed) {
             System.exit(1); // Exit the program with code 1 if UUID is not allowed

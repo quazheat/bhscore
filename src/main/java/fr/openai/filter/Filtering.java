@@ -9,12 +9,9 @@ import fr.openai.notify.NotificationSystem;
 
 public class Filtering extends ViolationHandler {
     private final DiscordRPC discordRPC;
-    private int mutes = 0;
-    private int warns = 0;
 
     private final Filters filters;
     private final Names names;
-    boolean swearingFilter = true;
 
     public Filtering(NotificationSystem notificationSystem) {
         super(notificationSystem);
@@ -34,14 +31,14 @@ public class Filtering extends ViolationHandler {
             return;
         }
 
-        updateCounters(message);
-        updateDiscordRPCState();
-
         JustAnotherFilter justAnotherFilter = new JustAnotherFilter(name, message);
         if (justAnotherFilter.shouldSkip()) {
             return;
         }
 
+        String newState = "Spectating for " + playerName;
+        DiscordRPC.updateRPCState(newState);
+        discordRPC.updateRPC();
         boolean flood = (filters.hasManySymbols(message) || filters.hasLaugh(message) || filters.hasWFlood(message));
         boolean isSwearFilterEnabled = FiltersManager.isSwearingFilter();
         if (isSwearFilterEnabled && flood && filters.hasCaps(message) && filters.hasSwearing(message)) {
@@ -80,16 +77,6 @@ public class Filtering extends ViolationHandler {
         }
     }
 
-    private void updateCounters(String message) {
-        if (filters.hasMuteCounter(message)) {
-            mutes++;
-        }
-
-        if (filters.hasWarnCounter(message)) {
-            warns++;
-        }
-    }
-
 
     private void updateDiscordRPCDetails() {
         DiscordDetails discordDetails = new DiscordDetails();
@@ -99,14 +86,5 @@ public class Filtering extends ViolationHandler {
         discordRPC.updateRPC();
     }
 
-    private void updateDiscordRPCState() {
-        String newState = mutes + " mutes | " + warns + " warns performed.";
-        System.out.println(newState);
-        DiscordRPC.updateRPCState(newState);
-        discordRPC.updateRPC();
-    }
-    public void setEnableSwearingFilter(boolean enabled) {
-        swearingFilter = enabled;
-    }
 
 }

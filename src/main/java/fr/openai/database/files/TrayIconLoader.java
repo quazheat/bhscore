@@ -14,12 +14,12 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
 public class TrayIconLoader {
-    private static final String TRAY_ICON_URL = "https://cdn-icons-png.flaticon.com/128/2839/2839162.png";
-    private static final String RAGE_ICON_ENABLED_URL = "https://cdn-icons-png.flaticon.com/128/982/982989.png";
-    private static final String RAGE_ICON_DISABLED_URL = "https://cdn-icons-png.flaticon.com/128/2164/2164313.png";
-    private static final String ICON_FILE_NAME = "tray_icon.png";
-    private static final String RAGE_ICON_NAME = "rage_mode.png";
-    private static final String RAGE_ICON_DISABLED_NAME = "rage_mode_disabled.png";
+    public final String TRAY_ICON_URL = "https://cdn-icons-png.flaticon.com/128/2839/2839162.png";
+    public final String RAGE_ICON_ENABLED_URL = "https://cdn-icons-png.flaticon.com/128/982/982989.png";
+    public final String RAGE_ICON_DISABLED_URL = "https://cdn-icons-png.flaticon.com/128/2164/2164313.png";
+    public final String ICON_FILE_NAME = "tray_icon.png";
+    public final String RAGE_ICON_NAME = "rage_mode.png";
+    public final String RAGE_ICON_DISABLED_NAME = "rage_mode_disabled.png";
 
     public Image loadIcon() {
         File iconFile = new File(ICON_FILE_NAME);

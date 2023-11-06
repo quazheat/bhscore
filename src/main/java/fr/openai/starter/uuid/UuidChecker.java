@@ -1,6 +1,5 @@
 package fr.openai.starter.uuid;
 
-import fr.openai.database.menu.SendTicket;
 import fr.openai.starter.logs.UuidLog;
 import fr.openai.starter.uuid.manager.HwidManager;
 
@@ -10,6 +9,8 @@ import java.util.List;
 
 public class UuidChecker {
     private final UuidProvider uuidProvider = new UuidProvider();
+    private final UuidLog uuidLog = new UuidLog();
+
     private final ProviderCheck providerCheck = new ProviderCheck();
 
     public boolean isAllowed() {
@@ -22,7 +23,7 @@ public class UuidChecker {
             List<String> allowedUuids = providerCheck.getUuuidList();
 
             boolean isAllowed = allowedUuids.contains(uuid);
-            UuidLog.logUuid(isAllowed);
+            uuidLog.logUuid(isAllowed);
 
             return isAllowed;
         } catch (IOException e) {

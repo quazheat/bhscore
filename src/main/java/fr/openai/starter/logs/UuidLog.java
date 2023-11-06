@@ -5,7 +5,7 @@ import fr.openai.ui.LoginUIManager;
 import java.io.IOException;
 
 public class UuidLog {
-    public static void logUuid(boolean isAllowed) throws IOException {
+    public void logUuid(boolean isAllowed) throws IOException {
         if (isAllowed) {
             System.out.println("Is UUID Allowed: true");
         } else {
