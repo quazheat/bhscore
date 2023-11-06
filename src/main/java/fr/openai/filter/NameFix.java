@@ -1,6 +1,7 @@
 package fr.openai.filter;
 
 public class NameFix {
+
     public String cscFix(String playerName) {
         String[] words = playerName.split(" ");
 

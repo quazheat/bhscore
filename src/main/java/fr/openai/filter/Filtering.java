@@ -40,8 +40,7 @@ public class Filtering extends ViolationHandler {
         DiscordRPC.updateRPCState(newState);
         discordRPC.updateRPC();
         boolean flood = (filters.hasManySymbols(message) || filters.hasLaugh(message) || filters.hasWFlood(message));
-        boolean isSwearFilterEnabled = FiltersManager.isSwearingFilter();
-        if (isSwearFilterEnabled && flood && filters.hasCaps(message) && filters.hasSwearing(message)) {
+        if (flood && filters.hasCaps(message) && filters.hasSwearing(message)) {
             handleViolation(playerName, message, muteText + playerName + " 2.12+2.10+2.7", message, "2.12+2.10+2.7");
             updateDiscordRPCDetails();
             return; // ALL REASONS
@@ -52,17 +51,17 @@ public class Filtering extends ViolationHandler {
             return; // FLOOD + CAPS
         }
 
-        if (isSwearFilterEnabled && flood && filters.hasSwearing(message)) {
+        if (flood && filters.hasSwearing(message)) {
             handleViolation(playerName, message, muteText + playerName + " 2.10+2.12+", message, "2.10+2.12+");
             return; // FLOOD + SWEAR
         }
 
-        if (isSwearFilterEnabled && filters.hasCaps(message) && filters.hasSwearing(message)) {
+        if (filters.hasCaps(message) && filters.hasSwearing(message)) {
             handleViolation(playerName, message, muteText + playerName + " 2.12+2.7", message, "2.12+2.7");
             return; // CAPS + SWEAR
         }
 
-        if (isSwearFilterEnabled && filters.hasSwearing(message)) {
+        if (filters.hasSwearing(message)) {
             handleViolation(playerName, message, warnText + playerName + " Не матерись", message, "2.7");
             return;
         }

@@ -33,11 +33,13 @@ public class Menu {
         WhitelistPanel whitelistPanel = new WhitelistPanel(addNewWhitelistWord, removeWhitelistWord);
         ReportsPanel reportsPanel = new ReportsPanel(frame);
         ModesPanel modesPanel = new ModesPanel();
+        PlayPanel playPanel = new PlayPanel();
 
-        tabbedPane.addTab("Скорость", modesPanel);
-        tabbedPane.addTab("Ругательства", forbiddenWordsPanel);
-        tabbedPane.addTab("Белый список", whitelistPanel);
-        tabbedPane.addTab("Отчеты", reportsPanel);
+        tabbedPane.addTab("Main", modesPanel);
+        tabbedPane.addTab("Words", forbiddenWordsPanel);
+        tabbedPane.addTab("Whitelist", whitelistPanel);
+        tabbedPane.addTab("Reports", reportsPanel);
+        tabbedPane.addTab("Playground",playPanel);
 
         frame.getContentPane().add(tabbedPane);
         outputLabel = new JLabel();

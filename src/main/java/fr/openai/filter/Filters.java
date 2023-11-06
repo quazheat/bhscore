@@ -109,21 +109,6 @@ public class Filters {
         return false;
     }
 
-    public boolean hasMuteCounter(String message) {
-        String username = DiscordRPCDiag.getUsername();
-        System.out.println(message);
-        return message.contains(username + " замутил");
-    }
-
-    public boolean hasWarnCounter(String message) {
-        String username = DiscordRPCDiag.getUsername();
-        if (message.contains(username)) {
-            System.out.println(message);
-
-        }
-            return message.contains(username + " предупредил");
-    }
-
     private String removeSpecialCharacters(String input) {
         return input.replaceAll("[^a-zA-Zа-яА-Я]", "");
     }

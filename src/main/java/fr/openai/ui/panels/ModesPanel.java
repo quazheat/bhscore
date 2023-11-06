@@ -1,7 +1,7 @@
 package fr.openai.ui.panels;
 
 import fr.openai.database.ConfigManager;
-import fr.openai.filter.FiltersManager;
+import fr.openai.filter.fixer.Names;
 import fr.openai.ui.customui.CustomHelp;
 import fr.openai.discordfeatures.DiscordRPC;
 
@@ -11,23 +11,23 @@ import java.awt.*;
 public class ModesPanel extends JPanel {
     DiscordRPC discordRPC = new DiscordRPC();
     private final JCheckBox rpcCheckBox;
-    private final JCheckBox swearingFilterBox;
+    private final JCheckBox skyBlockCheckBox;
 
     public ModesPanel() {
         setLayout(new BorderLayout());
 
         ConfigManager configManager = new ConfigManager();
         rpcCheckBox = new JCheckBox("Активность в Discord", true); // Initially enabled
-        swearingFilterBox = new JCheckBox("Фильтр: Ругательства", true); // Initially enabled
+        skyBlockCheckBox = new JCheckBox("Я на скайблоке", false); // Initially disabled
         rpcCheckBox.setFocusPainted(false);
-        swearingFilterBox.setFocusPainted(false);
+        skyBlockCheckBox.setFocusPainted(false);
         rpcCheckBox.addActionListener(e -> {
             boolean isEnabled = rpcCheckBox.isSelected();
             discordRPC.setRPCEnabled(isEnabled); // Update the RPC state based on the checkbox
         });
-        swearingFilterBox.addActionListener(e -> {
-            boolean isEnabled = swearingFilterBox.isSelected();
-            FiltersManager.setEnableSwearingFilter(isEnabled); // Update the RPC state based on the checkbox
+        skyBlockCheckBox.addActionListener(e -> {
+            boolean isEnabled = skyBlockCheckBox.isSelected();
+            Names.isSkyBlockEnabled(isEnabled); // Update the RPC state based on the checkbox
         });
 
         JSlider upFQSlider = new JSlider(JSlider.HORIZONTAL, 10, 510, configManager.getUpFQ());
@@ -66,7 +66,7 @@ public class ModesPanel extends JPanel {
 
         CustomHelp helpButton = new CustomHelp(
                 """
-                        Скорость в этой вкладке влияет на две вещи:
+                        Ползунок в этой вкладке влияет на две вещи:
                         1) Скорость авто-наказаний — меняется СРАЗУ ЖЕ после изменений.
                         Авто-наказание не работает на скорости 10-20 мс.
                         2) Скорость работы программы — меняется ТОЛЬКО
@@ -81,19 +81,19 @@ public class ModesPanel extends JPanel {
                                                                                                 
                                                                                                 xxx
                                                                                                 
-                        Слова во вкладке "Ругательства". Добавлять нужно целое слово,
+                        Слова во вкладке "Words". Добавлять нужно целое слово,
                         будет реагировать на похожие слова. Зачастую, добавлять
                         однокоренные слова НЕ НУЖНО. Если не реагирует, кидайте репорт.
                                                                                                 
                                                                                                 xxx
                                                                                                 
-                        Слов, в словаре "Белый список" и похожие слова,
+                        Слов, в словаре "Whitelist" и похожие слова,
                         не видны для модуля ругательств.
                         Исключения можно добавлять через запятую, за раз хоть 100 штук.
                                                                                                 
                                                                                                 xxx
                                                                                                 
-                        Вкладка "Отчеты" создана для отправки репорта или предложения
+                        Вкладка "Reports" создана для отправки репорта или предложения
                         по работе этой программы, можно кидать что-то ссылкой и всё такое.
                                                                                                 
                                                                                                 xxx
@@ -116,7 +116,7 @@ public class ModesPanel extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.EAST;
         rightPanel.add(rpcCheckBox, gbc);
-        rightPanel.add(swearingFilterBox, gbc);
+        rightPanel.add(skyBlockCheckBox, gbc);
 
         JPanel radioButtonPanel = new JPanel(new GridLayout(1, 1));
         radioButtonPanel.add(rightPanel); // Add the RPC toggle checkbox to the right corner
