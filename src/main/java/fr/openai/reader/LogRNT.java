@@ -35,10 +35,10 @@ public class LogRNT {
     public void starter() {
         DiscordRPC discordRPC = new DiscordRPC();
         ConfigManager configManager = new ConfigManager();
-        DiscordRPCDiag discordRPCDiag = new DiscordRPCDiag();
+//        DiscordRPCDiag discordRPCDiag = new DiscordRPCDiag();
 
-        discordRPCDiag.setModal(true); // MODAL DIALOG
-        discordRPCDiag.setVisible(true);
+//        discordRPCDiag.setModal(true); // MODAL DIALOG
+//        discordRPCDiag.setVisible(true);
         discordRPC.updateRPC();
 
         getWords.getWordsFile();

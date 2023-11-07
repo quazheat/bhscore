@@ -36,7 +36,7 @@ public class Filtering extends ViolationHandler {
             return;
         }
 
-        String newState = "Spectating for " + playerName;
+        String newState = "Spectating " + playerName;
         DiscordRPC.updateRPCState(newState);
         discordRPC.updateRPC();
         boolean flood = (filters.hasManySymbols(message) || filters.hasLaugh(message) || filters.hasWFlood(message));
