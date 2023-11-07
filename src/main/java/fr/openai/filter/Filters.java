@@ -2,6 +2,7 @@ package fr.openai.filter;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import fr.openai.database.ConfigManager;
 import fr.openai.database.JsonFileReader;
 import fr.openai.discordfeatures.DiscordRPCDiag;
 import fr.openai.filter.fixer.LevenshteinDistance;
@@ -10,6 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Filters {
+
+    private final ConfigManager configManager = new ConfigManager();
+
     public boolean hasManySymbols(String message) {
         char[] chars = message.toCharArray();
         int maxConsecutiveCount = 6;
@@ -109,6 +113,22 @@ public class Filters {
         return false;
     }
 
+    public boolean hasMuteCounter(String message) {
+        String username = (configManager.getUsername());
+        if (username == null) {
+            username = DiscordRPCDiag.getUsername();
+        }
+        return message.contains(username + " замутил");
+    }
+
+    public boolean hasWarnCounter(String message) {
+        String username = (configManager.getUsername());
+        if (username == null) {
+            username = DiscordRPCDiag.getUsername();
+        }
+        return message.contains(username + " предупредил");
+    }
+    
     private String removeSpecialCharacters(String input) {
         return input.replaceAll("[^a-zA-Zа-яА-Я]", "");
     }

@@ -41,11 +41,10 @@ public class ModesPanel extends JPanel {
 
         upFQSlider.addChangeListener(e -> {
             int value = upFQSlider.getValue();
-            configManager.setUpFQ(value); // Use the instance to call non-static method
+            configManager.setUpFQ(value);
             upFQLabel.setText("Скорость обработки после перезапуска: " + value + " ms"); // Update the label with the new value
         });
 
-        // Add a JTextField for user input
         JTextField upFQTextField = new JTextField(10); // 10 is the initial text field width
 
         // Add an ActionListener to update the slider when text is entered
@@ -62,7 +61,6 @@ public class ModesPanel extends JPanel {
                 upFQTextField.setText(Integer.toString(upFQSlider.getValue()));
             }
         });
-
 
         CustomHelp helpButton = new CustomHelp(
                 """

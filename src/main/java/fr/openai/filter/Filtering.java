@@ -9,7 +9,8 @@ import fr.openai.notify.NotificationSystem;
 
 public class Filtering extends ViolationHandler {
     private final DiscordRPC discordRPC;
-
+    public static int warns = 0;
+    public static int mutes = 0;
     private final Filters filters;
     private final Names names;
 
@@ -30,11 +31,12 @@ public class Filtering extends ViolationHandler {
         if (message == null) {
             return;
         }
-
+        updateCounters(message);
         JustAnotherFilter justAnotherFilter = new JustAnotherFilter(name, message);
         if (justAnotherFilter.shouldSkip()) {
             return;
         }
+
 
         String newState = "Spectating " + playerName;
         DiscordRPC.updateRPCState(newState);
@@ -85,5 +87,23 @@ public class Filtering extends ViolationHandler {
         discordRPC.updateRPC();
     }
 
+
+    private void updateCounters(String message) {
+        if (filters.hasMuteCounter(message)) {
+            mutes++;
+        }
+
+        if (filters.hasWarnCounter(message)) {
+            warns++;
+        }
+    }
+
+    public static int getWarns() {
+        return warns;
+    }
+
+    public static int getMutes() {
+        return mutes;
+    }
 
 }

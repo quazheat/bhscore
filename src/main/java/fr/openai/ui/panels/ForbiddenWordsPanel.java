@@ -8,17 +8,19 @@ import fr.openai.database.menu.RemoveWord;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class ForbiddenWordsPanel extends JPanel {
-    private final JTextField inputTextField;
-    private final JLabel outputLabel;
+    private final JTextField inputField;
 
     public ForbiddenWordsPanel(AddNewWord addNewWord, RemoveWord removeWord) {
         setLayout(new BorderLayout());
+        String watermark = "Слово во множественном числе";
         setBackground(Color.lightGray);
 
         // Create the output label at the top
-        outputLabel = new JLabel();
+        JLabel outputLabel = new JLabel();
         outputLabel.setHorizontalAlignment(JLabel.CENTER);
         outputLabel.setForeground(Color.BLACK);
         add(outputLabel, BorderLayout.NORTH);
@@ -32,9 +34,10 @@ public class ForbiddenWordsPanel extends JPanel {
         inputLabel.setForeground(Color.BLACK);
         inputPanel.setBackground(Color.LIGHT_GRAY);
 
-        inputTextField = new JTextField(20);
+        inputField = new JTextField(watermark,20);
+        inputField.setForeground(Color.GRAY);
         inputPanel.add(inputLabel);
-        inputPanel.add(inputTextField);
+        inputPanel.add(inputField);
 
         JButton addButton = new JButton("Добавить");
         JButton removeButton = new JButton("Удалить");
@@ -54,30 +57,44 @@ public class ForbiddenWordsPanel extends JPanel {
 
         add(inputButtonPanel, BorderLayout.CENTER);
 
+        inputField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (inputField.getText().equals(watermark)) {
+                    inputField.setText("");
+                    inputField.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (inputField.getText().isEmpty()) {
+                    inputField.setText(watermark);
+                    inputField.setForeground(Color.GRAY);
+                }
+            }
+        });
+
         addButton.addActionListener(e -> {
-            String newWord = inputTextField.getText();
+            String newWord = inputField.getText();
             if (!newWord.isEmpty()) {
                 addNewWord.addNewWord(newWord);
             }
-            inputTextField.setText("");
+            inputField.setText("");
         });
 
         removeButton.addActionListener(e -> {
-            String wordToRemove = inputTextField.getText();
+            String wordToRemove = inputField.getText();
             if (!wordToRemove.isEmpty()) {
                 removeWord.removeWord(wordToRemove);
             }
-            inputTextField.setText("");
+            inputField.setText("");
         });
 
-        InputValidator.setupInputValidation(inputTextField, addButton, removeButton);
+        InputValidator.setupInputValidation(inputField, addButton, removeButton);
 
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setUI(new CustomTab());
         add(tabbedPane, BorderLayout.SOUTH);
-    }
-
-    public void setOutputText(String message) {
-        outputLabel.setText(message);
     }
 }

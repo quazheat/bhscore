@@ -12,7 +12,6 @@ public class Names {
 
     public String formatPlayerName(String playerName) {
         String[] words = playerName.split(" ");
-        System.out.println(isSkyBlock);
         if (isSkyBlock && words.length >= 2) {
             if (words.length >= 3) {
                 words[1] = words[2]; // Replace the second word with the third

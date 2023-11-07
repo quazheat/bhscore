@@ -1,6 +1,7 @@
 package fr.openai.runtime;
 
 import fr.openai.database.files.TrayIconLoader;
+import fr.openai.ui.customui.MutesWarnsGUI;
 import fr.openai.ui.panels.Menu;
 
 import java.awt.*;
@@ -41,7 +42,7 @@ public class SystemTrayManager {
             TrayIcon trayIcon = new TrayIcon(appIcon, "BHScore", popupMenu);
             SystemTray tray = SystemTray.getSystemTray();
 
-            exitItem.addActionListener(e -> System.exit(0));
+
 
             Image rageIconEnabled = iconLoader.loadRageIcon();
             Image rageIconDisabled = iconLoader.loadRageIconDisabled();
@@ -74,6 +75,12 @@ public class SystemTrayManager {
                 }
             });
 
+            exitItem.addActionListener(e -> {
+                MutesWarnsGUI mutesWarnsGUI = new MutesWarnsGUI();
+                mutesWarnsGUI.setModal(true);
+                mutesWarnsGUI.setVisible(true);
+                System.exit(0);
+            });
             // Create a TrayIconManager instance and set up icon listeners
             TrayIconManager iconManager = new TrayIconManager(trayIcon, rageIconEnabled, rageIconDisabled, loyalModeDisabled);
             iconManager.setupIconListeners(toggleRageModeItem, toggleLoyalModeItem);
