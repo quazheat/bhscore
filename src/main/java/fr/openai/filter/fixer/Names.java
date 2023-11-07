@@ -24,7 +24,7 @@ public class Names {
             if (words.length >= 3) {
                 words[1] = words[2]; // Replace the second word with the third
             } else {
-                words[0] = ""; // Set the second word to an empty string
+                words[0] = ""; // Set the first word to an empty string
             }
             playerName = String.join(" ", words).trim(); // Combine the words into one string
         }
@@ -34,7 +34,6 @@ public class Names {
     public static void isSkyBlockEnabled(boolean enabled) {
         isSkyBlock = enabled;
     }
-
 
     public String getFinalName(String line) {
         if (line.contains("»")) {
@@ -75,10 +74,5 @@ public class Names {
         return finalName;
     }
 
-    public void TestName(String rawString) {
-        System.out.println("Entered raw string: " + rawString);
-        String playerName = getFinalName(rawString);
-        System.out.println("Formatted Player Name: " + playerName);
-    }
 
 }

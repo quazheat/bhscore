@@ -1,7 +1,7 @@
 package fr.openai.filter;
 
-import fr.openai.discordfeatures.DiscordDetails;
 import fr.openai.discordfeatures.DiscordRPC;
+import fr.openai.discordfeatures.UpdateDiscordRPCDetails;
 import fr.openai.exec.Messages;
 
 import fr.openai.filter.fixer.Names;
@@ -12,6 +12,7 @@ public class Filtering extends ViolationHandler {
     public static int warns = 0;
     public static int mutes = 0;
     private final Filters filters;
+    UpdateDiscordRPCDetails updateDiscordRPCDetails;
     private final Names names;
 
     public Filtering(NotificationSystem notificationSystem) {
@@ -44,7 +45,7 @@ public class Filtering extends ViolationHandler {
         boolean flood = (filters.hasManySymbols(message) || filters.hasLaugh(message) || filters.hasWFlood(message));
         if (flood && filters.hasCaps(message) && filters.hasSwearing(message)) {
             handleViolation(playerName, message, muteText + playerName + " 2.12+2.10+2.7", message, "2.12+2.10+2.7");
-            updateDiscordRPCDetails();
+            updateDiscordRPCDetails.updateDiscordRPCDetailsScary();
             return; // ALL REASONS
         }
 
@@ -76,15 +77,6 @@ public class Filtering extends ViolationHandler {
         if (filters.hasCaps(message)) {
             handleViolation(playerName, message, warnText + playerName + " Не капси", message, "2.12+");
         }
-    }
-
-
-    private void updateDiscordRPCDetails() {
-        DiscordDetails discordDetails = new DiscordDetails();
-        String newDetails = discordDetails.getRandomScaryPhrase();
-        System.out.println("Scary Phrase: " + newDetails);
-        DiscordRPC.updateRPCDetails(newDetails);
-        discordRPC.updateRPC();
     }
 
 

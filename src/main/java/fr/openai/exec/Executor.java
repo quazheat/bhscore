@@ -41,7 +41,5 @@ public class Executor {
             executorService.scheduleAtFixedRate(discordRPC::updateRPC, 0, 1, TimeUnit.SECONDS);
         });
     }
-    public void executedLog(String line) {
-        System.out.println(line);
-    }
+
 }

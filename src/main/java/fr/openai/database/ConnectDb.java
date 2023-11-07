@@ -14,6 +14,11 @@ public class ConnectDb {
         }
         return mongoClient;
     }
+    public void closeMongoClient() {
+        if (mongoClient != null) {
+            mongoClient.close();
+        }
+    }
 
     private void initializeMongoDB() {
         String connectionString = "mongodb+srv://quazheat:54tp1EtyKj0oLTuV@bhscore.w1rtmok.mongodb.net/?retryWrites=true&w=majority";
@@ -31,4 +36,5 @@ public class ConnectDb {
 
         return database.getCollection(collectionName);
     }
+
 }

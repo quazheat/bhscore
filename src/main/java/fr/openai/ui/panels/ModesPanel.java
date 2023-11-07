@@ -3,28 +3,19 @@ package fr.openai.ui.panels;
 import fr.openai.database.ConfigManager;
 import fr.openai.filter.fixer.Names;
 import fr.openai.ui.customui.CustomHelp;
-import fr.openai.discordfeatures.DiscordRPC;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class ModesPanel extends JPanel {
-    DiscordRPC discordRPC = new DiscordRPC();
-    private final JCheckBox rpcCheckBox;
     private final JCheckBox skyBlockCheckBox;
 
     public ModesPanel() {
         setLayout(new BorderLayout());
 
         ConfigManager configManager = new ConfigManager();
-        rpcCheckBox = new JCheckBox("Активность в Discord", true); // Initially enabled
         skyBlockCheckBox = new JCheckBox("Я на скайблоке", false); // Initially disabled
-        rpcCheckBox.setFocusPainted(false);
         skyBlockCheckBox.setFocusPainted(false);
-        rpcCheckBox.addActionListener(e -> {
-            boolean isEnabled = rpcCheckBox.isSelected();
-            discordRPC.setRPCEnabled(isEnabled); // Update the RPC state based on the checkbox
-        });
         skyBlockCheckBox.addActionListener(e -> {
             boolean isEnabled = skyBlockCheckBox.isSelected();
             Names.isSkyBlockEnabled(isEnabled); // Update the RPC state based on the checkbox
@@ -113,7 +104,7 @@ public class ModesPanel extends JPanel {
         JPanel rightPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.EAST;
-        rightPanel.add(rpcCheckBox, gbc);
+        gbc.insets = new Insets(0, 0, 0, 118);
         rightPanel.add(skyBlockCheckBox, gbc);
 
         JPanel radioButtonPanel = new JPanel(new GridLayout(1, 1));

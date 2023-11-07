@@ -1,5 +1,6 @@
 package fr.openai.runtime;
 
+import fr.openai.database.ConnectDb;
 import fr.openai.database.files.TrayIconLoader;
 import fr.openai.ui.customui.MutesWarnsGUI;
 import fr.openai.ui.panels.Menu;
@@ -10,6 +11,7 @@ import java.awt.event.MouseEvent;
 
 public class SystemTrayManager {
     private Menu menu;
+    private final ConnectDb connectDb = new ConnectDb();
 
     public void setupSystemTray() {
         TrayIconLoader iconLoader = new TrayIconLoader();
@@ -42,12 +44,9 @@ public class SystemTrayManager {
             TrayIcon trayIcon = new TrayIcon(appIcon, "BHScore", popupMenu);
             SystemTray tray = SystemTray.getSystemTray();
 
-
-
             Image rageIconEnabled = iconLoader.loadRageIcon();
             Image rageIconDisabled = iconLoader.loadRageIconDisabled();
             Image loyalModeDisabled = iconLoader.loadIcon();
-
 
             try {
                 tray.add(trayIcon);
@@ -79,6 +78,7 @@ public class SystemTrayManager {
                 MutesWarnsGUI mutesWarnsGUI = new MutesWarnsGUI();
                 mutesWarnsGUI.setModal(true);
                 mutesWarnsGUI.setVisible(true);
+                connectDb.closeMongoClient();
                 System.exit(0);
             });
             // Create a TrayIconManager instance and set up icon listeners

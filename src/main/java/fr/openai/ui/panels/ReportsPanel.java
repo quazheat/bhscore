@@ -28,6 +28,7 @@ public class ReportsPanel extends JPanel {
     private MongoClient mongoClient;
     private final JTextArea textArea;
     private final JButton sendButton;
+    ConnectDb connectDb = new ConnectDb();
     private final JFrame frame;
 
     public ReportsPanel(JFrame parentFrame) {
@@ -65,7 +66,6 @@ public class ReportsPanel extends JPanel {
     }
 
     private void sendTicket() throws IOException {
-        ConnectDb connectDb = new ConnectDb();
         if (mongoClient == null) {
             mongoClient = connectDb.getMongoClient();
         }
@@ -76,6 +76,7 @@ public class ReportsPanel extends JPanel {
         uuidLog.logUuid(isUuidAllowed); // Log whether UUID is allowed
 
         if (!isUuidAllowed) {
+            connectDb.closeMongoClient();
             System.exit(1); // Exit the program with code 1 if UUID is not allowed
         }
 
@@ -109,6 +110,7 @@ public class ReportsPanel extends JPanel {
                     isSubmitting.set(true);
                 } catch (Exception ex) {
                     SwingUtilities.invokeLater(() -> {
+                        mongoClient = connectDb.getMongoClient();
                         SubmitTicketDialog submitTicketDialog = new SubmitTicketDialog(frame);
                         submitTicketDialog.showDialog();
                         if (submitTicketDialog.isCanceled()) {

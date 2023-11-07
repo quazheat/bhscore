@@ -1,7 +1,6 @@
 package fr.openai.ui.customui;
 
 import fr.openai.database.ConfigManager;
-import fr.openai.discordfeatures.DiscordRPCDiag;
 import fr.openai.filter.Filtering;
 
 import javax.swing.*;
@@ -22,28 +21,30 @@ public class MutesWarnsGUI extends JDialog {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 3;
+        gbc.gridheight = 1;
+        gbc.fill = GridBagConstraints.BOTH;
 
         String username = (configManager.getUsername());
         int mutes = Filtering.getMutes();
         int warns = Filtering.getWarns();
 
-        String statsText = "<html><b>Статистика за сессию</b> " + username +
+        String statsText = "<html><div align='center'><b>Статистика за сессию:</b> <br>" + username +
                 "<br><br>Mutes: " + mutes +
                 "<br>Warns: " + warns +
-                "<br><b>Total:</b> " + (mutes + warns) + "</html>";
+                "<br><b>Total:</b> " + (mutes + warns) + "</div></html>";
+
         if (username == null || username.length() <=3) {
-            DiscordRPCDiag discordRPCDiag = new DiscordRPCDiag();
-            discordRPCDiag.setModal(true);
-            discordRPCDiag.setVisible(true);
-            statsText = "<html>Статистика <b>недоступна</b>.<br>Вы не указали имя пользователя.<br><br>";
+            System.exit(0);
         }
         JLabel titleLabel = new JLabel(statsText);
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.PLAIN, 13));
 
-        gbc.insets = new Insets(10, 10, 0, 10);
+        Dimension minSize = new Dimension(300, 100);
+        titleLabel.setMinimumSize(minSize);
+        titleLabel.setPreferredSize(minSize);
+        gbc.insets = new Insets(15, 10, 0, 10);
         panel.add(titleLabel, gbc);
 
         JPanel buttonPanel = new JPanel(new GridBagLayout());
@@ -55,12 +56,12 @@ public class MutesWarnsGUI extends JDialog {
         JButton closeButton = new JButton("Закрыть");
         closeButton.addActionListener(e -> dispose());
 
-        Dimension buttonSize = new Dimension(160, 40);
+        Dimension buttonSize = new Dimension(280, 40);
         closeButton.setPreferredSize(buttonSize);
         CustomButtonUI.setCustomStyle(closeButton);
 
         gbc.gridx = 1;
-        gbc.insets = new Insets(10, 30, 10, 10);
+        gbc.insets = new Insets(10, 105, 10, 10);
         buttonPanel.add(closeButton, gbc);
 
         add(panel);

@@ -3,6 +3,8 @@ package fr.openai.exec;
 
 import fr.openai.filter.Validator;
 
+import java.util.Objects;
+
 public class Messages {
     public static String getMessage(String line) {
         if (Validator.isNotValid(line)) {
@@ -41,13 +43,6 @@ public class Messages {
 
     public String TestMessage(String rawString) {
         String message = getMessage(rawString);
-        if (message != null) {
-            System.out.println("Extracted Message: " + message);
-            return message;
-        } else {
-            System.out.println("No valid message found in the input string.");
-            return "No valid message found";
-        }
+        return Objects.requireNonNullElse(message, "No valid message");
     }
-
 }
