@@ -1,7 +1,8 @@
-package fr.openai.ui.customui;
+package fr.openai.ui;
 
 import fr.openai.database.ConfigManager;
 import fr.openai.filter.Filtering;
+import fr.openai.ui.customui.CustomButtonUI;
 
 import javax.swing.*;
 import java.awt.*;

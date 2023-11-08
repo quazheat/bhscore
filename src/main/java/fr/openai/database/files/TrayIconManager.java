@@ -1,4 +1,4 @@
-package fr.openai.runtime;
+package fr.openai.database.files;
 
 import fr.openai.filter.FilteringModeManager;
 import fr.openai.notify.WindowsNotification;
@@ -57,4 +57,5 @@ public class TrayIconManager {
             toggleRageModeItem.setEnabled(true);
         });
     }
+
 }

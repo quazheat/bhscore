@@ -2,7 +2,8 @@ package fr.openai.runtime;
 
 import fr.openai.database.ConnectDb;
 import fr.openai.database.files.TrayIconLoader;
-import fr.openai.ui.customui.MutesWarnsGUI;
+import fr.openai.database.files.TrayIconManager;
+import fr.openai.ui.MutesWarnsGUI;
 import fr.openai.ui.panels.Menu;
 
 import java.awt.*;

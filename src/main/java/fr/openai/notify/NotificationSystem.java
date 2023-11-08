@@ -3,7 +3,7 @@ package fr.openai.notify;
 import fr.openai.ui.customui.CustomClose;
 import fr.openai.ui.customui.CustomDialog;
 import fr.openai.ui.customui.CustomField;
-import fr.openai.filter.NameFix;
+import fr.openai.filter.fixer.NameFix;
 
 import javax.swing.*;
 import java.awt.*;

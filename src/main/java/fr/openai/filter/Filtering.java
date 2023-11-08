@@ -38,11 +38,13 @@ public class Filtering extends ViolationHandler {
             return;
         }
 
-
-        String newState = "Spectating " + playerName;
-        DiscordRPC.updateRPCState(newState);
-        discordRPC.updateRPC();
         boolean flood = (filters.hasManySymbols(message) || filters.hasLaugh(message) || filters.hasWFlood(message));
+
+        if (flood || filters.hasCaps(message) || filters.hasSwearing(message)) {
+            String newState = "Spectating " + playerName;
+            DiscordRPC.updateRPCState(newState);
+            discordRPC.updateRPC();
+        }
         if (flood && filters.hasCaps(message) && filters.hasSwearing(message)) {
             handleViolation(playerName, message, muteText + playerName + " 2.12+2.10+2.7", message, "2.12+2.10+2.7");
             updateDiscordRPCDetails.updateDiscordRPCDetailsScary();
@@ -78,7 +80,6 @@ public class Filtering extends ViolationHandler {
             handleViolation(playerName, message, warnText + playerName + " Не капси", message, "2.12+");
         }
     }
-
 
     private void updateCounters(String message) {
         if (filters.hasMuteCounter(message)) {

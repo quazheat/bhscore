@@ -1,9 +1,6 @@
-package fr.openai.runtime;
+package fr.openai.filter;
 
 import fr.openai.exec.ClipboardUtil;
-import fr.openai.filter.FilteringModeManager;
-import fr.openai.filter.JustAnotherFilter;
-import fr.openai.filter.ViolationHandler;
 import fr.openai.notify.NotificationSystem;
 import fr.openai.notify.WindowsNotification;
 

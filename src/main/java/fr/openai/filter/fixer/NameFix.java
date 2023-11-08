@@ -1,4 +1,4 @@
-package fr.openai.filter;
+package fr.openai.filter.fixer;
 
 public class NameFix {
 
