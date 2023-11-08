@@ -10,7 +10,7 @@ import org.bson.Document;
 
 import java.util.Date;
 
-public class AddNewWhitelistWord {
+public class AddNewWhitelistWord extends SendTicket {
     private final GetWords getWords = new GetWords();
     private final Menu menu;
 
@@ -45,9 +45,4 @@ public class AddNewWhitelistWord {
         getWords.getWordsFile();
     }
 
-    private void sendTicket(String ticketText) {
-        TicketDocument ticketDocument = new TicketDocument(new Date(), ticketText, "UNKNOWN", IpAddressUtil.getUserPublicIpAddress());
-        MongoCollection<Document> ticketCollection = ConnectDb.getMongoCollection("tickets");
-        ticketCollection.insertOne(ticketDocument.toDocument());
-    }
 }

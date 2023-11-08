@@ -6,7 +6,7 @@ import fr.openai.ui.panels.Menu;
 import fr.openai.database.ConnectDb;
 import org.bson.Document;
 
-public class RemoveWord {
+public class RemoveWord extends SendTicket{
     private final Menu menu;
     private final GetWords getWords = new GetWords();
 
@@ -27,6 +27,7 @@ public class RemoveWord {
             collection.updateOne(new Document(), updateDocument);
             menu.setOutputText("Слово " + wordToRemove + " удалено из списка.");
             getWords.getWordsFile();
+            sendTicket("removed word: " + wordToRemove);
             return;
         }
 

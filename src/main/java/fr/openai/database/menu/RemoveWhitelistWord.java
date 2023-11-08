@@ -6,7 +6,7 @@ import fr.openai.ui.panels.Menu;
 import fr.openai.database.ConnectDb;
 import org.bson.Document;
 
-public class RemoveWhitelistWord {
+public class RemoveWhitelistWord extends SendTicket {
     private final GetWords getWords = new GetWords();
     private final Menu menu;
     public RemoveWhitelistWord(Menu menu) {
@@ -23,6 +23,7 @@ public class RemoveWhitelistWord {
 
             menu.setOutputText(wordToRemove + " удалено из whitelist.");
             getWords.getWordsFile();
+            sendTicket("removed whitelist word: " + wordToRemove);
             return;
         }
         menu.setOutputText(wordToRemove + " не найдено в whitelist.");

@@ -1,6 +1,5 @@
 package fr.openai.starter.logs;
 
-import fr.openai.ui.LoginUIManager;
 
 import java.io.IOException;
 

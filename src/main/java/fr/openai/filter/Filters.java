@@ -87,23 +87,22 @@ public class Filters {
         String[] tokens = message.split("[\\s,.;!?]+"); // Разделение на токены
 
         for (String token : tokens) {
-            boolean shouldRemove = false;
+            boolean isWhitelisted = false;
             for (int i = 0; i < whitelistArray.size(); i++) {
                 String word = whitelistArray.get(i).getAsString();
                 double similarity = levenshteinDistance.apply(token, word);
                 if (similarity >= 0.8) {
-                    shouldRemove = true;
+                    isWhitelisted = true;
+
                     break;
                 }
             }
-            if (shouldRemove) {
-                message = message.replace(token, "");
-            }
-            for (String word : tokens) {
+            if (!isWhitelisted) {
                 for (int i = 0; i < forbiddenWordsArray.size(); i++) {
                     String forbiddenWord = forbiddenWordsArray.get(i).getAsString();
-                    double similarity = levenshteinDistance.apply(word, forbiddenWord);
+                    double similarity = levenshteinDistance.apply(token, forbiddenWord);
                     if (similarity >= 0.8) {
+
                         return true;
                     }
                 }
@@ -128,7 +127,7 @@ public class Filters {
         }
         return message.contains(username + " предупредил");
     }
-    
+
     private String removeSpecialCharacters(String input) {
         return input.replaceAll("[^a-zA-Zа-яА-Я]", "");
     }

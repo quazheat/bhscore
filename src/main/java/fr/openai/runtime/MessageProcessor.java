@@ -34,6 +34,7 @@ public class MessageProcessor extends ViolationHandler {
 
         if (duplicateCount == 2) {
             handleDuplicateMessages(name, message);
+            removeDuplicateMessages(name, message);
         }
     }
 
@@ -87,4 +88,9 @@ public class MessageProcessor extends ViolationHandler {
         pasteUtil.pasteFromClipboard(); // Paste the text from the clipboard
         System.out.println(textToCopy);
     }
+
+    private void removeDuplicateMessages(String playerName, String message) {
+        messageRecords.removeIf(record -> record.playerName().equals(playerName) && record.message().equals(message));
+    }
+
 }
