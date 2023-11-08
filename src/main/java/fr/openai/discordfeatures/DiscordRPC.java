@@ -2,9 +2,10 @@ package fr.openai.discordfeatures;
 
 import club.minnced.discord.rpc.DiscordEventHandlers;
 import club.minnced.discord.rpc.DiscordRichPresence;
-
+import fr.openai.database.ConfigManager;
 
 public class DiscordRPC {
+    private final ConfigManager configManager = new ConfigManager();
     private static final DiscordRichPresence presence = new DiscordRichPresence();
     private static String details = "Big brother watching you"; // The main text field
     private static String state = "Looking for something..."; // Initialize the state
@@ -16,7 +17,10 @@ public class DiscordRPC {
             return; // Don't update the RPC if it's disabled
         }
 
-        final String username = DiscordRPCDiag.getUsername();
+        String username = configManager.getUsername();
+        if (username == null || username.length() <= 3) {
+            username = (DiscordRPCDiag.getUsername());
+        }
 
         club.minnced.discord.rpc.DiscordRPC lib = club.minnced.discord.rpc.DiscordRPC.INSTANCE;
         DiscordEventHandlers handlers = new DiscordEventHandlers();
@@ -28,13 +32,17 @@ public class DiscordRPC {
         presence.largeImageKey = "https://media.tenor.com/22oV0lhc-H8AAAAd/anime-girl-crazy-physco-black-and-white.gif";
         presence.largeImageText = "BHScore";
         presence.smallImageKey = "minigames";
+        //presence.smallImageKey = "https://mc-heads.net/avatar/" + username;
         presence.smallImageText = username;
         presence.partySize = 0; // Number of players in the party
         presence.partyMax = 0; // Maximum size of the party
         presence.matchSecret = "match-secret";
-        presence.joinSecret = "join-secret";
         presence.spectateSecret = "spectate-secret";
         presence.instance = (byte) 1; // For true
+
+        // Добавляем метаданные для кнопки
+        presence.partyId = "party-id"; // Уникальный идентификатор группы
+        presence.joinSecret = "quazheat"; // Секретный ключ для присоединения к группе
 
         lib.Discord_UpdatePresence(presence);
     }
@@ -54,6 +62,4 @@ public class DiscordRPC {
     public void setRPCEnabled(boolean enabled) {
         isRPCEnabled = enabled;
     }
-
-
 }

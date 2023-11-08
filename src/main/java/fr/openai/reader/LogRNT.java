@@ -6,6 +6,7 @@ import fr.openai.discordfeatures.DiscordRPCDiag;
 import fr.openai.exec.Executor;
 import fr.openai.filter.fixer.Names;
 import fr.openai.notify.NotificationSystem;
+import fr.openai.online.OnlineHandler;
 import fr.openai.runtime.SystemTrayManager;
 import fr.openai.database.ConfigManager;
 
@@ -20,6 +21,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class LogRNT {
+    private final OnlineHandler onlineHandler = new OnlineHandler();
     private final ConfigManager configManager;
     private final GetWords getWords = new GetWords();
     private final Executor executor;
@@ -97,6 +99,10 @@ public class LogRNT {
 
         if (Readable.check(line)) {
             executor.execute(line, names);
+        }
+
+        if (Readable.checkServer(line)) {
+            onlineHandler.addOnlineUser(line);
         }
     }
 }

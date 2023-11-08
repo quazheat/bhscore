@@ -2,6 +2,8 @@ package fr.openai.ui.panels;
 
 import fr.openai.database.ConfigManager;
 import fr.openai.filter.fixer.Names;
+import fr.openai.online.OnlineUserLoader;
+import fr.openai.ui.customui.CustomButtonUI;
 import fr.openai.ui.customui.CustomHelp;
 
 import javax.swing.*;
@@ -9,12 +11,13 @@ import java.awt.*;
 
 public class ModesPanel extends JPanel {
     private final JCheckBox skyBlockCheckBox;
+    private final OnlineUserLoader onlineUserLoader = new OnlineUserLoader();
 
     public ModesPanel() {
         setLayout(new BorderLayout());
 
         ConfigManager configManager = new ConfigManager();
-        skyBlockCheckBox = new JCheckBox("Я на скайблоке", false); // Initially disabled
+        skyBlockCheckBox = new JCheckBox("Скайблок", false); // Initially disabled
         skyBlockCheckBox.setFocusPainted(false);
         skyBlockCheckBox.addActionListener(e -> {
             boolean isEnabled = skyBlockCheckBox.isSelected();
@@ -29,16 +32,22 @@ public class ModesPanel extends JPanel {
         upFQSlider.setSnapToTicks(true); // Snap to the nearest tick
 
         JLabel upFQLabel = new JLabel("Скорость обработки: " + configManager.getUpFQ() + " ms");
-
+        JButton onlineUsersButton = new JButton("Онлайн");
+        Font customFont = new Font("Arial", Font.PLAIN, 9);
+        onlineUsersButton.setFont(customFont);
+        CustomButtonUI.setCustomStyle(onlineUsersButton);
+        onlineUsersButton.setFocusPainted(false);
+        onlineUsersButton.addActionListener(e -> {
+            onlineUserLoader.loadOnlineUsers();
+        });
         upFQSlider.addChangeListener(e -> {
             int value = upFQSlider.getValue();
             configManager.setUpFQ(value);
-            upFQLabel.setText("Скорость обработки после перезапуска: " + value + " ms"); // Update the label with the new value
+            upFQLabel.setText("Скорость обработки после перезапуска: " + value + " ms");
         });
 
-        JTextField upFQTextField = new JTextField(10); // 10 is the initial text field width
+        JTextField upFQTextField = new JTextField(10);
 
-        // Add an ActionListener to update the slider when text is entered
         upFQTextField.addActionListener(e -> {
             try {
                 int value = Integer.parseInt(upFQTextField.getText());
@@ -101,16 +110,22 @@ public class ModesPanel extends JPanel {
         sliderPanel.add(upFQSlider, BorderLayout.NORTH);
         sliderPanel.add(upFQLabel, BorderLayout.SOUTH);
 
+
         JPanel rightPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.EAST;
-        gbc.insets = new Insets(0, 0, 0, 118);
+        onlineUsersButton.setMinimumSize(new Dimension(69, 30));
+        gbc.insets = new Insets(0, 16, 0, 0);
+        rightPanel.add(onlineUsersButton, gbc);
+        gbc.insets = new Insets(0, 0, 0, 250);
         rightPanel.add(skyBlockCheckBox, gbc);
+
 
         JPanel radioButtonPanel = new JPanel(new GridLayout(1, 1));
         radioButtonPanel.add(rightPanel); // Add the RPC toggle checkbox to the right corner
         add(radioButtonPanel, BorderLayout.NORTH);
         add(sliderPanel, BorderLayout.CENTER);
+        helpButton.setFont(customFont);
         add(helpButton, BorderLayout.WEST);
     }
 }

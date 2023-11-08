@@ -1,5 +1,6 @@
 package fr.openai.notify;
 
+import fr.openai.exec.PasteUtil;
 import fr.openai.ui.customui.CustomClose;
 import fr.openai.ui.customui.CustomDialog;
 import fr.openai.ui.customui.CustomField;
@@ -13,6 +14,13 @@ import java.util.*;
 import java.util.List;
 
 public class NotificationSystem {
+    protected final PasteUtil pasteUtil = new PasteUtil() {
+        @Override
+        public void pasteFromClipboard() {
+            super.pasteFromClipboard();
+        }
+    };
+
     NameFix nameFixer = new NameFix();
     private final List<Notification> notifications = new ArrayList<>();
     static final int MAX_NOTIFICATIONS = 10;
@@ -71,6 +79,7 @@ public class NotificationSystem {
             notificationDialog.dispose();
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(new StringSelection(command), null);
+            pasteUtil.pasteFromClipboard();
             notifications.remove(notification);
         });
 
@@ -81,6 +90,7 @@ public class NotificationSystem {
             notificationDialog.dispose();
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(new StringSelection(command), null);
+            pasteUtil.pasteFromClipboard();
             notifications.remove(notification);
         });
 
@@ -101,4 +111,5 @@ public class NotificationSystem {
 
         heightManager.updateCurrentY(20);
     }
+
 }

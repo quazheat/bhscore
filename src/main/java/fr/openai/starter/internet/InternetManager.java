@@ -9,7 +9,7 @@ public class InternetManager {
 
     public void check() {
         final InternetManager internetManager = new InternetManager();
-        if (internetChecker.isReachable("https://google.com")) {
+        if (internetChecker.isReachable("https://httpbin.org/uuid")) {
             loginManager.attemptLogin();
         } else {
             internetManager.internetErrorHandler.showErrorDialog();

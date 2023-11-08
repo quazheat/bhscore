@@ -20,7 +20,6 @@ public class CustomHelp extends JPanel {
             JDialog customDialog = new JDialog();
             customDialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL); // Prevent interaction with other windows
 
-            // Load the icon image from a file (tray_icon.png)
             try {
                 BufferedImage iconImage = ImageIO.read(new File("tray_icon.png"));
                 customDialog.setIconImage(iconImage);
