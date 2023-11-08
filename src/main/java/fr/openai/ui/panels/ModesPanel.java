@@ -37,9 +37,7 @@ public class ModesPanel extends JPanel {
         onlineUsersButton.setFont(customFont);
         CustomButtonUI.setCustomStyle(onlineUsersButton);
         onlineUsersButton.setFocusPainted(false);
-        onlineUsersButton.addActionListener(e -> {
-            onlineUserLoader.loadOnlineUsers();
-        });
+        onlineUsersButton.addActionListener(e -> onlineUserLoader.loadOnlineUsers());
         upFQSlider.addChangeListener(e -> {
             int value = upFQSlider.getValue();
             configManager.setUpFQ(value);
