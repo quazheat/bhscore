@@ -34,7 +34,7 @@ public class ModesPanel extends JPanel {
         upFQSlider.setPaintLabels(true);
         upFQSlider.setSnapToTicks(true); // Snap to the nearest tick
 
-        JLabel upFQLabel = new JLabel("Скорость обработки: " + configManager.getUpFQ() + " ms");
+        JLabel upFQLabel = new JLabel(" Скорость обработки: " + configManager.getUpFQ() + " ms");
         JButton onlineUsersButton = new JButton("Онлайн");
         Font customFont = new Font("Arial", Font.PLAIN, 9);
         onlineUsersButton.setFont(customFont);
@@ -51,7 +51,7 @@ public class ModesPanel extends JPanel {
         upFQSlider.addChangeListener(e -> {
             int value = upFQSlider.getValue();
             configManager.setUpFQ(value);
-            upFQLabel.setText("Скорость обработки после перезапуска: " + value + " ms");
+            upFQLabel.setText(" Скорость обработки после перезапуска: " + value + " ms");
         });
 
         JTextField upFQTextField = new JTextField(10);
@@ -81,7 +81,7 @@ public class ModesPanel extends JPanel {
                                                                                                 xxx
                                                                                                 
                         Вы можете менять моды работы программы, их всего три:
-                        1) Обычный мод, включен сразу. Кнопка копиурет команду в  буфер;
+                        1) Обычный мод, включен сразу. Кнопка копирует команду в буфер;
                         2) RAGE. Автоматически вставит в чат команду на мут с причиной;
                         3) LOYAL. Автоматически вставит в чат команду на варн с причиной;
                                                                                                 
@@ -93,7 +93,7 @@ public class ModesPanel extends JPanel {
                                                                                                 
                                                                                                 xxx
                                                                                                 
-                        Слов, в словаре "Whitelist" и похожие слова,
+                        Слова, в словаре "Whitelist" и похожие слова,
                         не видны для модуля ругательств.
                         Исключения можно добавлять через запятую, за раз хоть 100 штук.
                                                                                                 

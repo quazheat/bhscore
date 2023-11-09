@@ -50,7 +50,6 @@ public class MessageProcessor extends ViolationHandler {
     }
 
     private void addNewRecord(String playerName, long currentTime, String message) {
-
         MessageRecord newRecord = new MessageRecord(playerName, currentTime, message);
         messageRecords.add(newRecord);
     }
@@ -59,7 +58,7 @@ public class MessageProcessor extends ViolationHandler {
         if ("Unknown".equalsIgnoreCase(playerName)) {
             return;
         }
-        handleViolation(playerName, message, "/warn " + playerName + " Не флуди", message, "2.10+");
+        handleViolation(playerName, message, "/warn " + playerName + " Не флуди", "[3msg] " + message, "2.10+");
     }
 
     private void removeDuplicateMessages(String playerName, String message) {

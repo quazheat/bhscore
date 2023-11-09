@@ -14,7 +14,6 @@ public class VersionChecker {
 
     public String getDbVersion() {
         MongoCollection<Document> versionCollection = ConnectDb.getMongoCollection("version");
-
         MongoCursor<Document> cursor = versionCollection.find().iterator();
 
         if (cursor.hasNext()) {

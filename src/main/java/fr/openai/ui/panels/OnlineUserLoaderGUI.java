@@ -2,7 +2,7 @@ package fr.openai.ui.panels;
 
 import com.mongodb.client.MongoCollection;
 import fr.openai.database.ConnectDb;
-import fr.openai.online.DatabaseUtils;
+import fr.openai.exec.utils.DatabaseUtils;
 import org.bson.Document;
 
 import javax.swing.*;
@@ -11,13 +11,13 @@ import java.util.ArrayList;
 
 public class OnlineUserLoaderGUI {
     public final String COLLECTION_NAME = "online";
+    private final DatabaseUtils databaseUtils = new DatabaseUtils();
     private final JLabel yourTimezoneLabel = new JLabel();
-
+    protected final ImageIcon icon = new ImageIcon("tray_icon.png");
+    private final JFrame frame = new JFrame("Онлайн");
     public void createAndShowGUI(ArrayList<String> onlineUsers, String yourUsername) {
-        JFrame frame = new JFrame("Онлайн");
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setResizable(false);
-        ImageIcon icon = new ImageIcon("tray_icon.png");
         frame.setIconImage(icon.getImage());
 
         JPanel panel = new JPanel();
@@ -42,7 +42,7 @@ public class OnlineUserLoaderGUI {
                 removeButton.addActionListener(e -> {
                     MongoCollection<Document> collection = ConnectDb.getMongoCollection(COLLECTION_NAME);
                     Document filter = new Document("username", yourUsername);
-                    DatabaseUtils.deleteDocuments(collection, filter);
+                    databaseUtils.deleteDocuments(collection, filter);
                     finalUserPanel.setVisible(false);
                     frame.revalidate();
                     frame.repaint();

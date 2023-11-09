@@ -1,12 +1,11 @@
 package fr.openai.runtime;
 
 import com.mongodb.client.MongoCollection;
-import fr.openai.database.ConfigManager;
 import fr.openai.database.ConnectDb;
+import fr.openai.database.UsernameProvider;
 import fr.openai.database.files.TrayIconLoader;
 import fr.openai.database.files.TrayIconManager;
-import fr.openai.discordfeatures.DiscordRPCDiag;
-import fr.openai.online.DatabaseUtils;
+import fr.openai.exec.utils.DatabaseUtils;
 import fr.openai.ui.MutesWarnsGUI;
 import fr.openai.ui.panels.Menu;
 import org.bson.Document;
@@ -15,22 +14,17 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class SystemTrayManager {
+public class SystemTrayManager extends UsernameProvider {
     private Menu menu;
-    private final ConfigManager configManager = new ConfigManager();
     public final String COLLECTION_NAME = "online";
     private final ConnectDb connectDb = new ConnectDb();
+    private final DatabaseUtils databaseUtils = new DatabaseUtils();
+    TrayIconLoader iconLoader = new TrayIconLoader();
+    private final String username = getUsername();
+    private final Image appIcon = iconLoader.loadIcon();
 
     public void setupSystemTray() {
-        String username = configManager.getUsername();
-        if (username == null || username.length() <= 3) {
-            username = DiscordRPCDiag.getUsername();
-        }
-        String finalUsername = username;
 
-
-        TrayIconLoader iconLoader = new TrayIconLoader();
-        Image appIcon = iconLoader.loadIcon();
         if (SystemTray.isSupported()) {
             MenuItem showEditor = new MenuItem("menu");
             MenuItem stats = new MenuItem("my stats");
@@ -42,7 +36,6 @@ public class SystemTrayManager {
             CheckboxMenuItem toggleLoyalModeItem = new CheckboxMenuItem("Loyal Mode");
             modesMenu.add(toggleRageModeItem);
             modesMenu.add(toggleLoyalModeItem);
-
             modesMenu.add(toggleRageModeItem);
             modesMenu.add(toggleLoyalModeItem);
 
@@ -67,7 +60,7 @@ public class SystemTrayManager {
                 e.printStackTrace();
             }
 
-            if (finalUsername == null || finalUsername.length() <= 3) {
+            if (username == null || username.length() <= 3) {
                 stats.setEnabled(false);
             }
             stats.addActionListener(e -> {
@@ -98,13 +91,10 @@ public class SystemTrayManager {
                 }
             });
 
-
             exitItem.addActionListener(e -> {
-
-
                 MongoCollection<Document> collection = ConnectDb.getMongoCollection(COLLECTION_NAME);
 
-                DatabaseUtils.deleteDocuments(collection, new Document("username", finalUsername));
+                databaseUtils.deleteDocuments(collection, new Document("username", username));
                 connectDb.closeMongoClient();
                 System.exit(0);
             });

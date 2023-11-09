@@ -74,13 +74,11 @@ public class ConfigManager {
         }
     }
 
-    // New method to set and save the username
     public void setUsername(String username) {
         properties.setProperty(USERNAME_KEY, username);
         saveConfig();
     }
 
-    // New method to get the username
     public String getUsername() {
         return properties.getProperty(USERNAME_KEY);
     }

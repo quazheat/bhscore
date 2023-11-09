@@ -2,17 +2,14 @@ package fr.openai.filter;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import fr.openai.database.ConfigManager;
 import fr.openai.database.JsonFileReader;
-import fr.openai.discordfeatures.DiscordRPCDiag;
+import fr.openai.database.UsernameProvider;
 import fr.openai.filter.fixer.LevenshteinDistance;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Filters {
-
-    private final ConfigManager configManager = new ConfigManager();
+public class Filters extends UsernameProvider {
 
     public boolean hasManySymbols(String message) {
         char[] chars = message.toCharArray();
@@ -26,12 +23,9 @@ public class Filters {
             }
 
             if (count >= maxConsecutiveCount) {
-
                 return true;
             }
-
         }
-
         return false;
 
     }
@@ -48,7 +42,6 @@ public class Filters {
                 }
             }
         }
-
         return false;
 
     }
@@ -66,7 +59,6 @@ public class Filters {
                 return true;
             }
         }
-
         return false;
 
     }
@@ -81,7 +73,6 @@ public class Filters {
                 upperCaseCount++;
             }
         }
-
         return upperCaseCount > 5 && (double) upperCaseCount / cleanedMessage.length() > 0.55;
 
     }
@@ -111,34 +102,31 @@ public class Filters {
                 for (int i = 0; i < forbiddenWordsArray.size(); i++) {
                     String forbiddenWord = forbiddenWordsArray.get(i).getAsString();
                     double similarity = levenshteinDistance.apply(token, forbiddenWord);
-                    if (similarity >= 0.8) {
 
+                    if (similarity >= 0.8) {
                         return true;
                     }
                 }
             }
         }
-
         return false;
 
     }
 
     public boolean hasMuteCounter(String message) {
-        String username = (configManager.getUsername());
-        if (username == null) {
-            username = DiscordRPCDiag.getUsername();
+        String username = getUsername();
+        if (username == null || username.length() <= 3) {
+            return false;
         }
-
         return message.contains(username + " замутил");
 
     }
 
     public boolean hasWarnCounter(String message) {
-        String username = (configManager.getUsername());
-        if (username == null) {
-            username = DiscordRPCDiag.getUsername();
+        String username = getUsername();
+        if (username == null || username.length() <= 3) {
+            return false;
         }
-
         return message.contains(username + " предупредил");
 
     }

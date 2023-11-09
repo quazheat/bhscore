@@ -79,4 +79,5 @@ public class TrayIconLoader {
         TrayIcon trayIcon = SystemTray.getSystemTray().getTrayIcons()[0];
         trayIcon.setImageAutoSize(imageAutoSize);
     }
+
 }

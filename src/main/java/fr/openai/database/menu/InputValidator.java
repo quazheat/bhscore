@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public abstract class InputValidator {
+public class InputValidator {
     public static void setupInputValidation(JTextField inputTextField, JButton addButton, JButton removeButton) {
         inputTextField.addKeyListener(new KeyAdapter() {
             @Override

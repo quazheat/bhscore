@@ -3,9 +3,8 @@ package fr.openai.online;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import fr.openai.database.ConfigManager;
 import fr.openai.database.ConnectDb;
-import fr.openai.discordfeatures.DiscordRPCDiag;
+import fr.openai.database.UsernameProvider;
 import fr.openai.ui.panels.OnlineUserLoaderGUI;
 import org.bson.Document;
 
@@ -14,8 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class OnlineUserLoader {
-    private final ConfigManager configManager = new ConfigManager();
+public class OnlineUserLoader extends UsernameProvider {
     private static final String COLLECTION_NAME = "online";
     OnlineUserLoaderGUI gui = new OnlineUserLoaderGUI();
 
@@ -25,9 +23,9 @@ public class OnlineUserLoader {
         MongoCollection<Document> collection = ConnectDb.getMongoCollection(COLLECTION_NAME);
         FindIterable<Document> documents = collection.find();
         MongoCursor<Document> cursor = documents.iterator();
-        String yourUsername = configManager.getUsername();
-        if (yourUsername == null || yourUsername.length() <= 3) {
-            yourUsername = DiscordRPCDiag.getUsername();
+        String yourUsername = getUsername();
+        if (yourUsername == null || yourUsername.length() <=3 ) {
+            return;
         }
 
         while (cursor.hasNext()) {
@@ -38,7 +36,7 @@ public class OnlineUserLoader {
             String userTimezone = document.getString("timezone");
 
             Date date = new Date(timestamp);
-            SimpleDateFormat userTimeFormat = new SimpleDateFormat("HH:mm (z)");
+            SimpleDateFormat userTimeFormat = new SimpleDateFormat("HH:mm z");
             userTimeFormat.setTimeZone(TimeZone.getTimeZone(userTimezone));
             String timeString = userTimeFormat.format(date);
 

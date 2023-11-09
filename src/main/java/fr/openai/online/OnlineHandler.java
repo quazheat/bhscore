@@ -1,35 +1,32 @@
 package fr.openai.online;
 
 import com.mongodb.client.MongoCollection;
-import fr.openai.database.ConfigManager;
 import fr.openai.database.ConnectDb;
-import fr.openai.discordfeatures.DiscordRPCDiag;
+import fr.openai.database.UsernameProvider;
+import fr.openai.exec.utils.DatabaseUtils;
 import org.bson.Document;
 
 import java.util.TimeZone;
 
-public class OnlineHandler {
-    final ConfigManager configManager = new ConfigManager();
+public class OnlineHandler extends UsernameProvider {
+    private final DatabaseUtils databaseUtils = new DatabaseUtils();
     public final String COLLECTION_NAME = "online";
 
     public void addOnlineUser(String line) {
-        String username = configManager.getUsername();
-        if (username == null || username.length() <= 3) {
-            username = DiscordRPCDiag.getUsername();
-            if (username == null || username.length() <= 3) {
-                return;
-            }
+        String username = getUsername();
+        if (username == null || username.length() <=3 ) {
+            return;
         }
 
         MongoCollection<Document> collection = ConnectDb.getMongoCollection(COLLECTION_NAME);
         Document filter = new Document("username", username);
-        DatabaseUtils.deleteDocuments(collection, filter);
+        databaseUtils.deleteDocuments(collection, filter);
 
         long currentTimestamp = System.currentTimeMillis();
         long fiveHoursAgo = currentTimestamp - (5 * 60 * 60 * 1000);
 
         Document timestampFilter = new Document("timestamp", new Document("$lt", fiveHoursAgo));
-        DatabaseUtils.deleteDocuments(collection, timestampFilter);
+        databaseUtils.deleteDocuments(collection, timestampFilter);
 
         String serverID = extractUserText(line);
         Document document = new Document("userText", serverID)

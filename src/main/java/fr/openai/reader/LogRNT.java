@@ -36,10 +36,9 @@ public class LogRNT {
 
     public void starter() {
         DiscordRPC discordRPC = new DiscordRPC();
-        ConfigManager configManager = new ConfigManager();
         DiscordRPCDiag discordRPCDiag = new DiscordRPCDiag();
         String username = (configManager.getUsername());
-        if (username == null || username.length() <=3) {
+        if (username == null || username.length() <= 3) {
             discordRPCDiag.setModal(true); // MODAL DIALOG
             discordRPCDiag.setVisible(true);
         }
