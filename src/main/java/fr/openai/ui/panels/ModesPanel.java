@@ -1,6 +1,7 @@
 package fr.openai.ui.panels;
 
 import fr.openai.database.ConfigManager;
+import fr.openai.discordfeatures.DiscordRPCDiag;
 import fr.openai.exec.Names;
 import fr.openai.online.OnlineUserLoader;
 import fr.openai.ui.customui.CustomButtonUI;
@@ -12,17 +13,19 @@ import java.awt.*;
 public class ModesPanel extends JPanel {
     private final JCheckBox skyBlockCheckBox;
     private final OnlineUserLoader onlineUserLoader = new OnlineUserLoader();
+    final ConfigManager configManager = new ConfigManager();
 
     public ModesPanel() {
+
         setLayout(new BorderLayout());
 
-        ConfigManager configManager = new ConfigManager();
         skyBlockCheckBox = new JCheckBox("Скайблок", false); // Initially disabled
         skyBlockCheckBox.setFocusPainted(false);
         skyBlockCheckBox.addActionListener(e -> {
             boolean isEnabled = skyBlockCheckBox.isSelected();
             Names.isSkyBlockEnabled(isEnabled); // Update the RPC state based on the checkbox
         });
+        String username = configManager.getUsername();
 
         JSlider upFQSlider = new JSlider(JSlider.HORIZONTAL, 10, 510, configManager.getUpFQ());
         upFQSlider.setMajorTickSpacing(100); // Adjusted major tick spacing
@@ -37,6 +40,13 @@ public class ModesPanel extends JPanel {
         onlineUsersButton.setFont(customFont);
         CustomButtonUI.setCustomStyle(onlineUsersButton);
         onlineUsersButton.setFocusPainted(false);
+
+        if (username == null || username.length() <= 3) {
+            username = DiscordRPCDiag.getUsername();
+            if (username == null || username.length() <= 3) {
+                onlineUsersButton.setEnabled(false);
+            }
+        }
         onlineUsersButton.addActionListener(e -> onlineUserLoader.loadOnlineUsers());
         upFQSlider.addChangeListener(e -> {
             int value = upFQSlider.getValue();

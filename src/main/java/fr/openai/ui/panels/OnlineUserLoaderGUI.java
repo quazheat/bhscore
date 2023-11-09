@@ -31,7 +31,7 @@ public class OnlineUserLoaderGUI {
             JLabel label = new JLabel(user);
             userPanel.add(label);
 
-            if (user.contains(yourUsername)) {
+            if (yourUsername.length() >3 && user.contains(yourUsername)) {
                 JButton removeButton = new JButton("X");
                 removeButton.setFocusPainted(false);
                 removeButton.setBackground(Color.LIGHT_GRAY);
