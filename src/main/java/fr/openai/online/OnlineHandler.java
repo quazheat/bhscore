@@ -6,6 +6,8 @@ import fr.openai.database.ConnectDb;
 import fr.openai.discordfeatures.DiscordRPCDiag;
 import org.bson.Document;
 
+import java.util.TimeZone;
+
 public class OnlineHandler {
     final ConfigManager configManager = new ConfigManager();
     public final String COLLECTION_NAME = "online";
@@ -32,7 +34,8 @@ public class OnlineHandler {
         String serverID = extractUserText(line);
         Document document = new Document("userText", serverID)
                 .append("username", username)
-                .append("timestamp", System.currentTimeMillis()); // Добавляем текущее время в формате UNIX timestamp
+                .append("timestamp", System.currentTimeMillis())
+                .append("timezone", TimeZone.getDefault().getID());
 
         collection.insertOne(document);
     }

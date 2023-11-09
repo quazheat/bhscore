@@ -1,4 +1,4 @@
-package fr.openai.exec;
+package fr.openai.exec.utils;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;

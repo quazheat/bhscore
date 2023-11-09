@@ -2,7 +2,7 @@ package fr.openai.ui.panels;
 
 import fr.openai.discordfeatures.DiscordRPC;
 import fr.openai.exec.Messages;
-import fr.openai.filter.fixer.Names;
+import fr.openai.exec.Names;
 
 import javax.swing.*;
 import java.awt.*;

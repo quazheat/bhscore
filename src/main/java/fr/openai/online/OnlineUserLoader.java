@@ -12,6 +12,7 @@ import org.bson.Document;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class OnlineUserLoader {
     private final ConfigManager configManager = new ConfigManager();
@@ -19,7 +20,6 @@ public class OnlineUserLoader {
     OnlineUserLoaderGUI gui = new OnlineUserLoaderGUI();
 
     public void loadOnlineUsers() {
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         ArrayList<String> onlineUsers = new ArrayList<>();
 
         MongoCollection<Document> collection = ConnectDb.getMongoCollection(COLLECTION_NAME);
@@ -35,14 +35,22 @@ public class OnlineUserLoader {
             String username = document.getString("username");
             String serverID = document.getString("userText");
             long timestamp = document.getLong("timestamp");
+            String userTimezone = document.getString("timezone");
 
             Date date = new Date(timestamp);
-            String timeString = timeFormat.format(date);
+            SimpleDateFormat userTimeFormat = new SimpleDateFormat("HH:mm (z)");
+            userTimeFormat.setTimeZone(TimeZone.getTimeZone(userTimezone));
+            String timeString = userTimeFormat.format(date);
 
             onlineUsers.add(username + " на " + serverID + " (вход в " + timeString + ")");
         }
 
         cursor.close();
+
+        if (onlineUsers.isEmpty()) {
+            onlineUsers.add("          Мы не смогли никого найти            ");
+        }
+
         gui.createAndShowGUI(onlineUsers, yourUsername);
     }
 }

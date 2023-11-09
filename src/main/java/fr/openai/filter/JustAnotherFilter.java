@@ -1,6 +1,7 @@
 package fr.openai.filter;
 
 public class JustAnotherFilter {
+
     boolean shouldSkip;
 
     public JustAnotherFilter(String name, String message) {
@@ -13,4 +14,5 @@ public class JustAnotherFilter {
     public boolean shouldSkip() {
         return shouldSkip;
     }
+
 }

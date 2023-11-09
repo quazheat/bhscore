@@ -1,7 +1,7 @@
 package fr.openai.database.menu;
 
 import com.mongodb.client.MongoCollection;
-import fr.openai.exec.IpAddressUtil;
+import fr.openai.exec.utils.IpAddressUtil;
 import fr.openai.database.ConnectDb;
 import fr.openai.database.files.TicketDocument;
 import fr.openai.starter.uuid.UuidProvider;

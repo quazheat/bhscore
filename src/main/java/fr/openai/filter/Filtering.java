@@ -4,7 +4,7 @@ import fr.openai.discordfeatures.DiscordRPC;
 import fr.openai.discordfeatures.UpdateDiscordRPCDetails;
 import fr.openai.exec.Messages;
 
-import fr.openai.filter.fixer.Names;
+import fr.openai.exec.Names;
 import fr.openai.notify.NotificationSystem;
 
 public class Filtering extends ViolationHandler {

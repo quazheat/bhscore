@@ -3,7 +3,7 @@ package fr.openai.ui.panels;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import fr.openai.exec.IpAddressUtil;
+import fr.openai.exec.utils.IpAddressUtil;
 import fr.openai.ui.customui.CustomButtonUI;
 import fr.openai.ui.SubmitTicketDialog;
 import fr.openai.database.ConnectDb;

@@ -1,4 +1,4 @@
-package fr.openai.exec;
+package fr.openai.exec.utils;
 import fr.openai.database.ConfigManager;
 
 import java.awt.AWTException;

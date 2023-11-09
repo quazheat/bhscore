@@ -1,7 +1,7 @@
 package fr.openai.filter;
 
-import fr.openai.exec.ClipboardUtil;
-import fr.openai.exec.PasteUtil;
+import fr.openai.exec.utils.ClipboardUtil;
+import fr.openai.exec.utils.PasteUtil;
 import fr.openai.notify.NotificationSystem;
 import fr.openai.notify.WindowsNotification;
 

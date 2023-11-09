@@ -1,9 +1,9 @@
-package fr.openai.filter.fixer;
+package fr.openai.exec;
 
 import java.util.regex.Pattern;
 
 public class Names {
-    public static boolean isSkyBlock = false; // Flag to enable or disable the RPC
+    public static boolean isSkyBlock = false; // Flag to enable or disable
     private String finalName;
     private final Pattern SQUARE_BRACKETS_PATTERN = Pattern.compile("\\[.+?]");
     private final Pattern BRACKETS_PATTERN = Pattern.compile("\\(.+?\\)");

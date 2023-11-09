@@ -1,7 +1,6 @@
 package fr.openai.exec;
 
 import fr.openai.discordfeatures.DiscordRPC;
-import fr.openai.filter.fixer.Names;
 import fr.openai.filter.Filtering;
 import fr.openai.filter.MessageProcessor;
 import fr.openai.filter.Validator;

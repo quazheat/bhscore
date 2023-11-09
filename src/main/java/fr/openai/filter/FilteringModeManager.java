@@ -3,13 +3,7 @@ package fr.openai.filter;
 public class FilteringModeManager {
     private static boolean rageModeEnabled;
     private static boolean loyalModeEnabled;
-//    public static void toggleRageMode() {
-//        rageModeEnabled = !rageModeEnabled;
-//    }
-//    public static void toggleLoyalMode() {
-//        loyalModeEnabled = !loyalModeEnabled;
-//    }
-//
+
     public static boolean isRageModeEnabled() {
         return rageModeEnabled;
     }

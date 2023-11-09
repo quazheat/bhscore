@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class OnlineUserLoaderGUI {
     public final String COLLECTION_NAME = "online";
+    private final JLabel yourTimezoneLabel = new JLabel();
 
     public void createAndShowGUI(ArrayList<String> onlineUsers, String yourUsername) {
         JFrame frame = new JFrame("Онлайн");
@@ -57,9 +58,9 @@ public class OnlineUserLoaderGUI {
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         frame.add(scrollPane);
+        frame.add(yourTimezoneLabel, BorderLayout.NORTH);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-
 }

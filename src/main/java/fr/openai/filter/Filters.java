@@ -26,11 +26,14 @@ public class Filters {
             }
 
             if (count >= maxConsecutiveCount) {
+
                 return true;
             }
+
         }
 
         return false;
+
     }
 
     public boolean hasLaugh(String message) {
@@ -39,11 +42,15 @@ public class Filters {
         for (String word : words) {
             if (word.length() > 9) {
                 int uniqueChars = (int) word.chars().distinct().count();
-                if (uniqueChars <= 3) return true;
+                if (uniqueChars <= 3) {
+
+                    return true;
+                }
             }
         }
 
         return false;
+
     }
 
     public boolean hasWFlood(String message) {
@@ -55,11 +62,13 @@ public class Filters {
         for (String word : words) {
             wordCounts.put(word, wordCounts.getOrDefault(word, 0) + 1);
             if (wordCounts.get(word) >= targetCount) {
+
                 return true;
             }
         }
 
         return false;
+
     }
 
 
@@ -74,6 +83,7 @@ public class Filters {
         }
 
         return upperCaseCount > 5 && (double) upperCaseCount / cleanedMessage.length() > 0.55;
+
     }
 
     public boolean hasSwearing(String message) {
@@ -110,6 +120,7 @@ public class Filters {
         }
 
         return false;
+
     }
 
     public boolean hasMuteCounter(String message) {
@@ -117,7 +128,9 @@ public class Filters {
         if (username == null) {
             username = DiscordRPCDiag.getUsername();
         }
+
         return message.contains(username + " замутил");
+
     }
 
     public boolean hasWarnCounter(String message) {
@@ -125,10 +138,14 @@ public class Filters {
         if (username == null) {
             username = DiscordRPCDiag.getUsername();
         }
+
         return message.contains(username + " предупредил");
+
     }
 
     private String removeSpecialCharacters(String input) {
         return input.replaceAll("[^a-zA-Zа-яА-Я]", "");
+
     }
+
 }

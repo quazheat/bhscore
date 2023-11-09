@@ -1,4 +1,4 @@
-package fr.openai.exec;
+package fr.openai.exec.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -4,7 +4,7 @@ import fr.openai.database.files.GetWords;
 import fr.openai.discordfeatures.DiscordRPC;
 import fr.openai.discordfeatures.DiscordRPCDiag;
 import fr.openai.exec.Executor;
-import fr.openai.filter.fixer.Names;
+import fr.openai.exec.Names;
 import fr.openai.notify.NotificationSystem;
 import fr.openai.online.OnlineHandler;
 import fr.openai.runtime.SystemTrayManager;

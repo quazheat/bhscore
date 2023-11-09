@@ -1,6 +1,6 @@
 package fr.openai.notify;
 
-import fr.openai.exec.PasteUtil;
+import fr.openai.exec.utils.PasteUtil;
 import fr.openai.ui.customui.CustomClose;
 import fr.openai.ui.customui.CustomDialog;
 import fr.openai.ui.customui.CustomField;

@@ -1,7 +1,7 @@
 package fr.openai.ui.panels;
 
 import fr.openai.database.ConfigManager;
-import fr.openai.filter.fixer.Names;
+import fr.openai.exec.Names;
 import fr.openai.online.OnlineUserLoader;
 import fr.openai.ui.customui.CustomButtonUI;
 import fr.openai.ui.customui.CustomHelp;
