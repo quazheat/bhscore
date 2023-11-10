@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 
 public class Validator {
     public static boolean isNotValid(String line) {
-        String regex = "\\[CHAT] Игрок|получил с лутбокса:|разбанил игрока|кикнул игрока|получил награду с лутбокса" +
+        String regex = "\\[CHAT]\\s{2,}|Ошибка OpenGL:|\\[CHAT] Ошибка OpenGL:|\\[CHAT] Игрок|получил с лутбокса:|разбанил игрока|кикнул игрока|получил награду с лутбокса" +
                 "|\\n|\\[CHAT] \\(FAWE\\)|проводит ивент:|: \\[CHAT] \\[SC]|㨏|㐎|㥐|: \\[CHAT] Очистка ┃" +
                 "|: \\[CHAT] \\[Уборщик]|: \\[CHAT] i" +
                 "|: \\[CHAT] Предмет|: \\[CHAT] Теперь|: \\[CHAT] Баланс|: \\[CHAT] VK|: \\[CHAT] \\[I]" +
