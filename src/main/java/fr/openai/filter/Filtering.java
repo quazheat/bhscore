@@ -33,6 +33,7 @@ public class Filtering extends ViolationHandler {
             return;
         }
 
+
         updateCounters(message);
         JustAnotherFilter justAnotherFilter = new JustAnotherFilter(name, message);
         if (justAnotherFilter.shouldSkip()) {

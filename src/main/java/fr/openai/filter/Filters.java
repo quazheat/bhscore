@@ -131,6 +131,7 @@ public class Filters extends UsernameProvider {
 
     }
 
+
     private String removeSpecialCharacters(String input) {
         return input.replaceAll("[^a-zA-Zа-яА-Я]", "");
 
