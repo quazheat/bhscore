@@ -39,6 +39,12 @@ public class OnlineHandler extends UsernameProvider {
 
     public String extractUserText(String line) {
         int startIndex = line.indexOf("Join to server") + "Join to server".length();
+        if (line.substring(startIndex).trim().contains("Хаб")) {
+            hubDetected = true;
+            return line.substring(startIndex).trim();
+        }
+        hubDetected = false;
         return line.substring(startIndex).trim();
     }
+    public static boolean hubDetected = false;
 }

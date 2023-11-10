@@ -4,6 +4,7 @@ import fr.openai.exec.utils.ClipboardUtil;
 import fr.openai.exec.utils.PasteUtil;
 import fr.openai.notify.NotificationSystem;
 import fr.openai.notify.WindowsNotification;
+import fr.openai.online.OnlineHandler;
 
 import static java.awt.TrayIcon.MessageType.ERROR;
 import static java.awt.TrayIcon.MessageType.INFO;
@@ -22,6 +23,10 @@ public abstract class ViolationHandler {
     }
 
     void handleViolation(String playerName, String message, String loyalAction, String loyalMessage, String rageAction) {
+        System.out.println(OnlineHandler.hubDetected);
+        if (OnlineHandler.hubDetected) {
+            rageAction = "ac+" + rageAction;
+        }
 
         if (FilteringModeManager.isLoyalModeEnabled()) {
             showLoyalNotification(loyalMessage);
