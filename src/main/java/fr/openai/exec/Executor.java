@@ -4,7 +4,6 @@ import fr.openai.discordfeatures.DiscordRPC;
 import fr.openai.filter.Filtering;
 import fr.openai.filter.MessageProcessor;
 import fr.openai.filter.Validator;
-import fr.openai.filter.ViolationHandler;
 import fr.openai.notify.NotificationSystem;
 
 import java.util.concurrent.*;
