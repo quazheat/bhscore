@@ -93,7 +93,7 @@ public class LogRNT {
         }
     }
 
-    private void processLogLine(String line) throws IOException {
+    public void processLogLine(String line) throws IOException {
         line = new String(line.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
 
         if (Readable.check(line)) {

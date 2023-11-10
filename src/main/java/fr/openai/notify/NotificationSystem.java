@@ -21,16 +21,16 @@ public class NotificationSystem {
         }
     };
 
-    NameFix nameFixer = new NameFix();
+    private final NameFix nameFixer = new NameFix();
     private final List<Notification> notifications = new ArrayList<>();
-    static final int MAX_NOTIFICATIONS = 10;
+    protected static final int MAX_NOTIFICATIONS = 10;
     private final NotificationHeightManager heightManager = new NotificationHeightManager();
 
     public void showNotification(String playerName, String violation) {
+        System.out.println("Trying to showNotification");
         if (notifications.size() < MAX_NOTIFICATIONS) {
             Notification notification = new Notification(playerName, violation);
             notifications.add(notification);
-            System.out.println("Trying to showNotification");
             SwingUtilities.invokeLater(() -> displayNotification(notification));
         }
     }

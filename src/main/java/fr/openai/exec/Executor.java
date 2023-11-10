@@ -4,6 +4,7 @@ import fr.openai.discordfeatures.DiscordRPC;
 import fr.openai.filter.Filtering;
 import fr.openai.filter.MessageProcessor;
 import fr.openai.filter.Validator;
+import fr.openai.filter.ViolationHandler;
 import fr.openai.notify.NotificationSystem;
 
 import java.util.concurrent.*;
@@ -33,6 +34,7 @@ public class Executor {
         if (message == null) {
             return;
         }
+        System.out.println(message);
         // Используем executorService для выполнения задач в пуле потоков
         executorService.submit(() -> {
             filtering.onFilter(playerName, message);
@@ -40,5 +42,4 @@ public class Executor {
             executorService.scheduleAtFixedRate(discordRPC::updateRPC, 0, 1, TimeUnit.SECONDS);
         });
     }
-
 }

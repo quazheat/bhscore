@@ -14,7 +14,7 @@ public class OnlineHandler extends UsernameProvider {
 
     public void addOnlineUser(String line) {
         String username = getUsername();
-        if (username == null || username.length() <=3 ) {
+        if (username == null || username.length() <= 3) {
             return;
         }
 

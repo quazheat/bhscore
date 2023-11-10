@@ -25,6 +25,7 @@ public abstract class ViolationHandler {
 
         if (FilteringModeManager.isLoyalModeEnabled()) {
             showLoyalNotification(loyalMessage);
+
             copyToClipboard(loyalAction);
             pasteUtil.pasteFromClipboard();
             return;
@@ -39,6 +40,7 @@ public abstract class ViolationHandler {
         copyToClipboard("/mute " + playerName + " " + rageAction);
         pasteUtil.pasteFromClipboard();
     }
+
 
     private void showLoyalNotification(String message) {
         WindowsNotification.showWindowsNotification(getActionName(), message, INFO);

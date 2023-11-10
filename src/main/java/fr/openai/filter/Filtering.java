@@ -28,11 +28,9 @@ public class Filtering extends ViolationHandler {
 
         String message = Messages.getMessage(line);
         String playerName = names.formatPlayerName(name);
-
         if (message == null) {
             return;
         }
-
 
         updateCounters(message);
         JustAnotherFilter justAnotherFilter = new JustAnotherFilter(name, message);
