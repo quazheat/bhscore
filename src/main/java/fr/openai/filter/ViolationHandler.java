@@ -26,6 +26,11 @@ public abstract class ViolationHandler {
         System.out.println(OnlineHandler.hubDetected);
         if (OnlineHandler.hubDetected) {
             rageAction = "ac+" + rageAction;
+
+        }
+
+        if (OnlineHandler.hubDetected && loyalAction.contains("+")) {
+            loyalAction = loyalAction + "+ac";
         }
 
         if (FilteringModeManager.isLoyalModeEnabled()) {
