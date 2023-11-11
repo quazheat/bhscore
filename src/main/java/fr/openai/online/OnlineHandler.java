@@ -23,9 +23,10 @@ public class OnlineHandler extends UsernameProvider {
         databaseUtils.deleteDocuments(collection, filter);
 
         long currentTimestamp = System.currentTimeMillis();
-        long fiveHoursAgo = currentTimestamp - (5 * 60 * 60 * 1000);
+        long twoHoursAgo = currentTimestamp - (2 * 60 * 60 * 1000);
 
-        Document timestampFilter = new Document("timestamp", new Document("$lt", fiveHoursAgo));
+        Document timestampFilter = new Document("timestamp", new Document("$lt", twoHoursAgo))
+                .append("timezone", TimeZone.getDefault().getID());
         databaseUtils.deleteDocuments(collection, timestampFilter);
 
         String serverID = extractUserText(line);
@@ -46,5 +47,6 @@ public class OnlineHandler extends UsernameProvider {
         hubDetected = false;
         return line.substring(startIndex).trim();
     }
+
     public static boolean hubDetected = false;
 }

@@ -118,7 +118,7 @@ public class PlayPanel extends JPanel {
         if (newDetails == null || newDetails.length() < 1) {
             newDetails = "Big brother watching you";
         }
-        DiscordRPC.updateRPCDetails(newDetails);
+        discordRPC.updateRPCDetails(newDetails);
         discordRPC.updateRPC();
 
     }

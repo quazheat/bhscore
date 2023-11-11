@@ -43,13 +43,19 @@ public class DiscordRPC extends UsernameProvider {
         lib.Discord_UpdatePresence(presence);
     }
 
-    public static void updateRPCState(String newState) {
+    public void updateRPCState(String newState) {
+        if (!isRPCEnabled) {
+            return;
+        }
         state = newState; // Update the class-level state variable
         club.minnced.discord.rpc.DiscordRPC lib = club.minnced.discord.rpc.DiscordRPC.INSTANCE;
         lib.Discord_UpdatePresence(presence);
     }
 
-    public static void updateRPCDetails(String newDetails) {
+    public void updateRPCDetails(String newDetails) {
+        if (!isRPCEnabled) {
+            return;
+        }
         details = newDetails; // Update the class-level state variable
         club.minnced.discord.rpc.DiscordRPC lib = club.minnced.discord.rpc.DiscordRPC.INSTANCE;
         lib.Discord_UpdatePresence(presence);

@@ -48,7 +48,8 @@ public class Filtering extends ViolationHandler {
 
         if (floodFilters || filters.hasCaps(message) || filters.hasSwearing(message)) {
             String newState = "Spectating " + playerName;
-            DiscordRPC.updateRPCState(newState);
+
+            discordRPC.updateRPCState(newState);
             discordRPC.updateRPC();
         }
         if (floodFilters && filters.hasCaps(message) && filters.hasSwearing(message)) {

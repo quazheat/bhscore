@@ -25,12 +25,12 @@ public abstract class ViolationHandler {
     void handleViolation(String playerName, String message, String loyalAction, String loyalMessage, String rageAction) {
         System.out.println(OnlineHandler.hubDetected);
         if (OnlineHandler.hubDetected) {
-            rageAction = "ac+" + rageAction;
+            rageAction = "vc+" + rageAction;
 
         }
 
         if (OnlineHandler.hubDetected && loyalAction.contains("+")) {
-            loyalAction = loyalAction + "+ac";
+            loyalAction = loyalAction + "+vc";
         }
 
         if (FilteringModeManager.isLoyalModeEnabled()) {
