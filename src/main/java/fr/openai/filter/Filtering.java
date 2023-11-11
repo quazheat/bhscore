@@ -53,13 +53,13 @@ public class Filtering extends ViolationHandler {
         }
         if (floodFilters && filters.hasCaps(message) && filters.hasSwearing(message)) {
 
-            handleViolation(playerName, message, muteText + playerName + space+caps+plus+flood+plus+swear, message, space+caps+plus+flood+plus+swear);
+            handleViolation(playerName, message, muteText + playerName + space+caps+plus+flood+plus+swear, message, caps+plus+flood+plus+swear);
             updateDiscordRPCDetails.updateDiscordRPCDetailsScary();
             return; // ALL REASONS
         }
 
         if (floodFilters && filters.hasCaps(message)) {
-            handleViolation(playerName, message, muteText + playerName + space+caps+plus+flood, message, caps+plus+flood);
+            handleViolation(playerName, message, muteText + playerName + space+caps+plus+flood, message, caps+plus+flood+plus);
             return; // FLOOD + CAPS
         }
 
