@@ -11,6 +11,8 @@ import java.util.Map;
 
 public class Filters extends UsernameProvider {
 
+    private final String username = getUsername();
+
     public boolean hasManySymbols(String message) {
         char[] chars = message.toCharArray();
         int maxConsecutiveCount = 6;
@@ -46,6 +48,28 @@ public class Filters extends UsernameProvider {
 
     }
 
+
+    public boolean hasCaps(String message) {
+        String cleanedMessage = removeSpecialCharacters(message);
+
+        if (cleanedMessage.length() < 10) {
+            int uniqueChars = (int) cleanedMessage.chars().distinct().count();
+            if (uniqueChars == 2) {
+                return false;
+            }
+        }
+
+        int upperCaseCount = 0;
+        for (char c : cleanedMessage.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                upperCaseCount++;
+            }
+        }
+
+        return upperCaseCount > 5 && (double) upperCaseCount / cleanedMessage.length() > 0.55;
+    }
+
+
     public boolean hasWFlood(String message) {
         String[] words = message.split("\\s+");
         int targetCount = 5;
@@ -60,20 +84,6 @@ public class Filters extends UsernameProvider {
             }
         }
         return false;
-
-    }
-
-
-    public boolean hasCaps(String message) {
-        int upperCaseCount = 0;
-        String cleanedMessage = removeSpecialCharacters(message);
-
-        for (char c : cleanedMessage.toCharArray()) {
-            if (Character.isUpperCase(c)) {
-                upperCaseCount++;
-            }
-        }
-        return upperCaseCount > 5 && (double) upperCaseCount / cleanedMessage.length() > 0.55;
 
     }
 
@@ -114,7 +124,6 @@ public class Filters extends UsernameProvider {
     }
 
     public boolean hasMuteCounter(String message) {
-        String username = getUsername();
         if (username == null || username.length() <= 3) {
             return false;
         }
@@ -123,7 +132,6 @@ public class Filters extends UsernameProvider {
     }
 
     public boolean hasWarnCounter(String message) {
-        String username = getUsername();
         if (username == null || username.length() <= 3) {
             return false;
         }

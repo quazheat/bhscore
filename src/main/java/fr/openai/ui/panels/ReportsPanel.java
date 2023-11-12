@@ -6,7 +6,7 @@ import com.mongodb.client.MongoDatabase;
 import fr.openai.exec.utils.IpAddressUtil;
 import fr.openai.ui.customui.CustomButtonUI;
 import fr.openai.ui.SubmitTicketDialog;
-import fr.openai.database.ConnectDb;
+import fr.openai.database.b;
 import fr.openai.database.files.TicketDocument;
 import fr.openai.starter.logs.UuidLog;
 import fr.openai.starter.uuid.manager.HwidManager;
@@ -28,7 +28,7 @@ public class ReportsPanel extends JPanel {
     private MongoClient mongoClient;
     private final JTextArea textArea;
     private final JButton sendButton;
-    ConnectDb connectDb = new ConnectDb();
+    b b = new b();
     private final JFrame frame;
 
     public ReportsPanel(JFrame parentFrame) {
@@ -67,7 +67,7 @@ public class ReportsPanel extends JPanel {
 
     private void sendTicket() throws IOException {
         if (mongoClient == null) {
-            mongoClient = connectDb.getMongoClient();
+            mongoClient = b.Zg();
         }
 
         UuidChecker uuidChecker = new UuidChecker();
@@ -76,7 +76,7 @@ public class ReportsPanel extends JPanel {
         uuidLog.logUuid(isUuidAllowed); // Log whether UUID is allowed
 
         if (!isUuidAllowed) {
-            connectDb.closeMongoClient();
+            b.dqzxc();
             System.exit(1); // Exit the program with code 1 if UUID is not allowed
         }
 
@@ -110,7 +110,8 @@ public class ReportsPanel extends JPanel {
                     isSubmitting.set(true);
                 } catch (Exception ex) {
                     SwingUtilities.invokeLater(() -> {
-                        mongoClient = connectDb.getMongoClient();
+                        mongoClient = b.Zg();
+                        b.Zi();
                         SubmitTicketDialog submitTicketDialog = new SubmitTicketDialog(frame);
                         submitTicketDialog.showDialog();
                         if (submitTicketDialog.isCanceled()) {

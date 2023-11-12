@@ -3,23 +3,25 @@ package fr.openai.database.menu;
 import com.mongodb.client.MongoCollection;
 import fr.openai.database.files.GetWords;
 import fr.openai.ui.panels.Menu;
-import fr.openai.database.ConnectDb;
+import fr.openai.database.b;
 import org.bson.Document;
 
 public class AddNewWhitelistWord extends SendTicket {
     private final GetWords getWords = new GetWords();
     private final Menu menu;
-
     public AddNewWhitelistWord(Menu menu) {
         this.menu = menu;
     }
 
     public void addNewWhitelistWord(String words) {
         String[] wordArray = words.split(",");
-        MongoCollection<Document> collection = ConnectDb.getMongoCollection("words");
+        MongoCollection<Document> collection = b.Zxc("words");
         StringBuilder outputText = new StringBuilder();
 
         for (String word : wordArray) {
+            if (word.length() <= 2) {
+                return;
+            }
             word = word.trim().toLowerCase().replaceAll("[^a-zа-яё]", "");
 
             if (!word.isEmpty()) {

@@ -1,5 +1,6 @@
 package fr.openai.ui.panels;
 
+import fr.openai.database.b;
 import fr.openai.database.menu.AddNewWhitelistWord;
 import fr.openai.database.menu.AddNewWord;
 import fr.openai.database.menu.RemoveWhitelistWord;
@@ -8,10 +9,14 @@ import fr.openai.starter.VersionChecker;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Menu {
     private final JFrame frame;
     private final JLabel outputLabel;
+
+    private final b b = new b();
 
     public Menu(TrayIcon trayIcon) {
         VersionChecker versionChecker = new VersionChecker();
@@ -40,6 +45,14 @@ public class Menu {
         tabbedPane.addTab("Whitelist", whitelistPanel);
         tabbedPane.addTab("Reports", reportsPanel);
         tabbedPane.addTab("Playground",playPanel);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                b.dqzxc();
+                System.out.println("ConnectionClosed");
+            }
+        });
 
         frame.getContentPane().add(tabbedPane);
         outputLabel = new JLabel();
@@ -73,5 +86,6 @@ public class Menu {
     public void clearOutputText() {
         outputLabel.setText("");
     }
+
 
 }

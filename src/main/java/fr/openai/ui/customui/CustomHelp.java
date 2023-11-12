@@ -1,5 +1,8 @@
 package fr.openai.ui.customui;
 
+import fr.openai.database.menu.UserManager;
+import fr.openai.ui.panels.UserManagerGUI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -16,6 +19,10 @@ public class CustomHelp extends JPanel {
         infoButton.setFocusPainted(false);
 
         infoButton.addActionListener(e -> {
+            if (UserManager.adminStatus) {
+                SwingUtilities.invokeLater(UserManagerGUI::new);
+                return;
+            }
             // Create a custom dialog with your custom button
             JDialog customDialog = new JDialog();
             customDialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL); // Prevent interaction with other windows

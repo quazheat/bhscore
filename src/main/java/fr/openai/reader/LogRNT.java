@@ -1,6 +1,7 @@
 package fr.openai.reader;
 
 import fr.openai.database.files.GetWords;
+import fr.openai.database.menu.UserManager;
 import fr.openai.discordfeatures.DiscordRPC;
 import fr.openai.discordfeatures.DiscordRPCDiag;
 import fr.openai.exec.Executor;
@@ -35,6 +36,8 @@ public class LogRNT {
     }
 
     public void starter() {
+        UserManager userManager = new UserManager();
+        userManager.showUserList();
         DiscordRPC discordRPC = new DiscordRPC();
         DiscordRPCDiag discordRPCDiag = new DiscordRPCDiag();
         String username = (configManager.getUsername());

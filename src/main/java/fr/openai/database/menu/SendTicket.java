@@ -2,7 +2,7 @@ package fr.openai.database.menu;
 
 import com.mongodb.client.MongoCollection;
 import fr.openai.exec.utils.IpAddressUtil;
-import fr.openai.database.ConnectDb;
+import fr.openai.database.b;
 import fr.openai.database.files.TicketDocument;
 import fr.openai.starter.uuid.UuidProvider;
 import fr.openai.starter.uuid.manager.HwidManager;
@@ -14,8 +14,11 @@ public abstract class SendTicket {
     UuidProvider uuidProvider = new UuidProvider();
 
     protected void sendTicket(String ticketText) {
+        b b = new b();
+        b.Zi();
         TicketDocument ticketDocument = new TicketDocument(new Date(), ticketText, HwidManager.getHwid(uuidProvider), IpAddressUtil.getUserPublicIpAddress());
-        MongoCollection<Document> ticketCollection = ConnectDb.getMongoCollection("tickets");
+        MongoCollection<Document> ticketCollection = b.Zxc("tickets");
         ticketCollection.insertOne(ticketDocument.toDocument());
+        b.dqzxc();
     }
 }

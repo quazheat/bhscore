@@ -2,7 +2,6 @@ package fr.openai.ui.panels;
 
 import fr.openai.database.ConfigManager;
 import fr.openai.discordfeatures.DiscordRPCDiag;
-import fr.openai.exec.Names;
 import fr.openai.online.OnlineUserLoader;
 import fr.openai.ui.customui.CustomButtonUI;
 import fr.openai.ui.customui.CustomHelp;
@@ -11,20 +10,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ModesPanel extends JPanel {
-    private final JCheckBox skyBlockCheckBox;
     private final OnlineUserLoader onlineUserLoader = new OnlineUserLoader();
     final ConfigManager configManager = new ConfigManager();
 
     public ModesPanel() {
-
         setLayout(new BorderLayout());
-
-        skyBlockCheckBox = new JCheckBox("Скайблок", false); // Initially disabled
-        skyBlockCheckBox.setFocusPainted(false);
-        skyBlockCheckBox.addActionListener(e -> {
-            boolean isEnabled = skyBlockCheckBox.isSelected();
-            Names.isSkyBlockEnabled(isEnabled); // Update the RPC state based on the checkbox
-        });
         String username = configManager.getUsername();
 
         JSlider upFQSlider = new JSlider(JSlider.HORIZONTAL, 10, 510, configManager.getUpFQ());
@@ -123,10 +113,8 @@ public class ModesPanel extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.EAST;
         onlineUsersButton.setMinimumSize(new Dimension(69, 30));
-        gbc.insets = new Insets(0, 16, 0, 0);
+        gbc.insets = new Insets(0, 0, 0, 315);
         rightPanel.add(onlineUsersButton, gbc);
-        gbc.insets = new Insets(0, 0, 0, 250);
-        rightPanel.add(skyBlockCheckBox, gbc);
 
 
         JPanel radioButtonPanel = new JPanel(new GridLayout(1, 1));

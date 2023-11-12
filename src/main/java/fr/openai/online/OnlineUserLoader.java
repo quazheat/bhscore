@@ -3,7 +3,7 @@ package fr.openai.online;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import fr.openai.database.ConnectDb;
+import fr.openai.database.b;
 import fr.openai.database.UsernameProvider;
 import fr.openai.ui.panels.OnlineUserLoaderGUI;
 import org.bson.Document;
@@ -20,7 +20,7 @@ public class OnlineUserLoader extends UsernameProvider {
     public void loadOnlineUsers() {
         ArrayList<String> onlineUsers = new ArrayList<>();
 
-        MongoCollection<Document> collection = ConnectDb.getMongoCollection(COLLECTION_NAME);
+        MongoCollection<Document> collection = b.Zxc(COLLECTION_NAME);
         FindIterable<Document> documents = collection.find();
         MongoCursor<Document> cursor = documents.iterator();
         String yourUsername = getUsername();

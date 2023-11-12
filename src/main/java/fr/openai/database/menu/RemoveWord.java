@@ -3,7 +3,7 @@ package fr.openai.database.menu;
 import com.mongodb.client.MongoCollection;
 import fr.openai.database.files.GetWords;
 import fr.openai.ui.panels.Menu;
-import fr.openai.database.ConnectDb;
+import fr.openai.database.b;
 import org.bson.Document;
 
 public class RemoveWord extends SendTicket{
@@ -15,9 +15,12 @@ public class RemoveWord extends SendTicket{
     }
 
     public void removeWord(String wordToRemove) {
+        if (wordToRemove.length() <= 2){
+            return;
+        }
         // Приводим входное слово к нижнему регистру и удаляем лишние символы
         wordToRemove = wordToRemove.toLowerCase().replaceAll("[^a-zа-яё]", "");
-        MongoCollection<Document> collection = ConnectDb.getMongoCollection("words"); //фильтр для поиска, удаляемое слово
+        MongoCollection<Document> collection = b.Zxc("words"); //фильтр для поиска, удаляемое слово
         Document filter = new Document("forbidden_words", wordToRemove); // Проверяем, существует ли слово в массиве
 
         if (collection.countDocuments(filter) > 0) {

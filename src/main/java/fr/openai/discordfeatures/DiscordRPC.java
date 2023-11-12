@@ -11,13 +11,13 @@ public class DiscordRPC extends UsernameProvider {
     private static final long startTime = System.currentTimeMillis() / 1000; // Store the start time
     boolean isRPCEnabled = true; // Flag to enable or disable the RPC
     private final DiscordEventHandlers handlers = new DiscordEventHandlers();
+    private final String username = getUsername();
 
     public void updateRPC() {
         if (!isRPCEnabled) {
             return; // Don't update the RPC if it's disabled
         }
 
-        String username = getUsername();
 
         club.minnced.discord.rpc.DiscordRPC lib = club.minnced.discord.rpc.DiscordRPC.INSTANCE;
         lib.Discord_Initialize("1058737271341338655", handlers, true, null);
@@ -38,7 +38,7 @@ public class DiscordRPC extends UsernameProvider {
 
         // Добавляем метаданные для кнопки
         presence.partyId = "party-id"; // Уникальный идентификатор группы
-        presence.joinSecret = "quazheat"; // Секретный ключ для присоединения к группе
+//        presence.joinSecret = "quazheat"; // Секретный ключ для присоединения к группе
 
         lib.Discord_UpdatePresence(presence);
     }

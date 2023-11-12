@@ -1,7 +1,7 @@
 package fr.openai.runtime;
 
 import com.mongodb.client.MongoCollection;
-import fr.openai.database.ConnectDb;
+import fr.openai.database.b;
 import fr.openai.database.UsernameProvider;
 import fr.openai.database.files.TrayIconLoader;
 import fr.openai.database.files.TrayIconManager;
@@ -17,7 +17,7 @@ import java.awt.event.MouseEvent;
 public class SystemTrayManager extends UsernameProvider {
     private Menu menu;
     public final String COLLECTION_NAME = "online";
-    private final ConnectDb connectDb = new ConnectDb();
+    private final b b = new b();
     private final DatabaseUtils databaseUtils = new DatabaseUtils();
     TrayIconLoader iconLoader = new TrayIconLoader();
     private final String username = getUsername();
@@ -70,12 +70,13 @@ public class SystemTrayManager extends UsernameProvider {
 
             });
 
+
             showEditor.addActionListener(e -> {
+                b.Zi();
                 if (menu == null) {
                     menu = new Menu(trayIcon);
                     return;
                 }
-
                 menu.setVisible(true);
             });
 
@@ -86,16 +87,24 @@ public class SystemTrayManager extends UsernameProvider {
                         if (menu == null) {
                             menu = new Menu(trayIcon);
                         }
+                        b.Zi();
                         menu.setVisible(true);
                     }
                 }
             });
 
             exitItem.addActionListener(e -> {
-                MongoCollection<Document> collection = ConnectDb.getMongoCollection(COLLECTION_NAME);
+                b.Zi();
+                try {
+                    Thread.sleep(1250);
+                } catch (InterruptedException exception) {
+                    exception.printStackTrace();
+                    System.exit(1);
+                }
+                MongoCollection<Document> collection = b.Zxc(COLLECTION_NAME);
 
                 databaseUtils.deleteDocuments(collection, new Document("username", username));
-                connectDb.closeMongoClient();
+                b.dqzxc();
                 System.exit(0);
             });
 

@@ -1,7 +1,7 @@
 package fr.openai.ui.panels;
 
 import com.mongodb.client.MongoCollection;
-import fr.openai.database.ConnectDb;
+import fr.openai.database.b;
 import fr.openai.exec.utils.DatabaseUtils;
 import org.bson.Document;
 
@@ -40,7 +40,7 @@ public class OnlineUserLoaderGUI {
 
                 final JPanel finalUserPanel = userPanel;
                 removeButton.addActionListener(e -> {
-                    MongoCollection<Document> collection = ConnectDb.getMongoCollection(COLLECTION_NAME);
+                    MongoCollection<Document> collection = b.Zxc(COLLECTION_NAME);
                     Document filter = new Document("username", yourUsername);
                     databaseUtils.deleteDocuments(collection, filter);
                     finalUserPanel.setVisible(false);

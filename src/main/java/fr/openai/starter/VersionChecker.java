@@ -3,17 +3,17 @@ package fr.openai.starter;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import fr.openai.ui.VersionGUI;
-import fr.openai.database.ConnectDb;
+import fr.openai.database.b;
 import org.bson.Document;
 
 public class VersionChecker {
     public String getCurrentVersion() {
         // Текущая версия программы
-        return "6.6.5";
+        return "6.6.6";
     }
 
     public String getDbVersion() {
-        MongoCollection<Document> versionCollection = ConnectDb.getMongoCollection("version");
+        MongoCollection<Document> versionCollection = b.Zxc("version");
         MongoCursor<Document> cursor = versionCollection.find().iterator();
 
         if (cursor.hasNext()) {

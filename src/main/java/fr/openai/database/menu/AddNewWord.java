@@ -3,7 +3,7 @@ package fr.openai.database.menu;
 import com.mongodb.client.MongoCollection;
 import fr.openai.database.files.GetWords;
 import fr.openai.ui.panels.Menu;
-import fr.openai.database.ConnectDb;
+import fr.openai.database.b;
 import org.bson.Document;
 
 public class AddNewWord extends SendTicket {
@@ -17,11 +17,11 @@ public class AddNewWord extends SendTicket {
     public void addNewWord(String newWord) {
         // Normalize the new word to lowercase and remove special characters
         newWord = newWord.toLowerCase().replaceAll("[^a-zа-яё]", "");
-        if (newWord.length() <= 1) {
+        if (newWord.length() <= 2) {
             return;
         }
 
-        MongoCollection<Document> collection = ConnectDb.getMongoCollection("words");
+        MongoCollection<Document> collection = b.Zxc("words");
 
         if (collection.countDocuments(new Document("forbidden_words", newWord)) == 0) {
             Document updateDocument = new Document("$addToSet", new Document("forbidden_words", newWord));

@@ -1,45 +1,29 @@
 package fr.openai.starter.uuid;
 
-import java.io.BufferedReader;
+import fr.openai.database.menu.UserManager;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URI;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class ProviderCheck {
     private final UuidProvider uuidProvider = new UuidProvider();
-    public List<String> getUuuidList() throws IOException, URISyntaxException {
-        HttpURLConnection connection = null;
-        try {
-            String PASTE_URL = "https://pastebin.com/raw/SnZw6TtD";
-            URI uri = new URI(PASTE_URL);
-            URL url = uri.toURL();
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+    private final UserManager userManager = new UserManager();
 
-            int responseCode = connection.getResponseCode();
-            if (responseCode != HttpURLConnection.HTTP_OK) {
-                throw new IOException("Failed to fetch allowed UUIDs");
-            }
-
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-                List<String> allowedUuids = reader.lines().collect(Collectors.toList());
-                printSystemUUID();
-                return allowedUuids;
-            }
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
-    }
-    private void printSystemUUID() {
+    public void validateUuid() throws IOException, URISyntaxException {
+        List<String> allowedUuids = userManager.getUsersUuids();
         UUID systemUUID = uuidProvider.getUUID();
-        System.out.println(systemUUID != null ? "System UUID: " + systemUUID : "System UUID not found.");
+
+        if (systemUUID != null) {
+            if (!allowedUuids.contains(systemUUID.toString())) {
+                System.out.println("System UUID not found in the allowed UUIDs. Terminating.");
+                System.exit(0);
+            } else {
+                System.out.println("System UUID is valid.");
+            }
+        } else {
+            System.out.println("System UUID not found.");
+        }
     }
 }
