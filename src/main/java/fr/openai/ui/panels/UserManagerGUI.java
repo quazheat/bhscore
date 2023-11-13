@@ -6,12 +6,13 @@ import java.util.List;
 
 import fr.openai.database.menu.UserManager;
 import fr.openai.ui.customui.CustomButtonUI;
+import fr.openai.exec.utils.UserManagerService;
 import org.bson.Document;
 
 public class UserManagerGUI extends JFrame {
 
     private final UserManager userManager = new UserManager();
-
+    private final UserManagerService userManagerService = new UserManagerService();
     private final JTextField usernameField;
     private final JTextField uuidField;
     private final JCheckBox adminCheckbox;
@@ -24,8 +25,10 @@ public class UserManagerGUI extends JFrame {
         setLocationRelativeTo(null);
         ImageIcon icon = new ImageIcon("tray_icon.png");
         setIconImage(icon.getImage());
+
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
+        setResizable(false);
 
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
@@ -37,15 +40,16 @@ public class UserManagerGUI extends JFrame {
         uuidField = new JTextField();
         uuidField.setColumns(25);
         adminCheckbox = new JCheckBox("Admin");
+        adminCheckbox.setFocusPainted(false);
 
         JButton addUserButton = new JButton("Add User");
         CustomButtonUI.setCustomStyle(addUserButton);
 
         JButton removeUserButton = new JButton("Remove User");
         CustomButtonUI.setCustomStyle(removeUserButton);
-        removeUserButton.addActionListener(e -> removeUser());
+        removeUserButton.addActionListener(e -> userManagerService.removeUser(this, usernameField.getText(), uuidField.getText()));
 
-        addUserButton.addActionListener(e -> addUser());
+        addUserButton.addActionListener(e -> userManagerService.addUser(this, usernameField.getText(), uuidField.getText(), adminCheckbox.isSelected()));
 
         inputPanel.add(nameLabel);
         inputPanel.add(usernameField);
@@ -59,23 +63,11 @@ public class UserManagerGUI extends JFrame {
         buttonPanel.add(removeUserButton);
 
         userList = new JList<>();
-        userList.setCellRenderer(new CenteredTextCellRenderer());
+        userList.setCellRenderer(new UserListCellRenderer());
+        userList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         userList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
-                String selectedUser = userList.getSelectedValue();
-                if (selectedUser != null) {
-                    String[] userInfo = selectedUser.split(", ");
-                    if (userInfo.length == 3) {
-                        String username = userInfo[0].substring(userInfo[0].indexOf(":") + 2);
-                        String uuid = userInfo[1].substring(userInfo[1].indexOf(":") + 2);
-                        boolean isAdmin = Boolean.parseBoolean(userInfo[2].substring(userInfo[2].indexOf(":") + 2));
-
-                        // Update the text fields with the selected user information
-                        usernameField.setText(username);
-                        uuidField.setText(uuid);
-                        adminCheckbox.setSelected(isAdmin);
-                    }
-                }
+                handleUserListSelection();
             }
         });
 
@@ -93,66 +85,86 @@ public class UserManagerGUI extends JFrame {
         setVisible(true);
     }
 
-    private void addUser() {
-        String username = usernameField.getText();
-        String uuid = uuidField.getText();
-        boolean isAdmin = adminCheckbox.isSelected();
-
-        if (!username.isEmpty() && !uuid.isEmpty()) {
-            userManager.addUser(username, uuid, isAdmin);
-            JOptionPane.showMessageDialog(this, "User " + username + " added successfully.");
-            showUserList();
-        } else {
-            JOptionPane.showMessageDialog(this, "Enter username and UUID.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void removeUser() {
-        String username = usernameField.getText();
-        String uuid = uuidField.getText();
-
-        if (!username.isEmpty()) {
-            if (userManager.removeUserByUsername(username)) {
-                JOptionPane.showMessageDialog(this, "User " + username + " removed successfully.");
-                showUserList();
-            }
-        } else if (!uuid.isEmpty()) {
-            if (userManager.removeUserByUUID(uuid)) {
-                JOptionPane.showMessageDialog(this, "User with UUID " + uuid + " removed successfully.");
-                showUserList();
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Enter username or UUID for removal.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void showUserList() {
+    public void showUserList() {
         DefaultListModel<String> listModel = new DefaultListModel<>();
         List<Document> users = userManager.getUsers();
 
         if (users.isEmpty()) {
             listModel.addElement("No users found.");
-        } else {
-            listModel.addElement("User List:");
-            for (Document user : users) {
-                String username = user.getString("username");
-                String uuid = user.getString("uuid");
-                boolean isAdmin = user.getBoolean("admin", false);
+            return;
+        }
+        listModel.addElement("User List:");
+        for (Document user : users) {
+            String username = user.getString("username");
+            String uuid = user.getString("uuid");
+            boolean isAdmin = user.getBoolean("admin", false);
 
-                listModel.addElement("Username: " + username + ", UUID: " + uuid + ", Admin: " + isAdmin);
-            }
+            String formattedInfo = "Username: " + username +
+                    ", UUID: " + uuid;
+
+            // Include "Admin" part only if isAdmin is true
+            formattedInfo += isAdmin ? ", Admin: true" : "";
+
+            listModel.addElement(formattedInfo);
         }
 
         userList.setModel(listModel);
     }
 
-    private static class CenteredTextCellRenderer extends DefaultListCellRenderer {
-        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            if (c instanceof JLabel) {
-                ((JLabel) c).setHorizontalAlignment(JLabel.CENTER);
+    private void handleUserListSelection() {
+        int selectedIndex = userList.getSelectedIndex();
+        if (selectedIndex == 0) {
+            userList.clearSelection();
+        } else {
+            String selectedUser = userList.getSelectedValue();
+            if (selectedUser != null) {
+                updateFieldsFromUserInfo(selectedUser);
             }
-            return c;
         }
     }
+
+    private void updateFieldsFromUserInfo(String userInfo) {
+        String[] userInfoArray = userInfo.split(", ");
+        if (userInfoArray.length >= 2) {
+            String username = getValueFromUserInfo(userInfoArray[0]);
+            String uuid = getValueFromUserInfo(userInfoArray[1]);
+
+            usernameField.setText(username);
+            uuidField.setText(uuid);
+
+            if (userInfoArray.length == 3) {
+                boolean isAdmin = Boolean.parseBoolean(getValueFromUserInfo(userInfoArray[2]));
+                adminCheckbox.setSelected(isAdmin);
+            } else {
+                adminCheckbox.setSelected(false);
+            }
+        }
+    }
+
+    private String getValueFromUserInfo(String info) {
+        return info.substring(info.indexOf(":") + 2);
+    }
+
+    private static class UserListCellRenderer extends DefaultListCellRenderer {
+        private final DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
+
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+            if (index == 0) {
+                // Center the first item
+                renderer.setHorizontalAlignment(SwingConstants.CENTER);
+            }
+
+            if (index != 0) {
+                renderer.setHorizontalAlignment(SwingConstants.LEFT);
+            }
+
+            renderer.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
+
+            return renderer;
+        }
+    }
+
 }
