@@ -36,7 +36,6 @@ public class UserManagerService {
     }
 
     private void showUserList(JFrame frame) {
-        // show user list in the frame
         ((UserManagerGUI) frame).showUserList();
     }
 }

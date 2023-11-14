@@ -10,13 +10,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class VersionGUI extends JDialog {
+    VersionChecker versionChecker = new VersionChecker();
 
-    public VersionGUI() {
-        VersionChecker versionChecker = new VersionChecker();
-        String version = versionChecker.getCurrentVersion();
-        String dbVersion = versionChecker.getDbVersion();
-        setTitle("BHScore  " + version);
-        setSize(300, 150);
+    public VersionGUI(String dbVersion, String changelog) {
+
+        setTitle("BHScore " + versionChecker.getCurrentVersion());
+        setSize(500, 400);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -28,17 +27,30 @@ public class VersionGUI extends JDialog {
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        JLabel messageLabel1 = new JLabel("Ваша версия " + version + " устарела.");
-        JLabel messageLabel2 = new JLabel("Желаете обновить до " + dbVersion + "?");
+        JLabel messageLabel1 = new JLabel("Your version is outdated.");
+        JLabel messageLabel2 = new JLabel("Do you want to update to version " + dbVersion + "?");
         messageLabel1.setHorizontalAlignment(JLabel.CENTER);
         messageLabel2.setHorizontalAlignment(JLabel.CENTER);
 
-        gbc.insets = new Insets(10, 10, 0, 10); // Отступ между компонентами
+        gbc.insets = new Insets(10, 10, 0, 10);
         panel.add(messageLabel1, gbc);
 
         gbc.gridy = 1;
-        gbc.insets = new Insets(0, 10, 10, 10); // Отступ между компонентами
+        gbc.insets = new Insets(0, 10, 10, 10);
         panel.add(messageLabel2, gbc);
+
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(0, 10, 10, 10);
+        JTextArea changelogTextArea = new JTextArea(changelog);
+        changelogTextArea.setFont(new Font(Font.DIALOG, Font.PLAIN, 14));
+        JScrollPane changelogScrollPane = new JScrollPane(changelogTextArea);
+        changelogScrollPane.setPreferredSize(new Dimension(450, 200));
+        panel.add(changelogScrollPane, gbc);
+        changelogTextArea.setEditable(false);
+        changelogTextArea.setFocusable(false);
+        changelogTextArea.setLineWrap(true);
+        changelogTextArea.setWrapStyleWord(true);
 
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         gbc.gridy = 2;
@@ -46,26 +58,25 @@ public class VersionGUI extends JDialog {
         gbc.insets = new Insets(10, 10, 10, 10);
         panel.add(buttonPanel, gbc);
 
-        JButton okButton = new JButton("Скачать");
+        JButton okButton = new JButton("Download");
         CustomButtonUI.setCustomStyle(okButton);
         okButton.addActionListener(e -> {
             openBrowserToUpdate();
             dispose();
         });
 
-        JButton laterButton = new JButton("Позже");
+        JButton laterButton = new JButton("Later");
         CustomButtonUI.setCustomStyle(laterButton);
         laterButton.addActionListener(e -> dispose());
 
-
-        Dimension buttonSize = new Dimension(100, 40); // Размер кнопок
+        Dimension buttonSize = new Dimension(100, 40);
         okButton.setPreferredSize(buttonSize);
         laterButton.setPreferredSize(buttonSize);
 
         gbc.gridx = 0;
-        gbc.fill = GridBagConstraints.CENTER; //
+        gbc.fill = GridBagConstraints.CENTER;
         gbc.weightx = 0.5;
-        gbc.insets = new Insets(10, 10, 10, 75);
+        gbc.insets = new Insets(10, 60, 10, 125);
         buttonPanel.add(okButton, gbc);
 
         gbc.gridx = 1;

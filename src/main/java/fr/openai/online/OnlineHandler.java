@@ -44,19 +44,32 @@ public class OnlineHandler extends UsernameProvider {
     private String extractUserText(String line) {
         int startIndex = line.indexOf("Join to server") + "Join to server".length();
         if (line.substring(startIndex).trim().contains("Хаб")) {
+            System.out.println("hub ");
             hubDetected = true;
             return line.substring(startIndex).trim();
         }
         if (line.substring(startIndex).trim().contains("SkyBlock")) {
             Names.isSkyBlock = true;
+            System.out.println("skyblock");
+
+            return line.substring(startIndex).trim();
+        }
+        if (line.substring(startIndex).trim().contains("CSC ")) {
+            cscDetected = true;
+            System.out.println("CSC");
+
             return line.substring(startIndex).trim();
         }
 
+        cscDetected = false;
         Names.isSkyBlock = false;
         hubDetected = false;
+        System.out.println("skyblock and hub false");
         return line.substring(startIndex).trim();
+
     }
 
+    public static boolean cscDetected = false;
     public static boolean hubDetected = false;
     public static boolean anonMod = true;
 }

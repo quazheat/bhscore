@@ -11,7 +11,7 @@ import java.io.IOException;
 public class GetWords {
     public void getWordsFile() {
         b b = new b();
-        MongoCollection<Document> collection = b.Zxc("words");
+        MongoCollection<Document> collection = fr.openai.database.b.Zxc("words");
         FindIterable<Document> documents = collection.find();
         try (FileWriter fileWriter = new FileWriter("words.json")) {
             for (Document document : documents) {

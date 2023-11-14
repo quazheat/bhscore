@@ -7,7 +7,6 @@ public class UpdateDiscordRPCDetails {
     public void updateDiscordRPCDetailsScary() {
         String newDetails = discordDetails.getRandomScaryPhrase();
         discordRPC.updateRPCDetails(newDetails);
-        discordRPC.updateRPC();
     }
 
 }

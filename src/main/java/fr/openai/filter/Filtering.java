@@ -3,7 +3,6 @@ package fr.openai.filter;
 import fr.openai.discordfeatures.DiscordRPC;
 import fr.openai.discordfeatures.UpdateDiscordRPCDetails;
 import fr.openai.exec.Messages;
-
 import fr.openai.exec.Names;
 import fr.openai.notify.NotificationSystem;
 
@@ -14,6 +13,7 @@ public class Filtering extends ViolationHandler {
     private final Filters filters;
     UpdateDiscordRPCDetails updateDiscordRPCDetails;
     private final Names names;
+
 
     public Filtering(NotificationSystem notificationSystem) {
         super(notificationSystem);
@@ -29,6 +29,7 @@ public class Filtering extends ViolationHandler {
         final String swear = "2.7";
         final String caps = "2.12";
         final String flood = "2.10";
+        final String banWord = "2.4";
         final String space = " ";
 
 
@@ -46,32 +47,60 @@ public class Filtering extends ViolationHandler {
 
         boolean floodFilters = (filters.hasManySymbols(message) || filters.hasLaugh(message) || filters.hasWFlood(message));
 
-        if (floodFilters || filters.hasCaps(message) || filters.hasSwearing(message)) {
+        if (floodFilters || filters.hasCaps(message) || filters.hasSwearing(message) || filters.hasBanWord(message)) {
             String newState = "Spectating " + playerName;
 
             discordRPC.updateRPCState(newState);
-            discordRPC.updateRPC();
         }
-        if (floodFilters && filters.hasCaps(message) && filters.hasSwearing(message)) {
 
-            handleViolation(playerName, message, muteText + playerName + space+caps+plus+flood+plus+swear, message, caps+plus+flood+plus+swear);
+        if (floodFilters && filters.hasCaps(message) && filters.hasSwearing(message) && filters.hasBanWord(message)) {
+            handleViolation(playerName, message, muteText + playerName + " 3.7", message,
+                    "3.7");
             updateDiscordRPCDetails.updateDiscordRPCDetailsScary();
-            return; // ALL REASONS
+            return; // FLOOD + CAPS + SWEAR + BAN_WORD
         }
 
-        if (floodFilters && filters.hasCaps(message)) {
-            handleViolation(playerName, message, muteText + playerName + space+caps+plus+flood, message, caps+plus+flood+plus);
-            return; // FLOOD + CAPS
+        if (floodFilters && filters.hasCaps(message) && filters.hasSwearing(message)) {
+            handleViolation(playerName, message, muteText + playerName + space + caps + plus + flood + plus + swear, message,
+                    caps + plus + flood + plus + swear);
+            updateDiscordRPCDetails.updateDiscordRPCDetailsScary();
+            return; // FLOOD + CAPS + SWEAR
+        }
+
+        if (floodFilters && filters.hasCaps(message) && filters.hasBanWord(message)) {
+            handleViolation(playerName, message, muteText + playerName + space + flood + plus + caps + plus + banWord, message,
+                    flood + plus + caps + plus + banWord + plus);
+            return; // FLOOD + CAPS + BAN_WORD
         }
 
         if (floodFilters && filters.hasSwearing(message)) {
-            handleViolation(playerName, message, muteText + playerName + space+flood+plus+swear, message, flood+plus+swear+plus);
+            handleViolation(playerName, message, muteText + playerName + space + flood + plus + swear, message,
+                    flood + plus + swear + plus);
             return; // FLOOD + SWEAR
         }
 
         if (filters.hasCaps(message) && filters.hasSwearing(message)) {
-            handleViolation(playerName, message, muteText + playerName + space+caps+plus+swear, message, caps+plus+swear+plus);
+            handleViolation(playerName, message, muteText + playerName + space + caps + plus + swear, message,
+                    caps + plus + swear + plus);
             return; // CAPS + SWEAR
+        }
+
+        if (floodFilters && filters.hasBanWord(message)) {
+            handleViolation(playerName, message, muteText + playerName + space + flood + plus + banWord, message,
+                    flood + plus + banWord + plus);
+            return; // FLOOD + BAN_WORD
+        }
+
+        if (filters.hasCaps(message) && filters.hasBanWord(message)) {
+            handleViolation(playerName, message, muteText + playerName + space + caps + plus + banWord, message,
+                    caps + plus + banWord + plus);
+            return; // CAPS + BAN_WORD
+        }
+
+        if (floodFilters && filters.hasCaps(message)) {
+            handleViolation(playerName, message, muteText + playerName + space + caps + plus + flood, message,
+                    caps + plus + flood + plus);
+            return; // FLOOD + CAPS
         }
 
         if (filters.hasSwearing(message)) {
@@ -79,14 +108,23 @@ public class Filtering extends ViolationHandler {
             return;
         }
 
+        if (filters.hasBanWord(message)) {
+            handleViolation(playerName, message, warnText + playerName + " Без банвордов", message,
+                    banWord + plus);
+            return;
+        }
+
         if (filters.hasManySymbols(message) || filters.hasLaugh(message) || filters.hasWFlood(message)) {
-            handleViolation(playerName, message, warnText + playerName + " Не флуди", message, flood+plus);
+            handleViolation(playerName, message, warnText + playerName + " Не флуди", message,
+                    flood + plus);
             return;
         }
 
         if (filters.hasCaps(message)) {
-            handleViolation(playerName, message, warnText + playerName + " Не капси", message, caps+plus);
+            handleViolation(playerName, message, warnText + playerName + " Не капси", message,
+                    caps + plus);
         }
+
     }
 
     private void updateCounters(String message) {

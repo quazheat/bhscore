@@ -123,6 +123,42 @@ public class Filters extends UsernameProvider {
 
     }
 
+    public boolean hasBanWord(String message) {
+        JsonObject json = JsonFileReader.readJsonFile("words.json");
+        JsonArray whitelistArray = json.getAsJsonArray("whitelist");
+        JsonArray forbiddenWordsArray = json.getAsJsonArray("banwords");
+
+        LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
+
+        message = message.toLowerCase();
+        String[] tokens = message.split("[\\s,.;!?]+"); // Разделение на токены
+
+        for (String token : tokens) {
+            boolean isWhitelisted = false;
+            for (int i = 0; i < whitelistArray.size(); i++) {
+                String word = whitelistArray.get(i).getAsString();
+                double similarity = levenshteinDistance.apply(token, word);
+                if (similarity >= 0.8) {
+                    isWhitelisted = true;
+
+                    break;
+                }
+            }
+            if (!isWhitelisted) {
+                for (int i = 0; i < forbiddenWordsArray.size(); i++) {
+                    String forbiddenWord = forbiddenWordsArray.get(i).getAsString();
+                    double similarity = levenshteinDistance.apply(token, forbiddenWord);
+
+                    if (similarity >= 0.8) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+
+    }
+
     public boolean hasMuteCounter(String message) {
         if (username == null || username.length() <= 3) {
             return false;

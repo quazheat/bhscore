@@ -1,6 +1,5 @@
 package fr.openai.exec;
 
-import fr.openai.discordfeatures.DiscordRPC;
 import fr.openai.filter.Filtering;
 import fr.openai.filter.MessageProcessor;
 import fr.openai.filter.Validator;
@@ -11,13 +10,11 @@ import java.util.concurrent.*;
 public class Executor {
 
     private final Filtering filtering;
-    private final DiscordRPC discordRPC;
     private final ScheduledExecutorService executorService;
 
     private final MessageProcessor messageProcessor;
 
     public Executor(NotificationSystem notificationSystem) {
-        this.discordRPC = new DiscordRPC();
         this.filtering = new Filtering(notificationSystem);
         this.messageProcessor = new MessageProcessor(notificationSystem);
         this.executorService = Executors.newScheduledThreadPool(10);
@@ -38,7 +35,6 @@ public class Executor {
         executorService.submit(() -> {
             filtering.onFilter(playerName, message);
             messageProcessor.processMessage(playerName, message);
-            executorService.scheduleAtFixedRate(discordRPC::updateRPC, 0, 1, TimeUnit.SECONDS);
         });
     }
 }

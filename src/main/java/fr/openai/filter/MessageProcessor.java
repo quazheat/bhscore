@@ -1,5 +1,6 @@
 package fr.openai.filter;
 
+import fr.openai.exec.Names;
 import fr.openai.notify.NotificationSystem;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 
 public class MessageProcessor extends ViolationHandler {
     private final List<MessageRecord> messageRecords;
+    private final Names names = new Names();
 
     public MessageProcessor(NotificationSystem notificationSystem) {
         super(notificationSystem);
@@ -58,6 +60,7 @@ public class MessageProcessor extends ViolationHandler {
         if ("Unknown".equalsIgnoreCase(playerName)) {
             return;
         }
+        playerName = names.formatPlayerName(playerName);
         handleViolation(playerName, message, "/warn " + playerName + " Не флуди", "[3msg] " + message, "2.10+");
     }
 

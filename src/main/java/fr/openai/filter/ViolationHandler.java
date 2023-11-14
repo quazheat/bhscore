@@ -43,6 +43,7 @@ public abstract class ViolationHandler {
 
         if (!FilteringModeManager.isRageModeEnabled()) {
             notificationSystem.showNotification(playerName, loyalMessage);
+            System.out.println(playerName);
             return;
         }
 

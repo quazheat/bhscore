@@ -6,6 +6,7 @@ public class JustAnotherFilter {
 
     public JustAnotherFilter(String name, String message) {
         shouldSkip = message.contains("㰳")
+                || message.contains("Ставки выиграли:")
                 || message.contains("по причине:")
                 || message.contains("\\[CHAT]\\s{2,}")
                 || message.contains("Ошибка OpenGL:")

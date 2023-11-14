@@ -7,6 +7,7 @@ public class Validator {
     public static boolean isNotValid(String line) {
         String regex = "\\[CHAT]\\s{2,}" +
                 "|Ошибка OpenGL:" +
+                "|[CHAT] Ставки выиграли:" +
                 "|\\[CHAT] Вы " +
                 "|\\[CHAT] Игрок" +
                 "|получил с лутбокса:" +

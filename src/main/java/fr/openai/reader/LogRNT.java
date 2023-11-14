@@ -41,14 +41,17 @@ public class LogRNT {
         DiscordRPC discordRPC = new DiscordRPC();
         DiscordRPCDiag discordRPCDiag = new DiscordRPCDiag();
         String username = (configManager.getUsername());
+
         if (username == null || username.length() <= 3) {
             discordRPCDiag.setModal(true); // MODAL DIALOG
             discordRPCDiag.setVisible(true);
         }
-        discordRPC.updateRPC();
+
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
         getWords.getWordsFile();
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+
+        executorService.scheduleAtFixedRate(discordRPC::updateRPC, 0, 1, TimeUnit.SECONDS);
 
         SystemTrayManager trayManager = new SystemTrayManager();
         trayManager.setupSystemTray();
@@ -56,7 +59,6 @@ public class LogRNT {
         int initialDelay = 0; // Start immediately
         int period = configManager.getUpFQ(); // Set the period to the desired frequency
         previousSize = getFileSize();
-
         executorService.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.MILLISECONDS);
     }
 
