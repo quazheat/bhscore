@@ -5,7 +5,6 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import fr.openai.database.b;
 import fr.openai.database.UsernameProvider;
-import fr.openai.ui.panels.OnlineUserLoaderGUI;
 import org.bson.Document;
 
 import java.text.SimpleDateFormat;
@@ -15,10 +14,10 @@ import java.util.TimeZone;
 
 public class OnlineUserLoader extends UsernameProvider {
     private static final String COLLECTION_NAME = "online";
-    OnlineUserLoaderGUI gui = new OnlineUserLoaderGUI();
 
     public void loadOnlineUsers() {
         ArrayList<String> onlineUsers = new ArrayList<>();
+        OnlineUserLoaderGUI gui = new OnlineUserLoaderGUI();
 
         MongoCollection<Document> collection = b.Zxc(COLLECTION_NAME);
         FindIterable<Document> documents = collection.find();

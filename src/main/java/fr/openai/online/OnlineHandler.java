@@ -19,10 +19,6 @@ public class OnlineHandler extends UsernameProvider {
         if (username == null || username.length() <= 3) {
             return;
         }
-        if (anonMod) {
-            return;
-        }
-
         MongoCollection<Document> collection = b.Zxc(COLLECTION_NAME);
         Document filter = new Document("username", username);
         databaseUtils.deleteDocuments(collection, filter);
@@ -71,5 +67,4 @@ public class OnlineHandler extends UsernameProvider {
 
     public static boolean cscDetected = false;
     public static boolean hubDetected = false;
-    public static boolean anonMod = true;
 }

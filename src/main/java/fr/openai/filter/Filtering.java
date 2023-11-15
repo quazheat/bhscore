@@ -26,13 +26,12 @@ public class Filtering extends ViolationHandler {
         final String warnText = "/warn ";
         final String muteText = "/mute ";
         final String plus = "+";
-        final String swear = "2.7";
+        final String swear = "2.";
         final String caps = "2.12";
         final String flood = "2.10";
         final String banWord = "2.4";
         final String space = " ";
-
-
+        final String specText = "Spectating ";
         String message = Messages.getMessage(line);
         String playerName = names.formatPlayerName(name);
         if (message == null) {
@@ -48,7 +47,7 @@ public class Filtering extends ViolationHandler {
         boolean floodFilters = (filters.hasManySymbols(message) || filters.hasLaugh(message) || filters.hasWFlood(message));
 
         if (floodFilters || filters.hasCaps(message) || filters.hasSwearing(message) || filters.hasBanWord(message)) {
-            String newState = "Spectating " + playerName;
+            String newState = specText + playerName;
 
             discordRPC.updateRPCState(newState);
         }
@@ -73,15 +72,21 @@ public class Filtering extends ViolationHandler {
             return; // FLOOD + CAPS + BAN_WORD
         }
 
+        if (filters.hasBanWord(message) && filters.hasSwearing(message)) {
+            handleViolation(playerName, message, muteText + playerName + space + banWord + plus + swear, message,
+                    banWord + plus + swear);
+            return; // BAN_WORD + SWEAR
+        }
+
         if (floodFilters && filters.hasSwearing(message)) {
             handleViolation(playerName, message, muteText + playerName + space + flood + plus + swear, message,
-                    flood + plus + swear + plus);
+                    flood + plus + swear);
             return; // FLOOD + SWEAR
         }
 
         if (filters.hasCaps(message) && filters.hasSwearing(message)) {
             handleViolation(playerName, message, muteText + playerName + space + caps + plus + swear, message,
-                    caps + plus + swear + plus);
+                    caps + plus + swear);
             return; // CAPS + SWEAR
         }
 
@@ -104,7 +109,7 @@ public class Filtering extends ViolationHandler {
         }
 
         if (filters.hasSwearing(message)) {
-            handleViolation(playerName, message, warnText + playerName + " Не матерись", message, swear);
+            handleViolation(playerName, message, warnText + playerName + " Не ругайся", message, swear);
             return;
         }
 

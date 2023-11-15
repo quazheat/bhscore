@@ -91,6 +91,7 @@ public class VersionGUI extends JDialog {
         try {
             URI uri = new URI("https://drive.google.com/file/d/1n6r0J21FXMYWGi3IJgEjgggCVr-hinM2/view");
             Desktop.getDesktop().browse(uri);
+            System.exit(0);
         } catch (URISyntaxException | IOException e) {
             e.printStackTrace();
         }

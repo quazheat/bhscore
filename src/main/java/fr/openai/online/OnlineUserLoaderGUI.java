@@ -1,4 +1,4 @@
-package fr.openai.ui.panels;
+package fr.openai.online;
 
 import com.mongodb.client.MongoCollection;
 import fr.openai.database.b;
@@ -14,8 +14,8 @@ public class OnlineUserLoaderGUI {
     private final DatabaseUtils databaseUtils = new DatabaseUtils();
     private final JLabel yourTimezoneLabel = new JLabel();
     protected final ImageIcon icon = new ImageIcon("tray_icon.png");
-    private final JFrame frame = new JFrame("Онлайн");
     public void createAndShowGUI(ArrayList<String> onlineUsers, String yourUsername) {
+        JFrame frame = new JFrame("Онлайн");
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setResizable(false);
         frame.setIconImage(icon.getImage());
