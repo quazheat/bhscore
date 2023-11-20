@@ -2,11 +2,14 @@ package fr.openai.ui.panels;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import fr.openai.database.menu.UserManager;
-import fr.openai.ui.customui.CustomButtonUI;
 import fr.openai.exec.utils.UserManagerService;
+import fr.openai.ui.MessageSenderGUI;
+import fr.openai.ui.customui.CustomButtonUI;
 import org.bson.Document;
 
 public class UserManagerGUI extends JFrame {
@@ -17,6 +20,8 @@ public class UserManagerGUI extends JFrame {
     private final JTextField uuidField;
     private final JCheckBox adminCheckbox;
     private final JList<String> userList;
+
+    private final JPopupMenu contextMenu;
 
     public UserManagerGUI() {
         setTitle("User Manager");
@@ -71,6 +76,23 @@ public class UserManagerGUI extends JFrame {
             }
         });
 
+        contextMenu = new JPopupMenu();
+        JMenuItem sendMessageItem = new JMenuItem("Send Message");
+        sendMessageItem.addActionListener(e -> sendMessageToSelectedUser());
+        contextMenu.add(sendMessageItem);
+
+        userList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                showContextMenu(e);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                showContextMenu(e);
+            }
+        });
+
         JScrollPane userListScrollPane = new JScrollPane(userList);
         userListScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         userListScrollPane.setPreferredSize(new Dimension(400, 150));
@@ -83,6 +105,12 @@ public class UserManagerGUI extends JFrame {
 
         add(mainPanel);
         setVisible(true);
+    }
+
+    private void showContextMenu(MouseEvent e) {
+        if (e.isPopupTrigger() && userList.getSelectedIndex() > 0) {
+            contextMenu.show(e.getComponent(), e.getX(), e.getY());
+        }
     }
 
     public void showUserList() {
@@ -111,6 +139,19 @@ public class UserManagerGUI extends JFrame {
         userList.setModel(listModel);
     }
 
+    private void sendMessageToSelectedUser() {
+        int selectedIndex = userList.getSelectedIndex();
+        if (selectedIndex > 0) {
+            String selectedUser = userList.getSelectedValue();
+            if (selectedUser != null) {
+                String uuid = getValueFromUserInfo(selectedUser, "UUID");
+
+                SwingUtilities.invokeLater(() -> new MessageSenderGUI(uuid));
+            }
+        }
+    }
+
+
     private void handleUserListSelection() {
         int selectedIndex = userList.getSelectedIndex();
         if (selectedIndex == 0) {
@@ -118,22 +159,23 @@ public class UserManagerGUI extends JFrame {
         } else {
             String selectedUser = userList.getSelectedValue();
             if (selectedUser != null) {
-                updateFieldsFromUserInfo(selectedUser);
+                String[] userInfoArray = selectedUser.split(", ");
+                updateFieldsFromUserInfo(userInfoArray);
             }
         }
     }
 
-    private void updateFieldsFromUserInfo(String userInfo) {
-        String[] userInfoArray = userInfo.split(", ");
+
+    private void updateFieldsFromUserInfo(String[] userInfoArray) {
         if (userInfoArray.length >= 2) {
-            String username = getValueFromUserInfo(userInfoArray[0]);
-            String uuid = getValueFromUserInfo(userInfoArray[1]);
+            String username = getValueFromUserInfo(userInfoArray[0], "Username");
+            String uuid = getValueFromUserInfo(userInfoArray[1], "UUID");
 
             usernameField.setText(username);
             uuidField.setText(uuid);
 
             if (userInfoArray.length == 3) {
-                boolean isAdmin = Boolean.parseBoolean(getValueFromUserInfo(userInfoArray[2]));
+                boolean isAdmin = Boolean.parseBoolean(getValueFromUserInfo(userInfoArray[2], "Admin"));
                 adminCheckbox.setSelected(isAdmin);
             } else {
                 adminCheckbox.setSelected(false);
@@ -141,9 +183,17 @@ public class UserManagerGUI extends JFrame {
         }
     }
 
-    private String getValueFromUserInfo(String info) {
-        return info.substring(info.indexOf(":") + 2);
+
+    private String getValueFromUserInfo(String info, String key) {
+        String[] userInfoArray = info.split(", ");
+        for (String userInfo : userInfoArray) {
+            if (userInfo.startsWith(key)) {
+                return userInfo.substring(userInfo.indexOf(":") + 2);
+            }
+        }
+        return "";
     }
+
 
     private static class UserListCellRenderer extends DefaultListCellRenderer {
         private final DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();

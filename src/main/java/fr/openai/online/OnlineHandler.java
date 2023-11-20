@@ -1,7 +1,6 @@
 package fr.openai.online;
 
 import com.mongodb.client.MongoCollection;
-import fr.openai.database.b;
 import fr.openai.database.UsernameProvider;
 import fr.openai.exec.Names;
 import fr.openai.exec.utils.DatabaseUtils;
@@ -19,7 +18,7 @@ public class OnlineHandler extends UsernameProvider {
         if (username == null || username.length() <= 3) {
             return;
         }
-        MongoCollection<Document> collection = b.Zxc(COLLECTION_NAME);
+        MongoCollection<Document> collection = fr.openai.database.b.Zxc(COLLECTION_NAME);
         Document filter = new Document("username", username);
         databaseUtils.deleteDocuments(collection, filter);
 
@@ -62,7 +61,6 @@ public class OnlineHandler extends UsernameProvider {
         hubDetected = false;
         System.out.println("skyblock and hub false");
         return line.substring(startIndex).trim();
-
     }
 
     public static boolean cscDetected = false;

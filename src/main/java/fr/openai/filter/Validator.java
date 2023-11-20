@@ -7,7 +7,7 @@ public class Validator {
     public static boolean isNotValid(String line) {
         String regex = "\\[CHAT]\\s{2,}" +
                 "|Ошибка OpenGL:" +
-                "|[CHAT] Ставки выиграли:" +
+                "|\\[CHAT] Ставки выиграли:" +
                 "|\\[CHAT] Вы " +
                 "|\\[CHAT] Игрок" +
                 "|получил с лутбокса:" +
@@ -27,16 +27,15 @@ public class Validator {
                 "|: \\[CHAT] VK" +
                 "|: \\[CHAT] \\[I]" +
                 "|размутил игрока" +
-                "|\\[CHAT] \\n" +
                 "|\\[CHAT] Всё" +
                 "|\\[CHAT] -----------" +
                 "|\\[CHAT] \uE310 ЗБТ" +
                 "|ЗБТ чатов! Доступ только для персонала!" +
-                "|\\[CHAT] Урон ";
+                "|\\[CHAT] Урон " +
+                "| \\[CHAT] \\\\n ";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(line);
 
         return matcher.find();
-
     }
 }

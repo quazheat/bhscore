@@ -6,6 +6,7 @@ import fr.openai.discordfeatures.DiscordRPC;
 import fr.openai.discordfeatures.DiscordRPCDiag;
 import fr.openai.exec.Executor;
 import fr.openai.exec.Names;
+import fr.openai.notify.MessageChecker;
 import fr.openai.notify.NotificationSystem;
 import fr.openai.online.OnlineHandler;
 import fr.openai.runtime.SystemTrayManager;
@@ -36,6 +37,7 @@ public class LogRNT {
     }
 
     public void starter() {
+        MessageChecker messageChecker = new MessageChecker();
         UserManager userManager = new UserManager();
         userManager.showUserList();
         DiscordRPC discordRPC = new DiscordRPC();
@@ -60,8 +62,8 @@ public class LogRNT {
         int period = configManager.getUpFQ(); // Set the period to the desired frequency
         previousSize = getFileSize();
         executorService.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.MILLISECONDS);
+        executorService.scheduleAtFixedRate(messageChecker::checkMessages, 0, 3, TimeUnit.MINUTES);
     }
-
 
     private void checkLogChanges() {
         String logRntPath = configManager.getLogRntPath();

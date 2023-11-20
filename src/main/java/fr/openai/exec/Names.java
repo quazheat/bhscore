@@ -14,6 +14,14 @@ public class Names {
 
     public String formatPlayerName(String playerName) {
         String[] words = playerName.split(" ");
+        if (words.length >= 2) {
+            if (!isSkyBlock && !OnlineHandler.cscDetected &&  words.length >= 3) {
+                words[1] = words[2]; // Replace the second word with the third
+            } else {
+                words[1] = ""; // Set the second word to an empty string
+            }
+            playerName = String.join(" ", words).trim(); // Combine the words into one string
+        }
         if (isSkyBlock && words.length >= 2) {
             if (words.length >= 3) {
                 words[2] = words[1]; // Replace the third  word with the second
@@ -30,14 +38,7 @@ public class Names {
             }
             playerName = String.join(" ", words).trim(); // Combine the words into one string
         }
-        if (!isSkyBlock && !OnlineHandler.cscDetected && words.length >= 2) {
-            if (words.length >= 3) {
-                words[1] = words[2]; // Replace the second word with the third
-            } else {
-                words[1] = ""; // Set the second word to an empty string
-            }
-            playerName = String.join(" ", words).trim(); // Combine the words into one string
-        }
+
         System.out.println(playerName);
         return playerName;
     }

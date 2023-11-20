@@ -1,14 +1,16 @@
 package fr.openai.ui;
 
 import fr.openai.database.ConfigManager;
-import fr.openai.filter.Filtering;
+import fr.openai.database.b;
 import fr.openai.ui.customui.CustomButtonUI;
+import fr.openai.ui.panels.StatsDatabaseManager;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class MutesWarnsGUI extends JDialog {
     ConfigManager configManager = new ConfigManager();
+    private final fr.openai.database.b b = new b();
 
     public MutesWarnsGUI() {
         setTitle("BHScore");
@@ -26,16 +28,20 @@ public class MutesWarnsGUI extends JDialog {
         gbc.gridheight = 1;
         gbc.fill = GridBagConstraints.BOTH;
 
-        String username = (configManager.getUsername());
-        int mutes = Filtering.getMutes();
-        int warns = Filtering.getWarns();
+        String username = configManager.getUsername();
+
+        saveMutesAndWarns(username);
+
+        StatsDatabaseManager statsDatabaseManager = new StatsDatabaseManager();
+        int mutes = statsDatabaseManager.getMutes(username);
+        int warns = statsDatabaseManager.getWarns(username);
 
         String statsText = "<html><div align='center'><b>Статистика за сессию:</b> <br>" + username +
                 "<br><br>Mutes: " + mutes +
                 "<br>Warns: " + warns +
                 "<br><b>Total:</b> " + (mutes + warns) + "</div></html>";
 
-        if (username == null || username.length() <=3) {
+        if (username == null || username.length() <= 3) {
             System.exit(0);
         }
         JLabel titleLabel = new JLabel(statsText);
@@ -50,21 +56,45 @@ public class MutesWarnsGUI extends JDialog {
 
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         gbc.gridy = 1;
-        gbc.gridwidth = 1;
+        gbc.gridwidth = 3;
         gbc.insets = new Insets(10, 10, 10, 10);
         panel.add(buttonPanel, gbc);
 
-        JButton closeButton = new JButton("Закрыть");
-        closeButton.addActionListener(e -> dispose());
+        JButton clearButton = new JButton("Очистить");
+        clearButton.addActionListener(e -> clearStats(username));
 
-        Dimension buttonSize = new Dimension(280, 40);
+        JButton closeButton = new JButton("Закрыть");
+        closeButton.addActionListener(e -> {
+            dispose();
+            b.dqzxc();
+        });
+
+        Dimension buttonSize = new Dimension(140, 40);
+        clearButton.setPreferredSize(buttonSize);
         closeButton.setPreferredSize(buttonSize);
+        CustomButtonUI.setCustomStyle(clearButton);
         CustomButtonUI.setCustomStyle(closeButton);
 
-        gbc.gridx = 1;
-        gbc.insets = new Insets(10, 105, 10, 10);
+        gbc.gridx = 0;
+        gbc.insets = new Insets(10, 10, 10, 135);
+        buttonPanel.add(clearButton, gbc);
+
+        gbc.gridx = 2;
+        gbc.insets = new Insets(10, 135, 10, 10);
         buttonPanel.add(closeButton, gbc);
 
         add(panel);
+    }
+
+    private void saveMutesAndWarns(String username) {
+        StatsDatabaseManager statsDatabaseManager = new StatsDatabaseManager();
+        statsDatabaseManager.saveMutesAndWarns(username);
+    }
+
+    private void clearStats(String username) {
+        StatsDatabaseManager statsDatabaseManager = new StatsDatabaseManager();
+        statsDatabaseManager.deleteDocumentIfMatch(username);
+
+        dispose();
     }
 }

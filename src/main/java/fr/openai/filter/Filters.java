@@ -6,9 +6,6 @@ import fr.openai.database.JsonFileReader;
 import fr.openai.database.UsernameProvider;
 import fr.openai.filter.fixer.LevenshteinDistance;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Filters extends UsernameProvider {
 
     private final String username = getUsername();
@@ -69,23 +66,24 @@ public class Filters extends UsernameProvider {
         return upperCaseCount > 5 && (double) upperCaseCount / cleanedMessage.length() > 0.55;
     }
 
-
     public boolean hasWFlood(String message) {
         String[] words = message.split("\\s+");
         int targetCount = 5;
-        // Create a HashMap to count word occurrences
-        Map<String, Integer> wordCounts = new HashMap<>();
+        int consecutiveCount = 1;
 
-        for (String word : words) {
-            wordCounts.put(word, wordCounts.getOrDefault(word, 0) + 1);
-            if (wordCounts.get(word) >= targetCount) {
-
-                return true;
+        for (int i = 1; i < words.length; i++) {
+            if (words[i].equals(words[i - 1])) {
+                consecutiveCount++;
+                if (consecutiveCount >= targetCount) {
+                    return true;
+                }
+            } else {
+                consecutiveCount = 1; // Сбрасываем счетчик, если слова не идут подряд
             }
         }
         return false;
-
     }
+
 
     public boolean hasSwearing(String message) {
         JsonObject json = JsonFileReader.readJsonFile("words.json");

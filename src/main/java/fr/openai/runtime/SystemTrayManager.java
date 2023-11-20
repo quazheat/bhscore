@@ -72,7 +72,6 @@ public class SystemTrayManager extends UsernameProvider {
 
 
             showEditor.addActionListener(e -> {
-                b.Zi();
                 if (menu == null) {
                     menu = new Menu(trayIcon);
                     return;
@@ -87,7 +86,6 @@ public class SystemTrayManager extends UsernameProvider {
                         if (menu == null) {
                             menu = new Menu(trayIcon);
                         }
-                        b.Zi();
                         menu.setVisible(true);
                     }
                 }
@@ -101,7 +99,7 @@ public class SystemTrayManager extends UsernameProvider {
                     exception.printStackTrace();
                     System.exit(1);
                 }
-                MongoCollection<Document> collection = b.Zxc(COLLECTION_NAME);
+                MongoCollection<Document> collection = fr.openai.database.b.Zxc(COLLECTION_NAME);
 
                 databaseUtils.deleteDocuments(collection, new Document("username", username));
                 b.dqzxc();

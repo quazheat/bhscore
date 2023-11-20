@@ -76,7 +76,6 @@ public class ReportsPanel extends JPanel {
         uuidLog.logUuid(isUuidAllowed); // Log whether UUID is allowed
 
         if (!isUuidAllowed) {
-            b.dqzxc();
             System.exit(1); // Exit the program with code 1 if UUID is not allowed
         }
 
