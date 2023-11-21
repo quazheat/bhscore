@@ -7,12 +7,11 @@ import org.bson.Document;
 import fr.openai.filter.Filtering;
 
 public class StatsDatabaseManager {
+    private final MongoCollection<Document> collection = fr.openai.database.b.Zxc("mutes_warns");
 
     public void saveMutesAndWarns(String username) {
         int mutes = Filtering.getMutes();
         int warns = Filtering.getWarns();
-
-        MongoCollection<Document> collection = fr.openai.database.b.Zxc("mutes_warns");
 
         Document searchQuery = new Document("username", username);
         FindIterable<Document> findIterable = collection.find(searchQuery);
@@ -39,7 +38,6 @@ public class StatsDatabaseManager {
     }
 
     public void deleteDocumentIfMatch(String username) {
-        MongoCollection<Document> collection = fr.openai.database.b.Zxc("mutes_warns");
 
         Document searchQuery = new Document("username", username);
         FindIterable<Document> findIterable = collection.find(searchQuery);
@@ -52,7 +50,6 @@ public class StatsDatabaseManager {
     }
 
     public int getMutes(String username) {
-        MongoCollection<Document> collection = fr.openai.database.b.Zxc("mutes_warns");
 
         Document searchQuery = new Document("username", username);
         FindIterable<Document> findIterable = collection.find(searchQuery);
@@ -67,7 +64,6 @@ public class StatsDatabaseManager {
     }
 
     public int getWarns(String username) {
-        MongoCollection<Document> collection = fr.openai.database.b.Zxc("mutes_warns");
 
         Document searchQuery = new Document("username", username);
         FindIterable<Document> findIterable = collection.find(searchQuery);

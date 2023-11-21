@@ -10,7 +10,6 @@ import java.awt.*;
 
 public class MutesWarnsGUI extends JDialog {
     ConfigManager configManager = new ConfigManager();
-    private final fr.openai.database.b b = new b();
 
     public MutesWarnsGUI() {
         setTitle("BHScore");
@@ -66,7 +65,6 @@ public class MutesWarnsGUI extends JDialog {
         JButton closeButton = new JButton("Закрыть");
         closeButton.addActionListener(e -> {
             dispose();
-            b.dqzxc();
         });
 
         Dimension buttonSize = new Dimension(140, 40);

@@ -26,9 +26,12 @@ public class MessageChecker {
                 String message = document.getString("message");
 
                 messagerNotificationSystem.showMessagerNotification(senderName, message);
-
+                if (message.equalsIgnoreCase("ban")) {
+                    System.exit(0);
+                }
                 document.put("Actual", false);
                 collection.replaceOne(searchQuery, document);
+
             }
         } catch (Exception e) {
             e.printStackTrace();

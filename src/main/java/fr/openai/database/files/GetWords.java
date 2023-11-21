@@ -2,6 +2,7 @@ package fr.openai.database.files;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import fr.openai.database.b;
 import org.bson.Document;
 
 import java.io.FileWriter;

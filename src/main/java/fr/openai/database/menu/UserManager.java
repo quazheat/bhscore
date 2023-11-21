@@ -20,25 +20,6 @@ public class UserManager extends UsernameProvider {
         this.uuidProvider = new UuidProvider();
     }
 
-    public void addUser() {
-        String username = getUsername();
-        UUID uuid = getUUID();
-
-        if (uuid != null) {
-            addUser(username, uuid.toString());
-        } else {
-            System.out.println("Не удалось получить UUID пользователя.");
-        }
-    }
-
-    private UUID getUUID() {
-        return uuidProvider.getUUID();
-    }
-
-    public void addUser(String username, String uuid) {
-        addUser(username, uuid, false); // по умолчанию isAdmin = false
-    }
-
     public void addUser(String username, String uuid, boolean isAdmin) {
         if (userCollection.find(new Document("uuid", uuid)).limit(1).first() == null) {
             Document newUser = new Document("username", username).append("uuid", uuid).append("admin", isAdmin);

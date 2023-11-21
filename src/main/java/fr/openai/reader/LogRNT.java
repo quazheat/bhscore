@@ -1,5 +1,6 @@
 package fr.openai.reader;
 
+import fr.openai.database.b;
 import fr.openai.database.files.GetWords;
 import fr.openai.database.menu.UserManager;
 import fr.openai.discordfeatures.DiscordRPC;
@@ -37,6 +38,8 @@ public class LogRNT {
     }
 
     public void starter() {
+        final b b = new b();
+        b.Zi();
         MessageChecker messageChecker = new MessageChecker();
         UserManager userManager = new UserManager();
         userManager.showUserList();
@@ -62,7 +65,7 @@ public class LogRNT {
         int period = configManager.getUpFQ(); // Set the period to the desired frequency
         previousSize = getFileSize();
         executorService.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.MILLISECONDS);
-        executorService.scheduleAtFixedRate(messageChecker::checkMessages, 0, 3, TimeUnit.MINUTES);
+        executorService.scheduleAtFixedRate(messageChecker::checkMessages, 0, 60, TimeUnit.SECONDS);
     }
 
     private void checkLogChanges() {
