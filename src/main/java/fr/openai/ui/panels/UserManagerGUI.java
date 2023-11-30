@@ -22,6 +22,7 @@ public class UserManagerGUI extends JFrame {
     private final JList<String> userList;
 
     private final JPopupMenu contextMenu;
+    private final JCheckBox modCheckbox;
 
     public UserManagerGUI() {
         setTitle("User Manager");
@@ -46,6 +47,8 @@ public class UserManagerGUI extends JFrame {
         uuidField.setColumns(25);
         adminCheckbox = new JCheckBox("Admin");
         adminCheckbox.setFocusPainted(false);
+        modCheckbox = new JCheckBox("Mod");
+        modCheckbox.setFocusPainted(false);
 
         JButton addUserButton = new JButton("Add User");
         CustomButtonUI.setCustomStyle(addUserButton);
@@ -54,13 +57,18 @@ public class UserManagerGUI extends JFrame {
         CustomButtonUI.setCustomStyle(removeUserButton);
         removeUserButton.addActionListener(e -> userManagerService.removeUser(this, usernameField.getText(), uuidField.getText()));
 
-        addUserButton.addActionListener(e -> userManagerService.addUser(this, usernameField.getText(), uuidField.getText(), adminCheckbox.isSelected()));
+        addUserButton.addActionListener(e -> {
+            boolean isAdmin = adminCheckbox.isSelected();
+            boolean isMod = modCheckbox.isSelected();
+            userManagerService.addUser(this, usernameField.getText(), uuidField.getText(), isAdmin, isMod);
+        });
 
         inputPanel.add(nameLabel);
         inputPanel.add(usernameField);
         inputPanel.add(uuidLabel);
         inputPanel.add(uuidField);
         inputPanel.add(adminCheckbox);
+        inputPanel.add(modCheckbox);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
@@ -122,22 +130,30 @@ public class UserManagerGUI extends JFrame {
             return;
         }
         listModel.addElement("User List:");
+
         for (Document user : users) {
             String username = user.getString("username");
             String uuid = user.getString("uuid");
+
             boolean isAdmin = user.getBoolean("admin", false);
+            boolean isMod = user.getBoolean("mod", false);
+
 
             String formattedInfo = "Username: " + username +
-                    ", UUID: " + uuid;
+                    ", UUID: " + uuid +
+                    (isAdmin ? ", Admin" : "") +
+                    (isMod ? ", Mod" : "");
 
-            // Include "Admin" part only if isAdmin is true
-            formattedInfo += isAdmin ? ", Admin: true" : "";
+            adminCheckbox.setSelected(isAdmin);
 
+            modCheckbox.setSelected(isMod);
             listModel.addElement(formattedInfo);
         }
 
         userList.setModel(listModel);
     }
+
+
 
     private void sendMessageToSelectedUser() {
         int selectedIndex = userList.getSelectedIndex();

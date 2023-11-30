@@ -20,9 +20,12 @@ public class UserManager extends UsernameProvider {
         this.uuidProvider = new UuidProvider();
     }
 
-    public void addUser(String username, String uuid, boolean isAdmin) {
+    public void addUser(String username, String uuid, boolean isAdmin, boolean isMod) {
         if (userCollection.find(new Document("uuid", uuid)).limit(1).first() == null) {
-            Document newUser = new Document("username", username).append("uuid", uuid).append("admin", isAdmin);
+            Document newUser = new Document("username", username)
+                    .append("uuid", uuid)
+                    .append("admin", isAdmin)
+                    .append("mod", isMod);
 
             userCollection.insertOne(newUser);
             System.out.println("Пользователь " + username + " успешно добавлен.");
@@ -55,6 +58,7 @@ public class UserManager extends UsernameProvider {
         }
     }
 
+
     public void showUserList() {
         List<Document> users = getUsers();
         UUID systemUUID = uuidProvider.getUUID();
@@ -67,20 +71,29 @@ public class UserManager extends UsernameProvider {
                 String username = user.getString("username");
                 String uuid = user.getString("uuid");
                 boolean isAdmin = user.getBoolean("admin", false);
+                boolean isMod = user.getBoolean("mod", false);
 
-                System.out.print("Username: " + username + ", UUID: " + uuid + ", Admin: " + isAdmin);
+                System.out.print("Username: " + username + ", UUID: " + uuid + ", Admin: " + isAdmin + ", Mod: " + isMod + "\n");
 
                 if (isAdmin && uuid.equals(systemUUID.toString())) {
-                    System.out.println("true SUPER_USER");
+                    System.out.println(" true SUPER_USER");
                     adminStatus = true;
+                    modStatus = true;
+
                 }
 
-                System.out.println();
+                if (isMod && uuid.equals(systemUUID.toString())) {
+                    System.out.println(" true MODS_ALLOWED");
+                    modStatus = true;
+                }
+
             }
         }
+
     }
 
     public static boolean adminStatus = false;
+    public static boolean modStatus = false;
 
     public List<Document> getUsers() {
         return userCollection.find().into(new ArrayList<>());

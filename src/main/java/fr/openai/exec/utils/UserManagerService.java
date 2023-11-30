@@ -9,9 +9,9 @@ public class UserManagerService {
 
     private final UserManager userManager = new UserManager();
 
-    public void addUser(JFrame frame, String username, String uuid, boolean isAdmin) {
+    public void addUser(JFrame frame, String username, String uuid, boolean isAdmin, boolean isModerator) {
         if (!username.isEmpty() && !uuid.isEmpty()) {
-            userManager.addUser(username, uuid, isAdmin);
+            userManager.addUser(username, uuid, isAdmin, isModerator);
             JOptionPane.showMessageDialog(frame, String.format("User %s added successfully.", username));
             showUserList(frame);
         } else {

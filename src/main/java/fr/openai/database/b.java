@@ -5,6 +5,7 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
 import org.bson.Document;
 
+
 public class b {
     private static MongoClient fij;
 

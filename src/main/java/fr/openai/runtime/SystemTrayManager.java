@@ -5,6 +5,7 @@ import fr.openai.database.b;
 import fr.openai.database.UsernameProvider;
 import fr.openai.database.files.TrayIconLoader;
 import fr.openai.database.files.TrayIconManager;
+import fr.openai.database.menu.UserManager;
 import fr.openai.exec.utils.DatabaseUtils;
 import fr.openai.ui.MutesWarnsGUI;
 import fr.openai.ui.panels.Menu;
@@ -60,8 +61,13 @@ public class SystemTrayManager extends UsernameProvider {
                 e.printStackTrace();
             }
 
+            if (!UserManager.modStatus) {
+                modesMenu.setEnabled(false);
+                popupMenu.remove(modesMenu);
+            }
+
             if (username == null || username.length() <= 3) {
-                stats.setEnabled(false);
+                popupMenu.remove(stats);
             }
             stats.addActionListener(e -> {
                 MutesWarnsGUI mutesWarnsGUI = new MutesWarnsGUI();

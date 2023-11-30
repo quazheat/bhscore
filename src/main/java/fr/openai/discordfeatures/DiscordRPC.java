@@ -36,9 +36,8 @@ public class DiscordRPC extends UsernameProvider {
         presence.spectateSecret = "spectate-secret";
         presence.instance = (byte) 1; // For true
 
-        // Добавляем метаданные для кнопки
         presence.partyId = "party-id"; // Уникальный идентификатор группы
-//        presence.joinSecret = "quazheat"; // Секретный ключ для присоединения к группе
+        presence.joinSecret = "quazheat"; // Секретный ключ для присоединения к группе
 
         lib.Discord_UpdatePresence(presence);
     }
