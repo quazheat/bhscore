@@ -1,7 +1,8 @@
-package fr.openai.filter;
+package fr.openai.filter.messages;
 
 import fr.openai.exec.utils.ClipboardUtil;
 import fr.openai.exec.utils.PasteUtil;
+import fr.openai.filter.FilteringModeManager;
 import fr.openai.notify.NotificationSystem;
 import fr.openai.notify.WindowsNotification;
 import fr.openai.online.OnlineHandler;

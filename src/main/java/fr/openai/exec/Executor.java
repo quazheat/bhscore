@@ -1,7 +1,7 @@
 package fr.openai.exec;
 
-import fr.openai.filter.Filtering;
-import fr.openai.filter.MessageProcessor;
+import fr.openai.filter.messages.Filtering;
+import fr.openai.filter.messages.MessageProcessor;
 import fr.openai.filter.Validator;
 import fr.openai.notify.NotificationSystem;
 

@@ -1,9 +1,11 @@
-package fr.openai.filter;
+package fr.openai.filter.messages;
 
 import fr.openai.discordfeatures.DiscordRPC;
 import fr.openai.discordfeatures.UpdateDiscordRPCDetails;
 import fr.openai.exec.Messages;
 import fr.openai.exec.Names;
+import fr.openai.filter.Filters;
+import fr.openai.filter.JustAnotherFilter;
 import fr.openai.notify.NotificationSystem;
 
 public class Filtering extends ViolationHandler {

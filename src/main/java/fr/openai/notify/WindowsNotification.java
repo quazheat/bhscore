@@ -2,7 +2,6 @@ package fr.openai.notify;
 
 import fr.openai.database.files.TrayIconLoader;
 import fr.openai.filter.FilteringModeManager;
-import fr.openai.filter.ViolationHandler;
 
 import java.awt.*;
 import java.awt.event.*;

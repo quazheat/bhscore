@@ -1,6 +1,7 @@
 package fr.openai.runtime;
 
 import com.mongodb.client.MongoCollection;
+import fr.openai.database.StatsDatabaseManager;
 import fr.openai.database.b;
 import fr.openai.database.UsernameProvider;
 import fr.openai.database.files.TrayIconLoader;
@@ -105,7 +106,10 @@ public class SystemTrayManager extends UsernameProvider {
                     exception.printStackTrace();
                     System.exit(1);
                 }
+
                 MongoCollection<Document> collection = fr.openai.database.b.Zxc(COLLECTION_NAME);
+
+                SystemTrayManager.saveMutesAndWarns(username);
 
                 databaseUtils.deleteDocuments(collection, new Document("username", username));
                 b.dqzxc();
@@ -116,5 +120,10 @@ public class SystemTrayManager extends UsernameProvider {
             iconManager.setupIconListeners(toggleRageModeItem, toggleLoyalModeItem);
         }
         iconLoader.setImageAutoSize(true);
+    }
+
+    private static void saveMutesAndWarns(String username) {
+        StatsDatabaseManager statsDatabaseManager = new StatsDatabaseManager();
+        statsDatabaseManager.saveMutesAndWarns(username);
     }
 }

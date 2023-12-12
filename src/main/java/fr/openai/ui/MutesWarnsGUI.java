@@ -1,9 +1,8 @@
 package fr.openai.ui;
 
 import fr.openai.database.ConfigManager;
-import fr.openai.database.b;
 import fr.openai.ui.customui.CustomButtonUI;
-import fr.openai.ui.panels.StatsDatabaseManager;
+import fr.openai.database.StatsDatabaseManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,9 +62,7 @@ public class MutesWarnsGUI extends JDialog {
         clearButton.addActionListener(e -> clearStats(username));
 
         JButton closeButton = new JButton("Закрыть");
-        closeButton.addActionListener(e -> {
-            dispose();
-        });
+        closeButton.addActionListener(e -> dispose());
 
         Dimension buttonSize = new Dimension(140, 40);
         clearButton.setPreferredSize(buttonSize);

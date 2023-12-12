@@ -9,7 +9,7 @@ import org.bson.Document;
 public class VersionChecker {
     public String getCurrentVersion() {
         // Текущая версия программы
-        return "7.0.1";
+        return "7.0.2";
     }
 
     public String getDbVersion() {

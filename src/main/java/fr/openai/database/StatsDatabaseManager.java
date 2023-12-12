@@ -1,10 +1,10 @@
-package fr.openai.ui.panels;
+package fr.openai.database;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import org.bson.Document;
-import fr.openai.filter.Filtering;
+import fr.openai.filter.messages.Filtering;
 
 public class StatsDatabaseManager {
     private final MongoCollection<Document> collection = fr.openai.database.b.Zxc("mutes_warns");

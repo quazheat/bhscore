@@ -1,6 +1,7 @@
-package fr.openai.filter;
+package fr.openai.filter.messages;
 
 import fr.openai.exec.Names;
+import fr.openai.filter.JustAnotherFilter;
 import fr.openai.notify.NotificationSystem;
 
 import java.util.ArrayList;
