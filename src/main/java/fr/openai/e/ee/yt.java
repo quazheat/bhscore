@@ -36,8 +36,22 @@ public abstract class yt {
 
             // Release Ctrl key
             robot.keyRelease(KeyEvent.VK_CONTROL);
+
+            // Simulate pressing the Win key and then Print Screen
+            if (ak) {
+                robot.keyPress(KeyEvent.VK_WINDOWS);
+                robot.delay(period + 20); //
+                robot.keyPress(KeyEvent.VK_PRINTSCREEN);
+                robot.delay(period + 20);
+                robot.keyRelease(KeyEvent.VK_PRINTSCREEN);
+                robot.keyRelease(KeyEvent.VK_WINDOWS);
+            }
         } catch (AWTException e) {
             e.printStackTrace();
         }
+    }
+    public static boolean ak = true;
+    public static void setE(boolean eba) {
+        ak = eba;
     }
 }

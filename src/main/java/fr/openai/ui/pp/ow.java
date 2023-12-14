@@ -1,10 +1,12 @@
 package fr.openai.ui.pp;
 
 import fr.openai.discordfeatures.da;
+import fr.openai.e.ee.yt;
 import fr.openai.e.o13;
 import fr.openai.e.Nes;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -23,6 +25,11 @@ public class ow extends JPanel {
     public ow() {
         setLayout(new BorderLayout());
 
+        JCheckBox akb = new JCheckBox("Авто-скриншот", yt.ak);
+        akb.addActionListener(e -> {
+            boolean a1 = akb.isSelected();
+            yt.setE(a1);
+        });
         String w = "В это поле можно вставить строку из логов";
         String var = "Свой текст в статус";
         String message = "Сообщение: ";
@@ -37,8 +44,8 @@ public class ow extends JPanel {
         topPanel.add(a);
         a.setFocusPainted(false);
         a.addActionListener(e -> {
-            boolean isEnabled = a.isSelected();
-            da.setE(isEnabled);
+            boolean a1 = a.isSelected();
+            da.setE(a1);
         });
 
         b = new JTextField(var, 20);
@@ -51,8 +58,12 @@ public class ow extends JPanel {
         v = new JLabel(message);
 
         JPanel labelPanel = new JPanel(new GridLayout(1, 2));
-        labelPanel.add(c);
-        labelPanel.add(v);
+        Border ii = BorderFactory.createEmptyBorder(0, 9, 0, 0);
+        akb.setBorder(ii);
+
+        labelPanel.add(akb);
+//        labelPanel.add(c);
+//        labelPanel.add(v);
         add(labelPanel, BorderLayout.CENTER);
 
         this.a = new JTextField(w);
@@ -91,7 +102,7 @@ public class ow extends JPanel {
                 }
             }
         });
-        add(this.a, BorderLayout.SOUTH);
+        //add(this.a, BorderLayout.SOUTH);
 
         this.a.addKeyListener(new KeyAdapter() {
             @Override

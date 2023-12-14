@@ -24,6 +24,8 @@ public class aez extends JPanel {
         uq.setPaintLabels(true);
         uq.setSnapToTicks(true);
 
+
+
         JLabel qq = new JLabel(" Скорость обработки: " + dzz.bq() + " ms");
         JButton qqz = new JButton("Онлайн");
         Font customFont = new Font("Arial", Font.PLAIN, 9);
@@ -37,6 +39,7 @@ public class aez extends JPanel {
                 qqz.setEnabled(false);
             }
         }
+
         qqz.addActionListener(e -> OO.a());
         uq.addChangeListener(e -> {
             int value = uq.getValue();
@@ -123,5 +126,6 @@ public class aez extends JPanel {
         add(o, BorderLayout.CENTER);
         hhg.setFont(customFont);
         add(hhg, BorderLayout.WEST);
+
     }
 }
