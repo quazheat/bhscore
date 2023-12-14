@@ -26,12 +26,12 @@ public class YY extends upA {
         long es = System.currentTimeMillis();
         long fa = es - (5 * 60 * 60 * 1000);
 
-        Document ef = new Document("timestamp", new Document("$lt", fa));
+        Document ef = new Document("a22", new Document("$lt", fa));
         a.dqI(op, ef);
 
         Document d = new Document("userText", id)
                 .append("username", u)
-                .append("timestamp", System.currentTimeMillis())
+                .append("a22", System.currentTimeMillis())
                 .append("timezone", TimeZone.getDefault().getID());
 
         op.insertOne(d);

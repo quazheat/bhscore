@@ -74,8 +74,8 @@ public class ap2 extends JFrame {
         gbc.insets = new Insets(20, 15, 30, 15);
         panel.add(d, gbc);
 
-        ImageIcon icon = new ImageIcon("tray_icon.png");
-        setIconImage(icon.getImage());
+        ImageIcon i = new ImageIcon("tray_icon.png");
+        setIconImage(i.getImage());
 
         Font s1 = new Font("Arial", Font.PLAIN, 16);
         aeq.setFont(s1);
@@ -112,9 +112,10 @@ public class ap2 extends JFrame {
             this.a.setText("");
 
             dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "UUID and varM cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-    }
 
+        JOptionPane.showMessageDialog(this, "UUID and varM cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
+
+    }
 }

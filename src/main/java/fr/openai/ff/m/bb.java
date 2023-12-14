@@ -35,7 +35,7 @@ public class bb extends ei {
     }
 
     private void a(long e) {
-        a.removeIf(record -> e - record.timestamp() >= 60);
+        a.removeIf(record -> e - record.a22() >= 60);
     }
 
     private int var5(String e, String i) {

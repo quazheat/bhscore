@@ -107,7 +107,7 @@ public class l {
         var = new String(var.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
 
         if (iD.id(var)) {
-            ex.execute(var, nes);
+            ex.e3(var, nes);
         }
 
         if (iD.var1(var)) {

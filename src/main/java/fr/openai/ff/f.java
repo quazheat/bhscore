@@ -99,7 +99,7 @@ public class f extends upA {
             boolean abvS = false;
             for (int i = 0; i < abs.size(); i++) {
                 String w = abs.get(i).getAsString();
-                double x = wqe.apply(z, w);
+                double x = wqe.a(z, w);
                 if (x >= 0.8) {
                     abvS = true;
 
@@ -109,7 +109,7 @@ public class f extends upA {
             if (!abvS) {
                 for (int i = 0; i < abv.size(); i++) {
                     String a = abv.get(i).getAsString();
-                    double xc = wqe.apply(z, a);
+                    double xc = wqe.a(z, a);
 
                     if (xc >= 0.8) {
                         return true;
@@ -135,7 +135,7 @@ public class f extends upA {
             boolean a = false;
             for (int i = 0; i < eqeq.size(); i++) {
                 String b = eqeq.get(i).getAsString();
-                double e = l.apply(x, b);
+                double e = l.a(x, b);
                 if (e >= 0.8) {
                     a = true;
 
@@ -145,7 +145,7 @@ public class f extends upA {
             if (!a) {
                 for (int i = 0; i < eqd.size(); i++) {
                     String o = eqd.get(i).getAsString();
-                    double peq = l.apply(x, o);
+                    double peq = l.a(x, o);
 
                     if (peq >= 0.8) {
                         return true;

@@ -7,9 +7,9 @@ import java.util.UUID;
 
 public class ud {
     public UUID a() {
-        String rawUuid = null;
+        String a1 = null;
         try {
-            rawUuid = Advapi32Util.registryGetStringValue(
+            a1 = Advapi32Util.registryGetStringValue(
                     WinReg.HKEY_LOCAL_MACHINE,
                     "SOFTWARE\\Microsoft\\Cryptography",
                     "MachineGuid"
@@ -18,9 +18,8 @@ public class ud {
             e.printStackTrace();
         }
 
-        if (rawUuid != null) {
-            // Преобразование к UUID (опционально)
-            return UUID.fromString(rawUuid);
+        if (a1 != null) {
+            return UUID.fromString(a1);
         }
 
         return null;

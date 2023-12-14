@@ -7,10 +7,10 @@ import java.util.regex.Pattern;
 public class Nes {
     public static boolean s = false;
     private String f;
-    private final Pattern SQUARE_BRACKETS_PATTERN = Pattern.compile("\\[.+?]");
-    private final Pattern BRACKETS_PATTERN = Pattern.compile("\\(.+?\\)");
-    private final Pattern HASHTAG_PATTERN = Pattern.compile("#.*");
-    private final Pattern PIPE_PATTERN = Pattern.compile(".+?┃");
+    private final Pattern a1 = Pattern.compile("\\[.+?]");
+    private final Pattern a2 = Pattern.compile("\\(.+?\\)");
+    private final Pattern a3 = Pattern.compile("#.*");
+    private final Pattern a = Pattern.compile(".+?┃");
 
     public String e1(String varP) {
         String[] a = varP.split(" ");
@@ -66,10 +66,10 @@ public class Nes {
     }
 
     private String fN(String a) {
-        a = BRACKETS_PATTERN.matcher(a).replaceAll("");
-        a = SQUARE_BRACKETS_PATTERN.matcher(a).replaceAll("");
-        a = HASHTAG_PATTERN.matcher(a).replaceAll("");
-        a = PIPE_PATTERN.matcher(a).replaceAll("");
+        a = a2.matcher(a).replaceAll("");
+        a = a1.matcher(a).replaceAll("");
+        a = a3.matcher(a).replaceAll("");
+        a = this.a.matcher(a).replaceAll("");
         a = a.trim();
         return a;
     }

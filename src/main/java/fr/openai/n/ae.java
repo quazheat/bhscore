@@ -9,60 +9,60 @@ import java.awt.*;
 import java.util.List;
 
 public class ae {
-    private final List<MessagerNotification> notifications = new java.util.ArrayList<>();
-    protected static final int MAX_NOTIFICATIONS = 10;
-    private final NN heightManager = new NN();
+    private final List<ex> ax = new java.util.ArrayList<>();
+    protected static final int a1 = 10;
+    private final NN a2 = new NN();
 
-    public void e(String senderName, String message) {
-        if (notifications.size() < MAX_NOTIFICATIONS) {
-            MessagerNotification notification = new MessagerNotification(senderName, message);
-            notifications.add(notification);
-            SwingUtilities.invokeLater(() -> displayMessagerNotification(notification));
+    public void e(String ep, String o) {
+        if (ax.size() < a1) {
+            ex ax = new ex(ep, o);
+            this.ax.add(ax);
+            SwingUtilities.invokeLater(() -> a(ax));
         }
     }
 
-    private void displayMessagerNotification(MessagerNotification notification) {
-        int currentYBeforeNotification = heightManager.zxcq();
+    private void a(ex xc) {
+        int cY = a2.zxcq();
 
-        cd notificationDialog = new cd();
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        cd cy1 = new cd();
+        Dimension sZ = Toolkit.getDefaultToolkit().getScreenSize();
 
-        int x = (int) (screenSize.getWidth() / 2 - notificationDialog.getWidth() / 2);
-        notificationDialog.setLocation(x, currentYBeforeNotification);
+        int x = (int) (sZ.getWidth() / 2 - cy1.getWidth() / 2);
+        cy1.setLocation(x, cY);
 
-        JPanel notificationPanel = new JPanel();
-        notificationPanel.setLayout(new BorderLayout());
-        notificationPanel.setBackground(Color.DARK_GRAY);
+        JPanel nfP = new JPanel();
+        nfP.setLayout(new BorderLayout());
+        nfP.setBackground(Color.DARK_GRAY);
 
-        JLabel titleLabel = new JLabel(notification.title(), SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Serif", Font.BOLD, 18));
-        titleLabel.setForeground(Color.BLACK);
+        JLabel ttL = new JLabel(xc.t(), SwingConstants.CENTER);
+        ttL.setFont(new Font("Serif", Font.BOLD, 18));
+        ttL.setForeground(Color.BLACK);
 
-        cvf messageField = new cvf(notification.message());
-        cs closeButton = new cs("x", notificationDialog, heightManager);
+        cvf ms = new cvf(xc.var());
+        cs cs = new cs("x", cy1, a2);
 
-        closeButton.addActionListener(e -> {
-            notificationDialog.dispose();
-            notifications.remove(notification);
+        cs.addActionListener(e -> {
+            cy1.dispose();
+            ax.remove(xc);
         });
 
         JPanel buttonPanel = new JPanel(new BorderLayout());
         buttonPanel.setBackground(Color.DARK_GRAY);
-        closeButton.setPreferredSize(new Dimension((int) (0.14 * notificationDialog.getWidth()), 18));
+        cs.setPreferredSize(new Dimension((int) (0.14 * cy1.getWidth()), 18));
 
-        buttonPanel.add(closeButton, BorderLayout.EAST);
-        notificationPanel.add(titleLabel, BorderLayout.NORTH);
-        notificationPanel.add(messageField, BorderLayout.CENTER);
-        notificationPanel.add(buttonPanel, BorderLayout.SOUTH);
-        notificationDialog.add(notificationPanel);
-        notificationDialog.setVisible(true);
+        buttonPanel.add(cs, BorderLayout.EAST);
+        nfP.add(ttL, BorderLayout.NORTH);
+        nfP.add(ms, BorderLayout.CENTER);
+        nfP.add(buttonPanel, BorderLayout.SOUTH);
+        cy1.add(nfP);
+        cy1.setVisible(true);
 
-        heightManager.xcz(20);
+        a2.xcz(20);
     }
 
-    private record MessagerNotification(String senderName, String message) {
-        public String title() {
-            return senderName;
+    private record ex(String a1, String var) {
+        public String t() {
+            return a1;
         }
     }
 

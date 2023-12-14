@@ -1,12 +1,11 @@
 package fr.openai.ff.fixer;
 
 public class L {
-    public static int calculate(String s1, String s2) {
+    public static int c(String s1, String s2) {
         int m = s1.length();
         int n = s2.length();
         int[][] dp = new int[m + 1][n + 1];
 
-        // Заполняем начальные значения
         for (int i = 0; i <= m; i++) {
             dp[i][0] = i;
         }
@@ -24,9 +23,9 @@ public class L {
         return dp[m][n];
     }
 
-    public double apply(String s1, String s2) {
-        int distance = calculate(s1, s2);
-        int maxLength = Math.max(s1.length(), s2.length());
-        return 1.0 - (double) distance / maxLength;
+    public double a(String s1, String s2) {
+        int i = c(s1, s2);
+        int i13 = Math.max(s1.length(), s2.length());
+        return 1.0 - (double) i / i13;
     }
 }

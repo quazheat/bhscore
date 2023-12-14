@@ -20,7 +20,7 @@ public class o5 {
         this.a = Executors.newScheduledThreadPool(10);
     }
 
-    public void execute(String ma, Nes nes) {
+    public void e3(String ma, Nes nes) {
         if (vV.vv(ma)) {
             return;
         }

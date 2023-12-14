@@ -1,7 +1,7 @@
 package fr.openai.s.uu;
 
 import fr.openai.b.menu.uu;
-import fr.openai.s.logs.u1;
+import fr.openai.s.lg.u1;
 import fr.openai.s.uu.manager.H;
 
 import java.io.IOException;

@@ -11,10 +11,10 @@ public class re {
     public static void oa() {
 
         ko a = new ko();
-        UUID systemUUID = a.ok();
-        String sysIdStr = systemUUID != null ? systemUUID.toString() : "UUID not found";
+        UUID ss34 = a.ok();
+        String str1 = ss34 != null ? ss34.toString() : "UUID not found";
 
-        JTextField e1 = new JTextField(sysIdStr);
+        JTextField e1 = new JTextField(str1);
         e1.setEditable(false);
         e1.setFont(new Font("Arial", Font.PLAIN, 14));
         e1.setForeground(Color.BLACK);
@@ -44,7 +44,7 @@ public class re {
 
         JButton o = new JButton("OK");
         o.addActionListener(e -> {
-            o4.a4(sysIdStr);
+            o4.a4(str1);
             System.exit(1);
         });
 

@@ -7,27 +7,27 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class W {
-    private static TrayIcon trayIcon;
+    private static TrayIcon ti;
 
     public static void dqps() {
         if (SystemTray.isSupported()) {
-            SystemTray tray = SystemTray.getSystemTray();
-            aa iconLoader = new aa();
-            Image icon = iconLoader.dAA();
+            SystemTray t = SystemTray.getSystemTray();
+            aa ia = new aa();
+            Image zx = ia.dAA();
             if (Bst.efz()) {
-                trayIcon = new TrayIcon(icon, "BHScore mode: RAGE");
+                ti = new TrayIcon(zx, "BHScore mode: RAGE");
             }
             if (Bst.ao()) {
-                trayIcon = new TrayIcon(icon, "BHScore mode: LOYAL");
+                ti = new TrayIcon(zx, "BHScore mode: LOYAL");
             }
-            trayIcon.addMouseListener(new MouseAdapter() {
+            ti.addMouseListener(new MouseAdapter() {
             });
 
             PopupMenu a = new PopupMenu();
-            trayIcon.setPopupMenu(a);
+            ti.setPopupMenu(a);
 
             try {
-                tray.add(trayIcon);
+                t.add(ti);
             } catch (AWTException e) {
                 System.err.println("Failed");
             }
@@ -35,16 +35,16 @@ public class W {
     }
 
     public static void sW(String t, String k, TrayIcon.MessageType ty) {
-        if (trayIcon != null) {
-            trayIcon.displayMessage(t, k, ty);
+        if (ti != null) {
+            ti.displayMessage(t, k, ty);
         }
     }
 
     public static void sdq() {
-        if (trayIcon != null) {
-            SystemTray tray = SystemTray.getSystemTray();
-            tray.remove(trayIcon);
-            trayIcon = null;
+        if (ti != null) {
+            SystemTray y = SystemTray.getSystemTray();
+            y.remove(ti);
+            ti = null;
         }
     }
 }

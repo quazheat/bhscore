@@ -8,7 +8,7 @@ import fr.openai.ui.ny.cui;
 import fr.openai.ui.y1;
 import fr.openai.b.k;
 import fr.openai.b.files.w;
-import fr.openai.s.logs.u1;
+import fr.openai.s.lg.u1;
 import fr.openai.s.uu.manager.H;
 import fr.openai.s.uu.ab;
 import fr.openai.s.uu.ud;

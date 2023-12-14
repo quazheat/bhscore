@@ -9,7 +9,7 @@ import org.bson.Document;
 public class VV {
     public String aex() {
         // Текущая версия программы
-        return "7.0.3";
+        return "7.0.1";
     }
 
     public String d() {

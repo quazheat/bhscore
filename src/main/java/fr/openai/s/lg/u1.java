@@ -1,4 +1,4 @@
-package fr.openai.s.logs;
+package fr.openai.s.lg;
 
 
 import java.io.IOException;
