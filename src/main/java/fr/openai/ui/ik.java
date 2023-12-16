@@ -88,7 +88,7 @@ public class ik extends JDialog {
 
     private void ssSa(String main) {
         sss sss = new sss();
-        sss.deleteDocumentIfMatch(main);
+        sss.ia(main);
 
         dispose();
     }

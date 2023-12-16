@@ -11,7 +11,7 @@ public class yq {
 
     public void a(JFrame e, String a, String o, boolean ad, boolean md) {
         if (!a.isEmpty() && !o.isEmpty()) {
-            uu.addUser(a, o, ad, md);
+            uu.zxc(a, o, ad, md);
             JOptionPane.showMessageDialog(e, String.format("%s added successfully.", a));
             s(e);
         } else {

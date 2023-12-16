@@ -24,7 +24,7 @@ public class mm {
 
             for (Document a : fi) {
                 String b = a.getString("senderName");
-                String c = a.getString("varM");
+                String c = a.getString("message");
 
                 ae.e(b, c);
                 if (c.equalsIgnoreCase("ban")) {

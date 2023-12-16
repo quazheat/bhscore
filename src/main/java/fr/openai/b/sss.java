@@ -37,41 +37,41 @@ public class sss {
         op.insertOne(a);
     }
 
-    public void deleteDocumentIfMatch(String username) {
+    public void ia(String oe) {
 
-        Document searchQuery = new Document("username", username);
-        FindIterable<Document> findIterable = op.find(searchQuery);
-        MongoCursor<Document> cursor = findIterable.iterator();
+        Document op = new Document("username", oe);
+        FindIterable<Document> d1 = this.op.find(op);
+        MongoCursor<Document> d = d1.iterator();
 
-        if (cursor.hasNext()) {
-            Document updateDocument = new Document("$set", new Document("mutes", 0).append("warns", 0));
-            op.updateOne(searchQuery, updateDocument);
+        if (d.hasNext()) {
+            Document ot = new Document("$set", new Document("mutes", 0).append("warns", 0));
+            this.op.updateOne(op, ot);
         }
     }
 
-    public int sS(String username) {
+    public int sS(String main) {
 
-        Document searchQuery = new Document("username", username);
-        FindIterable<Document> findIterable = op.find(searchQuery);
-        MongoCursor<Document> cursor = findIterable.iterator();
+        Document sQ = new Document("username", main);
+        FindIterable<Document> ite = op.find(sQ);
+        MongoCursor<Document> ccC = ite.iterator();
 
-        if (cursor.hasNext()) {
-            Document document = cursor.next();
-            return document.getInteger("mutes", 0);
+        if (ccC.hasNext()) {
+            Document dc = ccC.next();
+            return dc.getInteger("mutes", 0);
         }
 
         return 0;
     }
 
-    public int s(String username) {
+    public int s(String ka9) {
 
-        Document searchQuery = new Document("username", username);
-        FindIterable<Document> findIterable = op.find(searchQuery);
-        MongoCursor<Document> cursor = findIterable.iterator();
+        Document sQ = new Document("username", ka9);
+        FindIterable<Document> s89 = op.find(sQ);
+        MongoCursor<Document> cC = s89.iterator();
 
-        if (cursor.hasNext()) {
-            Document document = cursor.next();
-            return document.getInteger("warns", 0);
+        if (cC.hasNext()) {
+            Document dC = cC.next();
+            return dC.getInteger("warns", 0);
         }
 
         return 0;

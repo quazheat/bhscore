@@ -20,7 +20,7 @@ public class uu extends upA {
         this.ud = new ud();
     }
 
-    public void addUser(String s, String zx, boolean sS, boolean sSs) {
+    public void zxc(String s, String zx, boolean sS, boolean sSs) {
         if (zxc.find(new Document("uuid", zx)).limit(1).first() == null) {
             Document asd = new Document("username", s)
                     .append("uuid", zx)
