@@ -4,7 +4,6 @@ import fr.openai.b.k;
 import fr.openai.b.files.a;
 import fr.openai.b.menu.uu;
 import fr.openai.discordfeatures.da;
-import fr.openai.discordfeatures.de;
 import fr.openai.e.o5;
 import fr.openai.e.Nes;
 import fr.openai.n.mm;
@@ -44,13 +43,6 @@ public class l {
         uu uu = new uu();
         uu.dqw();
         da da = new da();
-        de de = new de();
-        String y = (dzz.us());
-
-        if (y == null || y.length() <= 3) {
-            de.setModal(true); // MODAL DIALOG
-            de.setVisible(true);
-        }
 
         ScheduledExecutorService excz = Executors.newSingleThreadScheduledExecutor();
 

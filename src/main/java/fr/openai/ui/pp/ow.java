@@ -30,6 +30,8 @@ public class ow extends JPanel {
             boolean a1 = akb.isSelected();
             yt.setE(a1);
         });
+
+        akb.setFocusPainted(false);
         String w = "В это поле можно вставить строку из логов";
         String var = "Свой текст в статус";
         String message = "Сообщение: ";

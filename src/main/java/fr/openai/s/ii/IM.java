@@ -1,10 +1,10 @@
 package fr.openai.s.ii;
 
-import fr.openai.s.uu.manager.a;
+import fr.openai.s.uu.manager.aA;
 
 public class IM {
     private final erq erq = new erq();
-    private final a l = new a();
+    private final aA l = new aA();
     private final es es = new es();
 
     public void a() {
