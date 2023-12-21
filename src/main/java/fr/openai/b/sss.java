@@ -10,10 +10,14 @@ public class sss {
     private final MongoCollection<Document> op = k.Zxc("mutes_warns");
 
     public void ap(String var) {
+        if (var.length() <= 3) {
+            return;
+        }
         int zxc = xc.gk();
         int zxc1 = xc.gv();
 
         Document sq = new Document("username", var);
+
         FindIterable<Document> fi = op.find(sq);
         MongoCursor<Document> cc = fi.iterator();
 
@@ -26,11 +30,14 @@ public class sss {
             ex.put("warns", exw + zxc1);
 
             op.replaceOne(sq, ex);
+            xc.a = 0;
+            xc.nea = 0;
             return;
         }
 
         Document a = new Document();
         a.put("username", var);
+
         a.put("mutes", zxc);
         a.put("warns", zxc1);
 
