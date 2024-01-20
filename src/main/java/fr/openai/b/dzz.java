@@ -1,6 +1,7 @@
 package fr.openai.b;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -24,7 +25,7 @@ public class dzz {
 
     private void e1() {
         try (InputStream i = new FileInputStream(de)) {
-            eq.load(i);
+            eq.load(new InputStreamReader(i, StandardCharsets.UTF_8));
             q = w();
         } catch (IOException e) {
             eq.setProperty(v1, vw3);
@@ -34,13 +35,15 @@ public class dzz {
         }
     }
 
+
     private void s() {
         try (OutputStream sz = new FileOutputStream(de)) {
-            eq.store(sz, "BHScore Configuration");
+            eq.store(new OutputStreamWriter(sz, StandardCharsets.UTF_8), "BHScore Configuration");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     private String aaA() {
         String var = eq.getProperty(dzz.v1);
@@ -75,9 +78,10 @@ public class dzz {
     }
 
     public void is(String i) {
-        eq.setProperty(v33, i);
+        eq.setProperty(v33, new String(i.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
         s();
     }
+
 
     public String us() {
         return eq.getProperty(v33);

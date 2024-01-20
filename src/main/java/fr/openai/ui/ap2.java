@@ -104,7 +104,7 @@ public class ap2 extends JFrame {
             Document d = new Document();
             d.put("UUID", u);
             d.put("senderName", a);
-            d.put("varM", e);
+            d.put("message", e);
             d.put("Actual", true);
 
             c.insertOne(d);
