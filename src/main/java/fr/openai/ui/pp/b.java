@@ -39,6 +39,8 @@ public class b extends JPanel {
         sd.add(b);
 
         JButton a = new JButton("Добавить");
+        a.setToolTipText("НЕ ДОБАВЛЯТЬ БАНВОРДЫ");
+
         JButton b = new JButton("Удалить");
         cui.cios(a);
         cui.cios(b);

@@ -8,7 +8,7 @@ import org.bson.Document;
 
 public class VV {
     public String aex() {
-        return "7.0.4";
+        return "7.0.5";
     }
 
     public String d() {

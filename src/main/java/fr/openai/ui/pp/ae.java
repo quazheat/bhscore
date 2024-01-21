@@ -39,6 +39,7 @@ public class ae extends JPanel {
         inputPanel.add(a);
 
         JButton d2 = new JButton("Добавить");
+
         JButton a1 = new JButton("Удалить");
         cui.cios(d2);
         cui.cios(a1);

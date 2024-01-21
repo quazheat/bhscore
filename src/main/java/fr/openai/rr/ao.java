@@ -9,9 +9,11 @@ import fr.openai.b.files.s;
 import fr.openai.b.menu.uu;
 import fr.openai.e.ee.DD;
 import fr.openai.ui.ik;
+import fr.openai.ui.pp.IE;
 import fr.openai.ui.pp.u8;
 import org.bson.Document;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -29,6 +31,7 @@ public class ao extends upA {
 
         if (SystemTray.isSupported()) {
             MenuItem mn = new MenuItem("menu");
+            MenuItem il = new MenuItem("ignore");
             MenuItem ms = new MenuItem("my stats");
             MenuItem cs = new MenuItem("hide");
             MenuItem ex = new MenuItem("exit program");
@@ -44,6 +47,7 @@ public class ao extends upA {
             PopupMenu ozxc = new PopupMenu();
             ozxc.add(ae1);
             ozxc.add(mn);
+            ozxc.add(il);
             ozxc.add(ms);
             ozxc.addSeparator();
             ozxc.add(cs);
@@ -97,6 +101,17 @@ public class ao extends upA {
                     }
                 }
             });
+
+
+            il.addActionListener(e -> {
+                SwingUtilities.invokeLater(() -> {
+                    IE x = new IE();
+                    x.setLocationRelativeTo(null);
+                    x.setVisible(true);
+                });
+            });
+
+
 
             ex.addActionListener(e -> {
                 k.Zi();

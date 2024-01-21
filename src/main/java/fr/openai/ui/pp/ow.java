@@ -31,6 +31,8 @@ public class ow extends JPanel {
             yt.setE(a1);
         });
 
+        akb.setToolTipText("Сохраняется в папку Pictures/Изображения (стандартная папка Windows)");
+
         akb.setFocusPainted(false);
         String w = "В это поле можно вставить строку из логов";
         String var = "Свой текст в статус";
