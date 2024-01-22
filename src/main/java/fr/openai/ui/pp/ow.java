@@ -4,6 +4,7 @@ import fr.openai.discordfeatures.da;
 import fr.openai.e.ee.yt;
 import fr.openai.e.o13;
 import fr.openai.e.Nes;
+import fr.openai.ff.m.ei;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -51,6 +52,20 @@ public class ow extends JPanel {
             boolean a1 = a.isSelected();
             da.setE(a1);
         });
+
+        JCheckBox additionalCheckbox = new JCheckBox("+gc", false);
+        additionalCheckbox.addActionListener(e -> {
+            boolean a2 = additionalCheckbox.isSelected();
+            ei.setE(a2);
+        });
+
+        additionalCheckbox.setToolTipText("Добавляет +gc в команду");
+        additionalCheckbox.setFocusPainted(false);
+
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        bottomPanel.add(additionalCheckbox);
+
+        add(bottomPanel, BorderLayout.SOUTH);
 
         b = new JTextField(var, 20);
         b.setForeground(Color.GRAY);

@@ -41,8 +41,16 @@ public class VV {
 
         if (i != null && !i.equals(avbb)) {
             Vv vv = new Vv(i, o);
+
             vv.setVisible(true);
+
+            if (!od) {
+                od = true;
+            }
+
         }
     }
+
+    public static boolean od = false;
 
 }

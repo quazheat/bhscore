@@ -9,6 +9,7 @@ import fr.openai.b.files.s;
 import fr.openai.b.menu.uu;
 import fr.openai.e.ee.DD;
 import fr.openai.ui.ik;
+import fr.openai.s.VV;
 import fr.openai.ui.pp.IE;
 import fr.openai.ui.pp.u8;
 import org.bson.Document;
@@ -19,6 +20,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class ao extends upA {
+    private final VV vv = new VV();
     private u8 m;
     public final String a = "online";
     private final k k = new k();
@@ -66,6 +68,12 @@ public class ao extends upA {
                 e.printStackTrace();
             }
 
+            if (VV.od) {
+                mn.setEnabled(false);
+                mn.setLabel("Outdated version");
+
+            }
+
             if (!uu.m) {
                 ae1.setEnabled(false);
                 ozxc.remove(ae1);
@@ -87,13 +95,25 @@ public class ao extends upA {
                     m = new u8(i);
                     return;
                 }
+
+
                 m.a1(true);
             });
 
             i.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
+
+
+
                     if (e.getClickCount() == 2) {
+
+                        if (VV.od) {
+                            vv.rs();
+
+                            return;
+                        }
+
                         if (m == null) {
                             m = new u8(i);
                         }
@@ -110,7 +130,6 @@ public class ao extends upA {
                     x.setVisible(true);
                 });
             });
-
 
 
             ex.addActionListener(e -> {
@@ -141,4 +160,5 @@ public class ao extends upA {
         sss sss = new sss();
         sss.ap(var);
     }
+
 }

@@ -10,15 +10,32 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class Vv extends JDialog {
-    VV VV = new VV();
+
+    private static boolean wO = false;
 
     public Vv(String v, String ch) {
+
+
+        if (wO) {
+            throw new IllegalStateException("Only one instance is allowed.");
+        }
+
+        wO = true;
+
+        fr.openai.s.VV VV = new VV();
 
         setTitle("BHScore " + VV.aex());
         setSize(500, 400);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
+
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent wE) {
+                wO = false;
+            }
+        });
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();

@@ -25,6 +25,17 @@ public abstract class ei {
 
     void o1(String a, String a1, String b, String b1, String r1) {
         System.out.println(YY.h);
+
+        if (ei.gc && !YY.h) {
+            r1 = "gc+" + r1;
+
+        }
+
+        if (ei.gc && b.contains("+") && !YY.h) {
+            b = b + "+gc";
+        }
+
+
         if (YY.h) {
             r1 = "vc+" + r1;
 
@@ -53,6 +64,15 @@ public abstract class ei {
         yt.eu();
     }
 
+    private String s() {
+        if (Bst.ao()) {
+            return "LOYAL";
+        } else if (Bst.efz()) {
+            return "RAGE";
+        } else {
+            return "";
+        }
+    }
 
     private void aee(String s) {
         W.sW(s(), s, INFO);
@@ -66,15 +86,12 @@ public abstract class ei {
         o4.a4(s);
     }
 
-    private String s() {
-        if (Bst.ao()) {
-            return "LOYAL";
-        } else if (Bst.efz()) {
-            return "RAGE";
-        } else {
-            return "";
-        }
+    public static boolean gc = false;
+
+    public static void setE(boolean eba) {
+        gc = eba;
     }
+
 }
 
 

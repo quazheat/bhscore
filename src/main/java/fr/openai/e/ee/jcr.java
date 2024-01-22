@@ -46,9 +46,9 @@ public class jcr {
     private void ob(String kr9) {
         JsonObject o = new JsonObject();
         JsonArray w = new JsonArray();
-        w.add("НИКНЕЙМ");
-        w.add("никнеймА");
-        w.add("никнеймВ");
+        w.add("никнеймы_нужно_писать");
+        w.add("в_точности_как_на_сервере");
+        w.add("типоВотТакойНИКНЕЙМБ");
         o.add("ignore_words", w);
 
         wrL(kr9, o);
